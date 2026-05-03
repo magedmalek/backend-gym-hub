@@ -1,8 +1,10 @@
 package com.gymhub.service;
 
+import com.gymhub.domain.employee.EmployeePermission;
 import com.gymhub.domain.gym.Gym;
 import com.gymhub.domain.gympackage.GymPackage;
 import com.gymhub.domain.gymservice.GymService;
+import com.gymhub.domain.user.User;
 import com.gymhub.dto.request.CreatePackageRequest;
 import com.gymhub.dto.response.PackageResponse;
 import com.gymhub.dto.response.ServiceResponse;
@@ -28,9 +30,11 @@ public class PackageService {
     private final GymPackageRepository packageRepository;
     private final GymServiceRepository serviceRepository;
     private final GymManagementService gymManagementService;
+    private final GymAccessService gymAccessService;
 
     @Transactional
-    public PackageResponse createPackage(Long gymId, CreatePackageRequest request) {
+    public PackageResponse createPackage(Long gymId, CreatePackageRequest request, User currentUser) {
+        gymAccessService.resolveActingEmployee(currentUser, gymId, EmployeePermission.MANAGE_PACKAGES);
         Gym gym = gymManagementService.findGymOrThrow(gymId);
 
         Set<GymService> services = resolveServices(gymId, request.getIncludedServiceIds());
@@ -53,19 +57,23 @@ public class PackageService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PackageResponse> getPackages(Long gymId, Pageable pageable) {
+    public Page<PackageResponse> getPackages(Long gymId, User currentUser, Pageable pageable) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return packageRepository.findByGymId(gymId, pageable).map(this::toResponse);
     }
 
     @Transactional(readOnly = true)
-    public PackageResponse getPackage(Long gymId, Long packageId) {
+    public PackageResponse getPackage(Long gymId, Long packageId, User currentUser) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         GymPackage pkg = findOrThrow(packageId);
         assertBelongsToGym(pkg, gymId);
         return toResponse(pkg);
     }
 
     @Transactional
-    public PackageResponse updatePackage(Long gymId, Long packageId, CreatePackageRequest request) {
+    public PackageResponse updatePackage(Long gymId, Long packageId,
+                                         CreatePackageRequest request, User currentUser) {
+        gymAccessService.resolveActingEmployee(currentUser, gymId, EmployeePermission.MANAGE_PACKAGES);
         GymPackage pkg = findOrThrow(packageId);
         assertBelongsToGym(pkg, gymId);
 
@@ -85,7 +93,8 @@ public class PackageService {
     }
 
     @Transactional
-    public void toggleStatus(Long gymId, Long packageId, boolean active) {
+    public void toggleStatus(Long gymId, Long packageId, boolean active, User currentUser) {
+        gymAccessService.resolveActingEmployee(currentUser, gymId, EmployeePermission.MANAGE_PACKAGES);
         GymPackage pkg = findOrThrow(packageId);
         assertBelongsToGym(pkg, gymId);
         pkg.setActive(active);

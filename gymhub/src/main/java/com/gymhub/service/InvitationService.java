@@ -10,7 +10,6 @@ import com.gymhub.domain.user.User;
 import com.gymhub.dto.request.UseInvitationRequest;
 import com.gymhub.exception.BusinessException;
 import com.gymhub.exception.ResourceNotFoundException;
-import com.gymhub.exception.UnauthorizedException;
 import com.gymhub.repository.InvitationRepository;
 import com.gymhub.repository.SubscriptionRepository;
 import com.gymhub.repository.UserRepository;
@@ -28,14 +27,12 @@ public class InvitationService {
     private final SubscriptionRepository subscriptionRepository;
     private final UserRepository userRepository;
     private final CustomerService customerService;
-    private final EmployeeManagementService employeeService;
+    private final GymAccessService gymAccessService;
 
     @Transactional
-    public Invitation useInvitation(Long gymId, UseInvitationRequest request, Long employeeId) {
-        Employee emp = employeeService.findOrThrow(employeeId);
-        if (!emp.hasPermission(EmployeePermission.REGISTER_INVITATION)) {
-            throw new UnauthorizedException("Employee does not have permission to register invitations");
-        }
+    public Invitation useInvitation(Long gymId, UseInvitationRequest request, User currentUser) {
+        Employee emp = gymAccessService.resolveActingEmployee(
+                currentUser, gymId, EmployeePermission.REGISTER_INVITATION);
 
         Customer host = customerService.findOrThrow(request.getHostCustomerId());
         Subscription sub = findActiveSubscription(request.getSubscriptionId(), gymId);
@@ -95,12 +92,15 @@ public class InvitationService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Invitation> getByHost(Long hostCustomerId, Pageable pageable) {
+    public Page<Invitation> getByHost(Long gymId, Long hostCustomerId,
+                                       User currentUser, Pageable pageable) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return invitationRepository.findByHostId(hostCustomerId, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<Invitation> getByGym(Long gymId, Pageable pageable) {
+    public Page<Invitation> getByGym(Long gymId, User currentUser, Pageable pageable) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return invitationRepository.findByGymId(gymId, pageable);
     }
 

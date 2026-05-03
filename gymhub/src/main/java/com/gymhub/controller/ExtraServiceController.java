@@ -1,5 +1,6 @@
 package com.gymhub.controller;
 
+import com.gymhub.domain.user.User;
 import com.gymhub.dto.request.SellExtraServiceRequest;
 import com.gymhub.dto.response.PagedResponse;
 import com.gymhub.service.ExtraServiceSaleService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,13 +23,13 @@ public class ExtraServiceController {
     private final ExtraServiceSaleService extraServiceSaleService;
 
     @PostMapping("/sell")
-    @Operation(summary = "Sell a paid extra service to a customer (creates an independent financial transaction)")
+    @Operation(summary = "Sell a paid extra service — acting employee resolved from JWT")
     public ResponseEntity<?> sellExtraService(
             @PathVariable Long gymId,
             @Valid @RequestBody SellExtraServiceRequest request,
-            @RequestParam Long employeeId) {
+            @AuthenticationPrincipal User currentUser) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(extraServiceSaleService.sellExtraService(gymId, request, employeeId));
+                .body(extraServiceSaleService.sellExtraService(gymId, request, currentUser));
     }
 
     @PostMapping("/usage")
@@ -37,20 +39,21 @@ public class ExtraServiceController {
             @RequestParam Long customerId,
             @RequestParam Long serviceId,
             @RequestParam Long subscriptionId,
-            @RequestParam Long employeeId,
+            @AuthenticationPrincipal User currentUser,
             @RequestParam(required = false) String notes) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(extraServiceSaleService.recordIncludedServiceUsage(
-                        gymId, customerId, serviceId, subscriptionId, employeeId, notes));
+                        gymId, customerId, serviceId, subscriptionId, currentUser, notes));
     }
 
     @GetMapping("/transactions")
     @Operation(summary = "List all extra service transactions for this gym")
     public ResponseEntity<PagedResponse<?>> getGymTransactions(
             @PathVariable Long gymId,
+            @AuthenticationPrincipal User currentUser,
             Pageable pageable) {
         return ResponseEntity.ok(
-                PagedResponse.from(extraServiceSaleService.getGymExtraTransactions(gymId, pageable)));
+                PagedResponse.from(extraServiceSaleService.getGymExtraTransactions(gymId, currentUser, pageable)));
     }
 
     @GetMapping("/transactions/customer/{customerId}")
@@ -58,9 +61,11 @@ public class ExtraServiceController {
     public ResponseEntity<PagedResponse<?>> getCustomerTransactions(
             @PathVariable Long gymId,
             @PathVariable Long customerId,
+            @AuthenticationPrincipal User currentUser,
             Pageable pageable) {
         return ResponseEntity.ok(
-                PagedResponse.from(extraServiceSaleService.getCustomerExtraTransactions(customerId, pageable)));
+                PagedResponse.from(extraServiceSaleService.getCustomerExtraTransactions(
+                        gymId, customerId, currentUser, pageable)));
     }
 
     @GetMapping("/usages/customer/{customerId}")
@@ -68,8 +73,10 @@ public class ExtraServiceController {
     public ResponseEntity<PagedResponse<?>> getCustomerUsages(
             @PathVariable Long gymId,
             @PathVariable Long customerId,
+            @AuthenticationPrincipal User currentUser,
             Pageable pageable) {
         return ResponseEntity.ok(
-                PagedResponse.from(extraServiceSaleService.getCustomerServiceUsages(customerId, pageable)));
+                PagedResponse.from(extraServiceSaleService.getCustomerServiceUsages(
+                        gymId, customerId, currentUser, pageable)));
     }
 }

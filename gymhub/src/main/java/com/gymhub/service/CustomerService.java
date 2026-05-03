@@ -1,6 +1,7 @@
 package com.gymhub.service;
 
 import com.gymhub.domain.customer.Customer;
+import com.gymhub.domain.employee.EmployeePermission;
 import com.gymhub.domain.gym.Gym;
 import com.gymhub.domain.user.User;
 import com.gymhub.domain.user.UserRole;
@@ -27,10 +28,12 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
     private final GymManagementService gymManagementService;
+    private final GymAccessService gymAccessService;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public CustomerResponse createCustomer(Long gymId, CreateCustomerRequest request) {
+    public CustomerResponse createCustomer(Long gymId, CreateCustomerRequest request, User currentUser) {
+        gymAccessService.resolveActingEmployee(currentUser, gymId, EmployeePermission.MANAGE_CUSTOMERS);
         Gym gym = gymManagementService.findGymOrThrow(gymId);
 
         User user = resolveOrCreateUser(request);
@@ -64,31 +67,37 @@ public class CustomerService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CustomerResponse> getCustomers(Long gymId, Pageable pageable) {
+    public Page<CustomerResponse> getCustomers(Long gymId, User currentUser, Pageable pageable) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return customerRepository.findByGymId(gymId, pageable).map(this::toResponse);
     }
 
     @Transactional(readOnly = true)
-    public Page<CustomerResponse> searchCustomers(Long gymId, String query, Pageable pageable) {
+    public Page<CustomerResponse> searchCustomers(Long gymId, String query,
+                                                   User currentUser, Pageable pageable) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return customerRepository.searchByGymId(gymId, query, pageable).map(this::toResponse);
     }
 
     @Transactional(readOnly = true)
-    public CustomerResponse getCustomer(Long gymId, Long customerId) {
+    public CustomerResponse getCustomer(Long gymId, Long customerId, User currentUser) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         Customer c = findOrThrow(customerId);
         assertBelongsToGym(c, gymId);
         return toResponse(c);
     }
 
     @Transactional(readOnly = true)
-    public CustomerResponse getByMemberCode(String memberCode) {
+    public CustomerResponse getByMemberCode(Long gymId, String memberCode, User currentUser) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         Customer c = customerRepository.findByMemberCode(memberCode)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found for code: " + memberCode));
         return toResponse(c);
     }
 
     @Transactional
-    public void toggleStatus(Long gymId, Long customerId, boolean active) {
+    public void toggleStatus(Long gymId, Long customerId, boolean active, User currentUser) {
+        gymAccessService.resolveActingEmployee(currentUser, gymId, EmployeePermission.MANAGE_CUSTOMERS);
         Customer c = findOrThrow(customerId);
         assertBelongsToGym(c, gymId);
         c.setActive(active);

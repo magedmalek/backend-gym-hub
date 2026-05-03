@@ -28,10 +28,13 @@ public class EmployeeManagementService {
     private final EmployeeRepository employeeRepository;
     private final UserRepository userRepository;
     private final GymManagementService gymService;
+    private final GymAccessService gymAccessService;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public EmployeeResponse createEmployee(Long gymId, CreateEmployeeRequest request) {
+    public EmployeeResponse createEmployee(Long gymId, CreateEmployeeRequest request, User currentUser) {
+        // Only gym owner or ADMIN employee can add employees
+        gymAccessService.assertOwnerOrAdmin(currentUser, gymId);
         Gym gym = gymService.findGymOrThrow(gymId);
 
         User user = resolveOrCreateUser(request);
@@ -64,12 +67,14 @@ public class EmployeeManagementService {
     }
 
     @Transactional(readOnly = true)
-    public Page<EmployeeResponse> getEmployees(Long gymId, Pageable pageable) {
+    public Page<EmployeeResponse> getEmployees(Long gymId, User currentUser, Pageable pageable) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return employeeRepository.findByGymId(gymId, pageable).map(this::toResponse);
     }
 
     @Transactional(readOnly = true)
-    public EmployeeResponse getEmployee(Long gymId, Long employeeId) {
+    public EmployeeResponse getEmployee(Long gymId, Long employeeId, User currentUser) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         Employee emp = findOrThrow(employeeId);
         if (!emp.getGym().getId().equals(gymId)) {
             throw new ResourceNotFoundException("Employee not found in this gym");
@@ -79,7 +84,8 @@ public class EmployeeManagementService {
 
     @Transactional
     public EmployeeResponse updatePermissions(Long gymId, Long employeeId,
-                                               Set<EmployeePermission> permissions) {
+                                               Set<EmployeePermission> permissions, User currentUser) {
+        gymAccessService.assertOwnerOrAdmin(currentUser, gymId);
         Employee emp = findOrThrow(employeeId);
         if (!emp.getGym().getId().equals(gymId)) {
             throw new ResourceNotFoundException("Employee not found in this gym");
@@ -89,7 +95,8 @@ public class EmployeeManagementService {
     }
 
     @Transactional
-    public void toggleStatus(Long gymId, Long employeeId, boolean active) {
+    public void toggleStatus(Long gymId, Long employeeId, boolean active, User currentUser) {
+        gymAccessService.assertOwnerOrAdmin(currentUser, gymId);
         Employee emp = findOrThrow(employeeId);
         if (!emp.getGym().getId().equals(gymId)) {
             throw new ResourceNotFoundException("Employee not found in this gym");

@@ -30,6 +30,18 @@ public enum EmployeePermission {
     /** Can view and manage customer profiles. */
     MANAGE_CUSTOMERS,
 
+    /** Can add, edit, and deactivate employees. */
+    MANAGE_EMPLOYEES,
+
+    /** Can freeze and unfreeze active subscriptions. */
+    FREEZE_SUBSCRIPTION,
+
+    /** Can perform manual date or amount adjustments on subscriptions. */
+    MANUAL_ADJUSTMENT,
+
+    /** Can perform daily cash-day closing. */
+    CLOSE_CASH_DAY,
+
     /** Full admin access — typically the gym owner only. */
     ADMIN
 }
