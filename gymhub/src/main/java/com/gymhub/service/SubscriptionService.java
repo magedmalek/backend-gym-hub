@@ -9,12 +9,12 @@ import com.gymhub.domain.gympackage.GymPackage;
 import com.gymhub.domain.subscription.Payment;
 import com.gymhub.domain.subscription.Subscription;
 import com.gymhub.domain.subscription.SubscriptionStatus;
+import com.gymhub.domain.user.User;
 import com.gymhub.dto.request.AddPaymentRequest;
 import com.gymhub.dto.request.SellSubscriptionRequest;
 import com.gymhub.dto.response.SubscriptionResponse;
 import com.gymhub.exception.BusinessException;
 import com.gymhub.exception.ResourceNotFoundException;
-import com.gymhub.exception.UnauthorizedException;
 import com.gymhub.repository.GymSettingsRepository;
 import com.gymhub.repository.PaymentRepository;
 import com.gymhub.repository.SubscriptionRepository;
@@ -36,17 +36,20 @@ public class SubscriptionService {
     private final GymSettingsRepository settingsRepository;
     private final CustomerService customerService;
     private final PackageService packageService;
-    private final EmployeeManagementService employeeService;
+    private final GymAccessService gymAccessService;
 
     // ── Sell ──────────────────────────────────────────────────────────────────
 
+    /**
+     * Sell a subscription to a customer.
+     * The acting user is resolved from JWT — never trusted from the request body.
+     */
     @Transactional
     public SubscriptionResponse sellSubscription(Long gymId, SellSubscriptionRequest request,
-                                                   Long sellerEmployeeId) {
-        Employee seller = employeeService.findOrThrow(sellerEmployeeId);
-        if (!seller.hasPermission(EmployeePermission.SELL_SUBSCRIPTION)) {
-            throw new UnauthorizedException("Employee does not have permission to sell subscriptions");
-        }
+                                                  User currentUser) {
+        // Resolve acting employee from JWT (owner bypass, else requires SELL_SUBSCRIPTION)
+        Employee seller = gymAccessService.resolveActingEmployee(
+                currentUser, gymId, EmployeePermission.SELL_SUBSCRIPTION);
 
         Customer customer = customerService.findOrThrow(request.getCustomerId());
         GymPackage pkg    = packageService.findOrThrow(request.getPackageId());
@@ -102,11 +105,17 @@ public class SubscriptionService {
 
     // ── Payment ───────────────────────────────────────────────────────────────
 
+    /**
+     * Record an additional payment instalment.
+     * Requires the acting user to be the owner or any active employee of the gym.
+     */
     @Transactional
     public SubscriptionResponse addPayment(Long gymId, Long subscriptionId,
-                                            AddPaymentRequest request, Long employeeId) {
+                                           AddPaymentRequest request, User currentUser) {
+        // Any active employee (or owner) can record a payment
+        Employee emp = gymAccessService.assertDashboardAccess(currentUser, gymId);
+
         Subscription sub = findOrThrow(subscriptionId, gymId);
-        Employee emp = employeeService.findOrThrow(employeeId);
 
         if (sub.getStatus() == SubscriptionStatus.CANCELLED ||
             sub.getStatus() == SubscriptionStatus.EXPIRED) {
@@ -135,15 +144,18 @@ public class SubscriptionService {
 
     // ── Activation ────────────────────────────────────────────────────────────
 
+    /**
+     * Manually activate a fully-paid subscription.
+     * Requires ACTIVATE_SUBSCRIPTION permission (or gym owner).
+     */
     @Transactional
     public SubscriptionResponse activateSubscription(Long gymId, Long subscriptionId,
-                                                      Long employeeId, LocalDate startDate) {
-        Subscription sub = findOrThrow(subscriptionId, gymId);
-        Employee emp = employeeService.findOrThrow(employeeId);
+                                                     User currentUser, LocalDate startDate) {
+        Employee emp = gymAccessService.resolveActingEmployee(
+                currentUser, gymId, EmployeePermission.ACTIVATE_SUBSCRIPTION);
 
-        if (!emp.hasPermission(EmployeePermission.ACTIVATE_SUBSCRIPTION)) {
-            throw new UnauthorizedException("Employee does not have permission to activate subscriptions");
-        }
+        Subscription sub = findOrThrow(subscriptionId, gymId);
+
         if (sub.getStatus() != SubscriptionStatus.PENDING_ACTIVATION &&
             sub.getStatus() != SubscriptionStatus.PENDING_PAYMENT) {
             throw new BusinessException("Subscription cannot be activated in status: " + sub.getStatus());
@@ -159,17 +171,21 @@ public class SubscriptionService {
     // ── Read ──────────────────────────────────────────────────────────────────
 
     @Transactional(readOnly = true)
-    public Page<SubscriptionResponse> getByGym(Long gymId, Pageable pageable) {
+    public Page<SubscriptionResponse> getByGym(Long gymId, User currentUser, Pageable pageable) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return subscriptionRepository.findByGymId(gymId, pageable).map(this::toResponse);
     }
 
     @Transactional(readOnly = true)
-    public Page<SubscriptionResponse> getByCustomer(Long customerId, Pageable pageable) {
+    public Page<SubscriptionResponse> getByCustomer(Long gymId, Long customerId,
+                                                     User currentUser, Pageable pageable) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return subscriptionRepository.findByCustomerId(customerId, pageable).map(this::toResponse);
     }
 
     @Transactional(readOnly = true)
-    public SubscriptionResponse getSubscription(Long gymId, Long subscriptionId) {
+    public SubscriptionResponse getSubscription(Long gymId, Long subscriptionId, User currentUser) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return toResponse(findOrThrow(subscriptionId, gymId));
     }
 
@@ -192,9 +208,8 @@ public class SubscriptionService {
     }
 
     private void tryAutoActivate(Subscription sub, GymSettings settings,
-                                  LocalDate deferredDate, Employee emp) {
+                                 LocalDate deferredDate, Employee emp) {
         if (deferredDate != null) {
-            // Deferred start = activation happens now but validity starts on the deferred date
             activate(sub, deferredDate, emp);
             return;
         }

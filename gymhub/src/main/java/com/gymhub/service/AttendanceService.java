@@ -7,10 +7,10 @@ import com.gymhub.domain.employee.Employee;
 import com.gymhub.domain.employee.EmployeePermission;
 import com.gymhub.domain.subscription.Subscription;
 import com.gymhub.domain.subscription.SubscriptionStatus;
+import com.gymhub.domain.user.User;
 import com.gymhub.dto.request.RecordAttendanceRequest;
 import com.gymhub.exception.BusinessException;
 import com.gymhub.exception.ResourceNotFoundException;
-import com.gymhub.exception.UnauthorizedException;
 import com.gymhub.repository.AttendanceRepository;
 import com.gymhub.repository.CustomerRepository;
 import com.gymhub.repository.SubscriptionRepository;
@@ -30,15 +30,13 @@ public class AttendanceService {
     private final AttendanceRepository attendanceRepository;
     private final CustomerRepository customerRepository;
     private final SubscriptionRepository subscriptionRepository;
-    private final EmployeeManagementService employeeService;
+    private final GymAccessService gymAccessService;
 
     @Transactional
     public AttendanceSummary recordAttendance(Long gymId, RecordAttendanceRequest request,
-                                               Long employeeId) {
-        Employee emp = employeeService.findOrThrow(employeeId);
-        if (!emp.hasPermission(EmployeePermission.REGISTER_ATTENDANCE)) {
-            throw new UnauthorizedException("Employee does not have permission to register attendance");
-        }
+                                              User currentUser) {
+        Employee emp = gymAccessService.resolveActingEmployee(
+                currentUser, gymId, EmployeePermission.REGISTER_ATTENDANCE);
 
         // Resolve customer
         Customer customer = resolveCustomer(request, gymId);
@@ -72,12 +70,15 @@ public class AttendanceService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Attendance> getGymAttendance(Long gymId, Pageable pageable) {
+    public Page<Attendance> getGymAttendance(Long gymId, User currentUser, Pageable pageable) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return attendanceRepository.findByGymIdOrderByVisitedAtDesc(gymId, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<Attendance> getCustomerAttendance(Long customerId, Pageable pageable) {
+    public Page<Attendance> getCustomerAttendance(Long gymId, Long customerId,
+                                                   User currentUser, Pageable pageable) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return attendanceRepository.findByCustomerIdOrderByVisitedAtDesc(customerId, pageable);
     }
 

@@ -7,10 +7,10 @@ import com.gymhub.domain.extraservice.ExtraServiceTransaction;
 import com.gymhub.domain.extraservice.ServiceUsage;
 import com.gymhub.domain.gymservice.GymService;
 import com.gymhub.domain.subscription.Subscription;
+import com.gymhub.domain.user.User;
 import com.gymhub.dto.request.SellExtraServiceRequest;
 import com.gymhub.exception.BusinessException;
 import com.gymhub.exception.ResourceNotFoundException;
-import com.gymhub.exception.UnauthorizedException;
 import com.gymhub.repository.ExtraServiceTransactionRepository;
 import com.gymhub.repository.ServiceUsageRepository;
 import com.gymhub.repository.SubscriptionRepository;
@@ -30,20 +30,19 @@ public class ExtraServiceSaleService {
     private final ServiceUsageRepository usageRepository;
     private final ServiceCatalogService serviceCatalogService;
     private final CustomerService customerService;
-    private final EmployeeManagementService employeeService;
+    private final GymAccessService gymAccessService;
     private final SubscriptionRepository subscriptionRepository;
 
     /**
      * Sells an extra paid service to a customer (independent financial transaction).
      * This must NOT be mixed with the subscription invoice.
+     * The acting employee is resolved from JWT — never trusted from the request body.
      */
     @Transactional
     public ExtraServiceTransaction sellExtraService(Long gymId, SellExtraServiceRequest request,
-                                                     Long employeeId) {
-        Employee emp = employeeService.findOrThrow(employeeId);
-        if (!emp.hasPermission(EmployeePermission.SELL_EXTRA_SERVICE)) {
-            throw new UnauthorizedException("Employee does not have permission to sell extra services");
-        }
+                                                    User currentUser) {
+        Employee emp = gymAccessService.resolveActingEmployee(
+                currentUser, gymId, EmployeePermission.SELL_EXTRA_SERVICE);
 
         Customer customer = customerService.findOrThrow(request.getCustomerId());
         GymService service = serviceCatalogService.findOrThrow(request.getServiceId());
@@ -70,12 +69,13 @@ public class ExtraServiceSaleService {
 
     /**
      * Records use of a service bundled inside a subscription (no financial transaction).
+     * The acting employee is resolved from JWT.
      */
     @Transactional
     public ServiceUsage recordIncludedServiceUsage(Long gymId, Long customerId,
-                                                    Long serviceId, Long subscriptionId,
-                                                    Long employeeId, String notes) {
-        Employee emp = employeeService.findOrThrow(employeeId);
+                                                   Long serviceId, Long subscriptionId,
+                                                   User currentUser, String notes) {
+        Employee emp = gymAccessService.assertDashboardAccess(currentUser, gymId);
         Customer customer = customerService.findOrThrow(customerId);
         GymService service = serviceCatalogService.findOrThrow(serviceId);
 
@@ -101,17 +101,23 @@ public class ExtraServiceSaleService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ExtraServiceTransaction> getCustomerExtraTransactions(Long customerId, Pageable pageable) {
+    public Page<ExtraServiceTransaction> getCustomerExtraTransactions(Long gymId, Long customerId,
+                                                                       User currentUser, Pageable pageable) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return transactionRepository.findByCustomerIdOrderBySoldAtDesc(customerId, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<ExtraServiceTransaction> getGymExtraTransactions(Long gymId, Pageable pageable) {
+    public Page<ExtraServiceTransaction> getGymExtraTransactions(Long gymId, User currentUser,
+                                                                  Pageable pageable) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return transactionRepository.findByGymIdOrderBySoldAtDesc(gymId, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<ServiceUsage> getCustomerServiceUsages(Long customerId, Pageable pageable) {
+    public Page<ServiceUsage> getCustomerServiceUsages(Long gymId, Long customerId,
+                                                        User currentUser, Pageable pageable) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return usageRepository.findByCustomerIdOrderByUsedAtDesc(customerId, pageable);
     }
 }

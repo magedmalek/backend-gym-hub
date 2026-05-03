@@ -1,5 +1,6 @@
 package com.gymhub.controller;
 
+import com.gymhub.domain.user.User;
 import com.gymhub.dto.request.UseInvitationRequest;
 import com.gymhub.dto.response.PagedResponse;
 import com.gymhub.service.InvitationService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,21 +23,23 @@ public class InvitationController {
     private final InvitationService invitationService;
 
     @PostMapping
-    @Operation(summary = "Use one invitation slot: register the guest and link to the host's subscription")
+    @Operation(summary = "Use one invitation slot — acting employee resolved from JWT")
     public ResponseEntity<?> useInvitation(
             @PathVariable Long gymId,
             @Valid @RequestBody UseInvitationRequest request,
-            @RequestParam Long employeeId) {
+            @AuthenticationPrincipal User currentUser) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(invitationService.useInvitation(gymId, request, employeeId));
+                .body(invitationService.useInvitation(gymId, request, currentUser));
     }
 
     @GetMapping
     @Operation(summary = "List all invitations for this gym")
     public ResponseEntity<PagedResponse<?>> getByGym(
             @PathVariable Long gymId,
+            @AuthenticationPrincipal User currentUser,
             Pageable pageable) {
-        return ResponseEntity.ok(PagedResponse.from(invitationService.getByGym(gymId, pageable)));
+        return ResponseEntity.ok(
+                PagedResponse.from(invitationService.getByGym(gymId, currentUser, pageable)));
     }
 
     @GetMapping("/customer/{customerId}")
@@ -43,7 +47,9 @@ public class InvitationController {
     public ResponseEntity<PagedResponse<?>> getByHost(
             @PathVariable Long gymId,
             @PathVariable Long customerId,
+            @AuthenticationPrincipal User currentUser,
             Pageable pageable) {
-        return ResponseEntity.ok(PagedResponse.from(invitationService.getByHost(customerId, pageable)));
+        return ResponseEntity.ok(
+                PagedResponse.from(invitationService.getByHost(gymId, customerId, currentUser, pageable)));
     }
 }

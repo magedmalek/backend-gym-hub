@@ -1,5 +1,6 @@
 package com.gymhub.controller;
 
+import com.gymhub.domain.user.User;
 import com.gymhub.dto.request.AddPaymentRequest;
 import com.gymhub.dto.request.SellSubscriptionRequest;
 import com.gymhub.dto.response.PagedResponse;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -26,13 +28,13 @@ public class SubscriptionController {
     private final SubscriptionService subscriptionService;
 
     @PostMapping("/sell")
-    @Operation(summary = "Sell a subscription to a customer (creates subscription + records initial payment)")
+    @Operation(summary = "Sell a subscription to a customer — acting employee resolved from JWT")
     public ResponseEntity<SubscriptionResponse> sellSubscription(
             @PathVariable Long gymId,
             @Valid @RequestBody SellSubscriptionRequest request,
-            @RequestParam Long sellerEmployeeId) {
+            @AuthenticationPrincipal User currentUser) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(subscriptionService.sellSubscription(gymId, request, sellerEmployeeId));
+                .body(subscriptionService.sellSubscription(gymId, request, currentUser));
     }
 
     @PostMapping("/{subscriptionId}/payments")
@@ -41,9 +43,9 @@ public class SubscriptionController {
             @PathVariable Long gymId,
             @PathVariable Long subscriptionId,
             @Valid @RequestBody AddPaymentRequest request,
-            @RequestParam Long employeeId) {
+            @AuthenticationPrincipal User currentUser) {
         return ResponseEntity.ok(
-                subscriptionService.addPayment(gymId, subscriptionId, request, employeeId));
+                subscriptionService.addPayment(gymId, subscriptionId, request, currentUser));
     }
 
     @PostMapping("/{subscriptionId}/activate")
@@ -51,27 +53,31 @@ public class SubscriptionController {
     public ResponseEntity<SubscriptionResponse> activateSubscription(
             @PathVariable Long gymId,
             @PathVariable Long subscriptionId,
-            @RequestParam Long employeeId,
+            @AuthenticationPrincipal User currentUser,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate startDate) {
         return ResponseEntity.ok(
-                subscriptionService.activateSubscription(gymId, subscriptionId, employeeId, startDate));
+                subscriptionService.activateSubscription(gymId, subscriptionId, currentUser, startDate));
     }
 
     @GetMapping
     @Operation(summary = "List all subscriptions for this gym")
     public ResponseEntity<PagedResponse<SubscriptionResponse>> getByGym(
             @PathVariable Long gymId,
+            @AuthenticationPrincipal User currentUser,
             Pageable pageable) {
-        return ResponseEntity.ok(PagedResponse.from(subscriptionService.getByGym(gymId, pageable)));
+        return ResponseEntity.ok(
+                PagedResponse.from(subscriptionService.getByGym(gymId, currentUser, pageable)));
     }
 
     @GetMapping("/{subscriptionId}")
     @Operation(summary = "Get a specific subscription")
     public ResponseEntity<SubscriptionResponse> getSubscription(
             @PathVariable Long gymId,
-            @PathVariable Long subscriptionId) {
-        return ResponseEntity.ok(subscriptionService.getSubscription(gymId, subscriptionId));
+            @PathVariable Long subscriptionId,
+            @AuthenticationPrincipal User currentUser) {
+        return ResponseEntity.ok(
+                subscriptionService.getSubscription(gymId, subscriptionId, currentUser));
     }
 
     @GetMapping("/customer/{customerId}")
@@ -79,7 +85,9 @@ public class SubscriptionController {
     public ResponseEntity<PagedResponse<SubscriptionResponse>> getByCustomer(
             @PathVariable Long gymId,
             @PathVariable Long customerId,
+            @AuthenticationPrincipal User currentUser,
             Pageable pageable) {
-        return ResponseEntity.ok(PagedResponse.from(subscriptionService.getByCustomer(customerId, pageable)));
+        return ResponseEntity.ok(
+                PagedResponse.from(subscriptionService.getByCustomer(gymId, customerId, currentUser, pageable)));
     }
 }

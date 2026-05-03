@@ -1,8 +1,10 @@
 package com.gymhub.service;
 
+import com.gymhub.domain.employee.EmployeePermission;
 import com.gymhub.domain.gym.Gym;
 import com.gymhub.domain.gymservice.GymService;
 import com.gymhub.domain.gymservice.ServiceStatus;
+import com.gymhub.domain.user.User;
 import com.gymhub.dto.request.CreateServiceRequest;
 import com.gymhub.dto.response.ServiceResponse;
 import com.gymhub.exception.DuplicateResourceException;
@@ -20,9 +22,11 @@ public class ServiceCatalogService {
 
     private final GymServiceRepository serviceRepository;
     private final GymManagementService gymManagementService;
+    private final GymAccessService gymAccessService;
 
     @Transactional
-    public ServiceResponse createService(Long gymId, CreateServiceRequest request) {
+    public ServiceResponse createService(Long gymId, CreateServiceRequest request, User currentUser) {
+        gymAccessService.resolveActingEmployee(currentUser, gymId, EmployeePermission.MANAGE_SERVICES);
         Gym gym = gymManagementService.findGymOrThrow(gymId);
 
         if (serviceRepository.existsByNameIgnoreCaseAndGymId(request.getName(), gymId)) {
@@ -42,19 +46,23 @@ public class ServiceCatalogService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ServiceResponse> getServices(Long gymId, Pageable pageable) {
+    public Page<ServiceResponse> getServices(Long gymId, User currentUser, Pageable pageable) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         return serviceRepository.findByGymId(gymId, pageable).map(this::toResponse);
     }
 
     @Transactional(readOnly = true)
-    public ServiceResponse getService(Long gymId, Long serviceId) {
+    public ServiceResponse getService(Long gymId, Long serviceId, User currentUser) {
+        gymAccessService.assertDashboardAccess(currentUser, gymId);
         GymService svc = findOrThrow(serviceId);
         assertBelongsToGym(svc, gymId);
         return toResponse(svc);
     }
 
     @Transactional
-    public ServiceResponse updateService(Long gymId, Long serviceId, CreateServiceRequest request) {
+    public ServiceResponse updateService(Long gymId, Long serviceId,
+                                         CreateServiceRequest request, User currentUser) {
+        gymAccessService.resolveActingEmployee(currentUser, gymId, EmployeePermission.MANAGE_SERVICES);
         GymService svc = findOrThrow(serviceId);
         assertBelongsToGym(svc, gymId);
 
@@ -67,7 +75,8 @@ public class ServiceCatalogService {
     }
 
     @Transactional
-    public void toggleStatus(Long gymId, Long serviceId, ServiceStatus status) {
+    public void toggleStatus(Long gymId, Long serviceId, ServiceStatus status, User currentUser) {
+        gymAccessService.resolveActingEmployee(currentUser, gymId, EmployeePermission.MANAGE_SERVICES);
         GymService svc = findOrThrow(serviceId);
         assertBelongsToGym(svc, gymId);
         svc.setStatus(status);
@@ -87,7 +96,7 @@ public class ServiceCatalogService {
         }
     }
 
-    private ServiceResponse toResponse(GymService svc) {
+    public ServiceResponse toResponse(GymService svc) {
         return ServiceResponse.builder()
                 .id(svc.getId())
                 .gymId(svc.getGym().getId())

@@ -1,5 +1,6 @@
 package com.gymhub.controller;
 
+import com.gymhub.domain.user.User;
 import com.gymhub.dto.request.RecordAttendanceRequest;
 import com.gymhub.dto.response.PagedResponse;
 import com.gymhub.service.AttendanceService;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,22 +24,23 @@ public class AttendanceController {
     private final AttendanceService attendanceService;
 
     @PostMapping
-    @Operation(summary = "Record a member or guest visit. Returns member info for the receptionist's screen.")
+    @Operation(summary = "Record a member or guest visit — acting employee resolved from JWT")
     public ResponseEntity<AttendanceSummary> recordAttendance(
             @PathVariable Long gymId,
             @Valid @RequestBody RecordAttendanceRequest request,
-            @RequestParam Long employeeId) {
+            @AuthenticationPrincipal User currentUser) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(attendanceService.recordAttendance(gymId, request, employeeId));
+                .body(attendanceService.recordAttendance(gymId, request, currentUser));
     }
 
     @GetMapping
     @Operation(summary = "List all attendance records for this gym")
     public ResponseEntity<?> getGymAttendance(
             @PathVariable Long gymId,
+            @AuthenticationPrincipal User currentUser,
             Pageable pageable) {
         return ResponseEntity.ok(
-                PagedResponse.from(attendanceService.getGymAttendance(gymId, pageable)));
+                PagedResponse.from(attendanceService.getGymAttendance(gymId, currentUser, pageable)));
     }
 
     @GetMapping("/customer/{customerId}")
@@ -45,8 +48,9 @@ public class AttendanceController {
     public ResponseEntity<?> getCustomerAttendance(
             @PathVariable Long gymId,
             @PathVariable Long customerId,
+            @AuthenticationPrincipal User currentUser,
             Pageable pageable) {
         return ResponseEntity.ok(
-                PagedResponse.from(attendanceService.getCustomerAttendance(customerId, pageable)));
+                PagedResponse.from(attendanceService.getCustomerAttendance(gymId, customerId, currentUser, pageable)));
     }
 }
