@@ -1,0 +1,87 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows:
+      - Build
+    types:
+      - completed
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Image tag to deploy (e.g. a1b2c3d)"
+        required: true
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    permissions:
+      packages: read
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Derive the tag from the commit SHA that triggered the build
+      # metadata-action uses the short SHA (7 chars) with type=sha,format=short
+      - name: Resolve image tag
+        id: resolve
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "tag=${{ inputs.image_tag }}" >> $GITHUB_OUTPUT
+          else
+            # Extract short SHA from the triggering workflow commit
+            echo "tag=$(echo '${{ github.event.workflow_run.head_sha }}' | cut -c1-7)" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Confirm image tag
+        run: |
+          echo "Resolved tag: ${{ steps.resolve.outputs.tag }}"
+          echo "Full SHA: ${{ github.event.workflow_run.head_sha }}"
+          echo "Short SHA: $(echo '${{ github.event.workflow_run.head_sha }}' | cut -c1-7)"
+
+      - name: Deploy to Server via SSH
+        uses: appleboy/ssh-action@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUB_ACTOR: ${{ github.actor }}
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          envs: GITHUB_TOKEN,GITHUB_ACTOR
+          script: |
+            cd /home/${{ secrets.SERVER_USER }}/app
+
+            # Authenticate with GHCR
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            # Write .env with the new image tag baked in
+            echo '${{ secrets.ENV_FILE }}' > .env
+            echo "IMAGE_TAG=${{ steps.resolve.outputs.tag }}" >> .env
+            echo "GITHUB_REPOSITORY=${{ github.repository }}" >> .env
+
+            # Fail immediately if any command fails
+            set -e
+ 
+            # Pull the specific image
+            docker compose pull app
+
+            # First deploy — start everything
+            # Subsequent deploys — restart app only, MySQL untouched
+
+            if [ "$(docker ps -q -f name=mysql)" ]; then
+              echo "MySQL already running — restarting app only"
+              docker compose up -d --no-deps --remove-orphans app
+            else
+              echo "First deploy — starting all services"
+              docker compose up -d
+            fi
+
+            # Clean up old images
+            docker image prune -f
