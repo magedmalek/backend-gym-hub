@@ -14,6 +14,8 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 
     Page<Attendance> findByCustomerIdOrderByVisitedAtDesc(Long customerId, Pageable pageable);
 
+    Page<Attendance> findByCustomerIdInOrderByVisitedAtDesc(java.util.List<Long> customerIds, Pageable pageable);
+
     Page<Attendance> findByGymIdOrderByVisitedAtDesc(Long gymId, Pageable pageable);
 
     List<Attendance> findByCustomerIdAndVisitedAtBetween(Long customerId,

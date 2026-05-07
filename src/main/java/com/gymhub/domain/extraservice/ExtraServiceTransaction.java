@@ -4,6 +4,7 @@ import com.gymhub.domain.customer.Customer;
 import com.gymhub.domain.employee.Employee;
 import com.gymhub.domain.gym.Gym;
 import com.gymhub.domain.gymservice.GymService;
+import com.gymhub.domain.subscription.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -52,6 +53,12 @@ public class ExtraServiceTransaction {
     @Column(nullable = false, length = 10)
     @Builder.Default
     private String currency = "EGP";
+
+    /** Phase 1: always CASH. */
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private PaymentMethod paymentMethod = PaymentMethod.CASH;
 
     /** Employee who sold the extra service. */
     @ManyToOne(fetch = FetchType.LAZY)

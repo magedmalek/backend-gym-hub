@@ -6,7 +6,9 @@ import com.gymhub.domain.employee.EmployeePermission;
 import com.gymhub.domain.gym.ActivationPolicy;
 import com.gymhub.domain.gym.GymSettings;
 import com.gymhub.domain.gympackage.GymPackage;
+import com.gymhub.domain.subscription.ActivationType;
 import com.gymhub.domain.subscription.Payment;
+import com.gymhub.domain.subscription.PaymentMethod;
 import com.gymhub.domain.subscription.Subscription;
 import com.gymhub.domain.subscription.SubscriptionStatus;
 import com.gymhub.domain.user.User;
@@ -117,6 +119,9 @@ public class SubscriptionService {
 
         Subscription sub = findOrThrow(subscriptionId, gymId);
 
+        if (request.getPaymentMethod() != null && request.getPaymentMethod() != PaymentMethod.CASH) {
+            throw new BusinessException("Only CASH payments are accepted in Phase 1");
+        }
         if (sub.getStatus() == SubscriptionStatus.CANCELLED ||
             sub.getStatus() == SubscriptionStatus.EXPIRED) {
             throw new BusinessException("Cannot add payment to a " + sub.getStatus() + " subscription");
@@ -130,7 +135,7 @@ public class SubscriptionService {
             throw new BusinessException("Payment exceeds remaining balance of " + remaining);
         }
 
-        addPaymentInternal(sub, request.getAmount(), emp);
+        addPaymentInternal(sub, request.getAmount(), emp, request.getNotes());
 
         sub = subscriptionRepository.findById(subscriptionId).orElseThrow();
 
@@ -145,7 +150,8 @@ public class SubscriptionService {
     // ── Activation ────────────────────────────────────────────────────────────
 
     /**
-     * Manually activate a fully-paid subscription.
+     * Manually activate a subscription.
+     * If the gym allows activation with remaining balance, partial payment is acceptable.
      * Requires ACTIVATE_SUBSCRIPTION permission (or gym owner).
      */
     @Transactional
@@ -160,11 +166,18 @@ public class SubscriptionService {
             sub.getStatus() != SubscriptionStatus.PENDING_PAYMENT) {
             throw new BusinessException("Subscription cannot be activated in status: " + sub.getStatus());
         }
+
         if (!sub.isFullyPaid()) {
-            throw new BusinessException("Subscription is not fully paid yet");
+            GymSettings settings = settingsRepository.findByGymId(gymId).orElse(null);
+            boolean allowPartialActivation = settings != null && settings.isAllowActivationWithRemainingBalance();
+            if (!allowPartialActivation) {
+                throw new BusinessException(
+                        "Subscription has a remaining balance of " + sub.getRemainingAmount() +
+                        ". Enable 'allowActivationWithRemainingBalance' in gym settings to activate with partial payment.");
+            }
         }
 
-        activate(sub, startDate != null ? startDate : LocalDate.now(), emp);
+        activate(sub, startDate != null ? startDate : LocalDate.now(), emp, ActivationType.MANUAL);
         return toResponse(subscriptionRepository.save(sub));
     }
 
@@ -192,11 +205,17 @@ public class SubscriptionService {
     // ── Internal helpers ──────────────────────────────────────────────────────
 
     private void addPaymentInternal(Subscription sub, BigDecimal amount, Employee emp) {
+        addPaymentInternal(sub, amount, emp, null);
+    }
+
+    private void addPaymentInternal(Subscription sub, BigDecimal amount, Employee emp, String notes) {
         Payment payment = Payment.builder()
                 .subscription(sub)
                 .amount(amount)
                 .currency(sub.getCurrency())
+                .paymentMethod(PaymentMethod.CASH)
                 .receivedBy(emp)
+                .notes(notes)
                 .build();
         paymentRepository.save(payment);
 
@@ -210,21 +229,23 @@ public class SubscriptionService {
     private void tryAutoActivate(Subscription sub, GymSettings settings,
                                  LocalDate deferredDate, Employee emp) {
         if (deferredDate != null) {
-            activate(sub, deferredDate, emp);
+            activate(sub, deferredDate, emp, ActivationType.MANUAL);
             return;
         }
         if (settings == null || settings.getActivationPolicy() == ActivationPolicy.IMMEDIATE) {
-            activate(sub, LocalDate.now(), emp);
+            activate(sub, LocalDate.now(), emp, ActivationType.AUTOMATIC);
         } else {
             sub.setStatus(SubscriptionStatus.PENDING_ACTIVATION);
         }
     }
 
-    private void activate(Subscription sub, LocalDate startDate, Employee emp) {
+    private void activate(Subscription sub, LocalDate startDate, Employee emp, ActivationType activationType) {
         sub.setActivationDate(LocalDate.now());
         sub.setStartDate(startDate);
-        sub.setEndDate(startDate.plusDays(sub.getGymPackage().getDurationDays()));
+        int totalDays = sub.getGymPackage().getDurationDays() + sub.getGymPackage().getBonusDays();
+        sub.setEndDate(startDate.plusDays(totalDays));
         sub.setActivatedBy(emp);
+        sub.setActivationType(activationType);
         sub.setStatus(SubscriptionStatus.ACTIVE);
     }
 
@@ -253,6 +274,9 @@ public class SubscriptionService {
                 .maxInvitations(sub.getGymPackage().getMaxInvitations())
                 .usedInvitations(sub.getUsedInvitations())
                 .remainingInvitations(sub.getRemainingInvitations())
+                .usedFreezeDays(sub.getUsedFreezeDays())
+                .remainingFreezeDays(sub.getRemainingFreezeDays())
+                .activationType(sub.getActivationType())
                 .soldByEmployeeName(sub.getSoldBy() != null ? sub.getSoldBy().getUser().getFullName() : null)
                 .activatedByEmployeeName(sub.getActivatedBy() != null ? sub.getActivatedBy().getUser().getFullName() : null)
                 .createdAt(sub.getCreatedAt())

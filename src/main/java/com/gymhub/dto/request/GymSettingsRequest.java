@@ -15,5 +15,8 @@ public class GymSettingsRequest {
     @NotNull
     private ActivationPolicy activationPolicy;
 
+    /** Allow activating a subscription even when there is a remaining balance. */
+    private boolean allowActivationWithRemainingBalance;
+
     private Set<EntranceMethod> enabledEntranceMethods;
 }

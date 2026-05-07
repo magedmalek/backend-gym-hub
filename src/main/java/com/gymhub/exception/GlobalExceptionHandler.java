@@ -1,5 +1,6 @@
 package com.gymhub.exception;
 
+import com.gymhub.dto.response.CustomerConflictResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<ErrorResponse> handleDuplicate(DuplicateResourceException ex) {
         return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<CustomerConflictResponse> handleUserAlreadyExists(UserAlreadyExistsException ex) {
+        CustomerConflictResponse response = CustomerConflictResponse.builder()
+                .status("USER_ALREADY_EXISTS")
+                .message("This phone number is already registered on the platform. " +
+                         "The user must request linking or subscription from the customer app.")
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
     @ExceptionHandler(UnauthorizedException.class)

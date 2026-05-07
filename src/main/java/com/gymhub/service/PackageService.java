@@ -39,16 +39,24 @@ public class PackageService {
 
         Set<GymService> services = resolveServices(gymId, request.getIncludedServiceIds());
 
+        if (request.isFamilyPackage() && request.getMaxSubUsers() <= 0) {
+            throw new BusinessException("maxSubUsers must be > 0 for a family package");
+        }
+
         GymPackage pkg = GymPackage.builder()
                 .gym(gym)
                 .name(request.getName())
                 .description(request.getDescription())
                 .durationDays(request.getDurationDays())
+                .bonusDays(request.getBonusDays())
                 .price(request.getPrice())
                 .currency(request.getCurrency() != null ? request.getCurrency() : "EGP")
+                .freezeAllowanceDays(request.getFreezeAllowanceDays())
                 .maxInvitations(request.getMaxInvitations())
                 .allowGuestRepeatVisit(request.isAllowGuestRepeatVisit())
                 .allowPartialPayment(request.isAllowPartialPayment())
+                .isFamilyPackage(request.isFamilyPackage())
+                .maxSubUsers(request.isFamilyPackage() ? request.getMaxSubUsers() : 0)
                 .includedServices(services)
                 .active(true)
                 .build();
@@ -77,13 +85,21 @@ public class PackageService {
         GymPackage pkg = findOrThrow(packageId);
         assertBelongsToGym(pkg, gymId);
 
+        if (request.isFamilyPackage() && request.getMaxSubUsers() <= 0) {
+            throw new BusinessException("maxSubUsers must be > 0 for a family package");
+        }
+
         pkg.setName(request.getName());
         pkg.setDescription(request.getDescription());
         pkg.setDurationDays(request.getDurationDays());
+        pkg.setBonusDays(request.getBonusDays());
         pkg.setPrice(request.getPrice());
+        pkg.setFreezeAllowanceDays(request.getFreezeAllowanceDays());
         pkg.setMaxInvitations(request.getMaxInvitations());
         pkg.setAllowGuestRepeatVisit(request.isAllowGuestRepeatVisit());
         pkg.setAllowPartialPayment(request.isAllowPartialPayment());
+        pkg.setFamilyPackage(request.isFamilyPackage());
+        pkg.setMaxSubUsers(request.isFamilyPackage() ? request.getMaxSubUsers() : 0);
 
         if (request.getIncludedServiceIds() != null) {
             pkg.setIncludedServices(resolveServices(gymId, request.getIncludedServiceIds()));
@@ -151,11 +167,15 @@ public class PackageService {
                 .name(pkg.getName())
                 .description(pkg.getDescription())
                 .durationDays(pkg.getDurationDays())
+                .bonusDays(pkg.getBonusDays())
                 .price(pkg.getPrice())
                 .currency(pkg.getCurrency())
+                .freezeAllowanceDays(pkg.getFreezeAllowanceDays())
                 .maxInvitations(pkg.getMaxInvitations())
                 .allowGuestRepeatVisit(pkg.isAllowGuestRepeatVisit())
                 .allowPartialPayment(pkg.isAllowPartialPayment())
+                .isFamilyPackage(pkg.isFamilyPackage())
+                .maxSubUsers(pkg.getMaxSubUsers())
                 .active(pkg.isActive())
                 .includedServices(services)
                 .createdAt(pkg.getCreatedAt())

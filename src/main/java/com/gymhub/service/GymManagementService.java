@@ -1,13 +1,20 @@
 package com.gymhub.service;
 
+import com.gymhub.domain.customer.Customer;
+import com.gymhub.domain.customer.GymLinkRequest;
+import com.gymhub.domain.customer.GymLinkRequestStatus;
 import com.gymhub.domain.gym.*;
 import com.gymhub.domain.user.User;
 import com.gymhub.domain.user.UserRole;
 import com.gymhub.dto.request.CreateGymRequest;
 import com.gymhub.dto.request.GymSettingsRequest;
+import com.gymhub.dto.response.GymLinkRequestResponse;
 import com.gymhub.dto.response.GymResponse;
+import com.gymhub.exception.BusinessException;
 import com.gymhub.exception.ResourceNotFoundException;
 import com.gymhub.exception.UnauthorizedException;
+import com.gymhub.repository.CustomerRepository;
+import com.gymhub.repository.GymLinkRequestRepository;
 import com.gymhub.repository.GymRepository;
 import com.gymhub.repository.GymSettingsRepository;
 import com.gymhub.repository.UserRepository;
@@ -15,7 +22,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +34,8 @@ public class GymManagementService {
     private final GymRepository gymRepository;
     private final GymSettingsRepository settingsRepository;
     private final UserRepository userRepository;
+    private final GymLinkRequestRepository linkRequestRepository;
+    private final CustomerRepository customerRepository;
 
     // ── Create ────────────────────────────────────────────────────────────────
 
@@ -109,6 +120,7 @@ public class GymManagementService {
 
         settings.setAllowPartialPayment(request.isAllowPartialPayment());
         settings.setActivationPolicy(request.getActivationPolicy());
+        settings.setAllowActivationWithRemainingBalance(request.isAllowActivationWithRemainingBalance());
         if (request.getEnabledEntranceMethods() != null) {
             settings.setEnabledEntranceMethods(request.getEnabledEntranceMethods());
         }
@@ -123,6 +135,72 @@ public class GymManagementService {
         gymRepository.save(gym);
     }
 
+    // ── Gym link requests (dashboard side) ───────────────────────────────────
+
+    @Transactional(readOnly = true)
+    public List<GymLinkRequestResponse> getPendingLinkRequests(Long gymId, String ownerEmail) {
+        Gym gym = findGymOrThrow(gymId);
+        assertOwner(gym, ownerEmail);
+        return linkRequestRepository.findByGymIdAndStatus(gymId, GymLinkRequestStatus.PENDING)
+                .stream().map(this::toLinkResponse).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void approveLinkRequest(Long gymId, Long requestId, String ownerEmail) {
+        Gym gym = findGymOrThrow(gymId);
+        assertOwner(gym, ownerEmail);
+
+        GymLinkRequest linkRequest = linkRequestRepository.findById(requestId)
+                .orElseThrow(() -> new ResourceNotFoundException("GymLinkRequest", requestId));
+
+        if (!linkRequest.getGym().getId().equals(gymId)) {
+            throw new BusinessException("Link request does not belong to this gym");
+        }
+        if (linkRequest.getStatus() != GymLinkRequestStatus.PENDING) {
+            throw new BusinessException("Link request is not in PENDING status");
+        }
+
+        User user = linkRequest.getUser();
+
+        if (!customerRepository.existsByUserIdAndGymId(user.getId(), gymId)) {
+            if (!user.getRoles().contains(UserRole.CUSTOMER)) {
+                user.addRole(UserRole.CUSTOMER);
+                userRepository.save(user);
+            }
+            Customer customer = Customer.builder()
+                    .user(user)
+                    .gym(gym)
+                    .memberCode("GH" + gymId + "-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase())
+                    .active(true)
+                    .build();
+            customerRepository.save(customer);
+        }
+
+        linkRequest.setStatus(GymLinkRequestStatus.APPROVED);
+        linkRequest.setResolvedAt(LocalDateTime.now());
+        linkRequestRepository.save(linkRequest);
+    }
+
+    @Transactional
+    public void rejectLinkRequest(Long gymId, Long requestId, String ownerEmail) {
+        Gym gym = findGymOrThrow(gymId);
+        assertOwner(gym, ownerEmail);
+
+        GymLinkRequest linkRequest = linkRequestRepository.findById(requestId)
+                .orElseThrow(() -> new ResourceNotFoundException("GymLinkRequest", requestId));
+
+        if (!linkRequest.getGym().getId().equals(gymId)) {
+            throw new BusinessException("Link request does not belong to this gym");
+        }
+        if (linkRequest.getStatus() != GymLinkRequestStatus.PENDING) {
+            throw new BusinessException("Link request is not in PENDING status");
+        }
+
+        linkRequest.setStatus(GymLinkRequestStatus.REJECTED);
+        linkRequest.setResolvedAt(LocalDateTime.now());
+        linkRequestRepository.save(linkRequest);
+    }
+
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     public Gym findGymOrThrow(Long gymId) {
@@ -134,6 +212,18 @@ public class GymManagementService {
         if (!gym.getOwner().getEmail().equals(email)) {
             throw new UnauthorizedException("You are not the owner of this gym");
         }
+    }
+
+    private GymLinkRequestResponse toLinkResponse(GymLinkRequest r) {
+        return GymLinkRequestResponse.builder()
+                .id(r.getId())
+                .gymId(r.getGym().getId())
+                .gymName(r.getGym().getName())
+                .status(r.getStatus())
+                .notes(r.getNotes())
+                .requestedAt(r.getRequestedAt())
+                .resolvedAt(r.getResolvedAt())
+                .build();
     }
 
     private GymResponse toResponse(Gym gym) {

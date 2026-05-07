@@ -3,6 +3,7 @@ package com.gymhub.controller;
 import com.gymhub.domain.gym.GymStatus;
 import com.gymhub.dto.request.CreateGymRequest;
 import com.gymhub.dto.request.GymSettingsRequest;
+import com.gymhub.dto.response.GymLinkRequestResponse;
 import com.gymhub.dto.response.GymResponse;
 import com.gymhub.domain.user.User;
 import com.gymhub.service.GymManagementService;
@@ -73,6 +74,36 @@ public class GymController {
             @RequestParam GymStatus status,
             @AuthenticationPrincipal User currentUser) {
         gymService.updateStatus(gymId, status, currentUser.getEmail());
+        return ResponseEntity.noContent().build();
+    }
+
+    // ── Customer link requests ────────────────────────────────────────────────
+
+    @GetMapping("/{gymId}/link-requests")
+    @Operation(summary = "List pending customer link requests for this gym")
+    public ResponseEntity<List<GymLinkRequestResponse>> getPendingLinkRequests(
+            @PathVariable Long gymId,
+            @AuthenticationPrincipal User currentUser) {
+        return ResponseEntity.ok(gymService.getPendingLinkRequests(gymId, currentUser.getEmail()));
+    }
+
+    @PostMapping("/{gymId}/link-requests/{requestId}/approve")
+    @Operation(summary = "Approve a customer link request — creates Customer record")
+    public ResponseEntity<Void> approveLinkRequest(
+            @PathVariable Long gymId,
+            @PathVariable Long requestId,
+            @AuthenticationPrincipal User currentUser) {
+        gymService.approveLinkRequest(gymId, requestId, currentUser.getEmail());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{gymId}/link-requests/{requestId}/reject")
+    @Operation(summary = "Reject a customer link request")
+    public ResponseEntity<Void> rejectLinkRequest(
+            @PathVariable Long gymId,
+            @PathVariable Long requestId,
+            @AuthenticationPrincipal User currentUser) {
+        gymService.rejectLinkRequest(gymId, requestId, currentUser.getEmail());
         return ResponseEntity.noContent().build();
     }
 }

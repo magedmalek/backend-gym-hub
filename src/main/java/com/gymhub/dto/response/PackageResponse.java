@@ -15,11 +15,15 @@ public class PackageResponse {
     private String name;
     private String description;
     private int durationDays;
+    private int bonusDays;
     private BigDecimal price;
     private String currency;
+    private int freezeAllowanceDays;
     private int maxInvitations;
     private boolean allowGuestRepeatVisit;
     private boolean allowPartialPayment;
+    private boolean isFamilyPackage;
+    private int maxSubUsers;
     private boolean active;
     private List<ServiceResponse> includedServices;
     private LocalDateTime createdAt;

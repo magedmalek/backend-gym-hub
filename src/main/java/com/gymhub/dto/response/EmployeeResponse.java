@@ -23,6 +23,7 @@ public class EmployeeResponse {
     private BigDecimal salary;
     private String salaryCurrency;
     private Set<EmployeePermission> permissions;
+    private int hierarchyLevel;
     private boolean active;
     private LocalDateTime createdAt;
 }

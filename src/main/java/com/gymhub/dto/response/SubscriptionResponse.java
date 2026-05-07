@@ -1,5 +1,6 @@
 package com.gymhub.dto.response;
 
+import com.gymhub.domain.subscription.ActivationType;
 import com.gymhub.domain.subscription.SubscriptionStatus;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +30,9 @@ public class SubscriptionResponse {
     private int maxInvitations;
     private int usedInvitations;
     private int remainingInvitations;
+    private int usedFreezeDays;
+    private int remainingFreezeDays;
+    private ActivationType activationType;
     private String soldByEmployeeName;
     private String activatedByEmployeeName;
     private LocalDateTime createdAt;

@@ -35,12 +35,19 @@ public class GymSettings {
     private boolean allowPartialPayment = false;
 
     /**
-     * How a fully-paid subscription transitions to ACTIVE status.
+     * How a subscription transitions to ACTIVE status.
      */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default
     private ActivationPolicy activationPolicy = ActivationPolicy.IMMEDIATE;
+
+    /**
+     * If true, employees may activate a subscription that still has a remaining
+     * balance (partial payment). If false, full payment is required before activation.
+     */
+    @Builder.Default
+    private boolean allowActivationWithRemainingBalance = false;
 
     /**
      * Which entry methods are enabled for this gym.
