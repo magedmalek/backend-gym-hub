@@ -8,7 +8,17 @@ import lombok.Data;
 @Data
 public class CreateCustomerRequest {
 
-    // ── Option A: link existing platform user ────────────────────────────────
+    // ── Phone (primary lookup key for new customers) ─────────────────────────
+    /**
+     * Phone number used to check whether this person already exists on the platform.
+     * If a user with this phone already exists, the dashboard cannot create a duplicate —
+     * the existing user must link via the customer app.
+     * Required when not using existingUserId.
+     */
+    @Size(max = 20)
+    private String phone;
+
+    // ── Option A: link existing platform user (by ID) ───────────────────────
     /** If provided, the customer record is linked to an existing user. */
     private Long existingUserId;
 
@@ -22,9 +32,6 @@ public class CreateCustomerRequest {
     @Email
     @Size(max = 150)
     private String email;
-
-    @Size(max = 20)
-    private String phone;
 
     @Size(min = 6)
     private String password;

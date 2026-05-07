@@ -10,6 +10,7 @@ import com.gymhub.dto.response.CustomerResponse;
 import com.gymhub.exception.BusinessException;
 import com.gymhub.exception.DuplicateResourceException;
 import com.gymhub.exception.ResourceNotFoundException;
+import com.gymhub.exception.UserAlreadyExistsException;
 import com.gymhub.repository.CustomerRepository;
 import com.gymhub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,16 @@ public class CustomerService {
     public CustomerResponse createCustomer(Long gymId, CreateCustomerRequest request, User currentUser) {
         gymAccessService.resolveActingEmployee(currentUser, gymId, EmployeePermission.MANAGE_CUSTOMERS);
         Gym gym = gymManagementService.findGymOrThrow(gymId);
+
+        // Phone-based duplicate check: if a user with this phone already exists on the
+        // platform but is NOT the one we are explicitly linking, block the creation.
+        if (request.getExistingUserId() == null && request.getPhone() != null) {
+            userRepository.findByPhone(request.getPhone()).ifPresent(existing -> {
+                // Existing user found — dashboard cannot silently link or duplicate them.
+                // The user must request linking via the customer app.
+                throw new UserAlreadyExistsException(request.getPhone());
+            });
+        }
 
         User user = resolveOrCreateUser(request);
 

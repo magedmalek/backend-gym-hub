@@ -10,6 +10,8 @@ import com.gymhub.dto.response.EmployeeResponse;
 import com.gymhub.exception.BusinessException;
 import com.gymhub.exception.DuplicateResourceException;
 import com.gymhub.exception.ResourceNotFoundException;
+import com.gymhub.exception.UnauthorizedException;
+import com.gymhub.repository.GymRepository;
 import com.gymhub.repository.EmployeeRepository;
 import com.gymhub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +31,11 @@ public class EmployeeManagementService {
     private final UserRepository userRepository;
     private final GymManagementService gymService;
     private final GymAccessService gymAccessService;
+    private final GymRepository gymRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private static final int OWNER_HIERARCHY_LEVEL = 100;
+    private static final int ADMIN_HIERARCHY_LEVEL = 50;
 
     @Transactional
     public EmployeeResponse createEmployee(Long gymId, CreateEmployeeRequest request, User currentUser) {
@@ -49,6 +55,11 @@ public class EmployeeManagementService {
             userRepository.save(user);
         }
 
+        Set<EmployeePermission> perms = request.getPermissions() != null
+                ? request.getPermissions() : new java.util.HashSet<>();
+
+        int hierarchyLevel = perms.contains(EmployeePermission.ADMIN) ? ADMIN_HIERARCHY_LEVEL : 1;
+
         Employee employee = Employee.builder()
                 .user(user)
                 .gym(gym)
@@ -56,12 +67,10 @@ public class EmployeeManagementService {
                 .salary(request.getSalary())
                 .salaryCurrency(request.getSalaryCurrency() != null ? request.getSalaryCurrency() : "EGP")
                 .notes(request.getNotes())
+                .permissions(perms)
+                .hierarchyLevel(hierarchyLevel)
                 .active(true)
                 .build();
-
-        if (request.getPermissions() != null) {
-            employee.setPermissions(request.getPermissions());
-        }
 
         return toResponse(employeeRepository.save(employee));
     }
@@ -85,24 +94,51 @@ public class EmployeeManagementService {
     @Transactional
     public EmployeeResponse updatePermissions(Long gymId, Long employeeId,
                                                Set<EmployeePermission> permissions, User currentUser) {
-        gymAccessService.assertOwnerOrAdmin(currentUser, gymId);
-        Employee emp = findOrThrow(employeeId);
-        if (!emp.getGym().getId().equals(gymId)) {
+        Employee actor = gymAccessService.assertOwnerOrAdmin(currentUser, gymId);
+        Employee target = findOrThrow(employeeId);
+        if (!target.getGym().getId().equals(gymId)) {
             throw new ResourceNotFoundException("Employee not found in this gym");
         }
-        emp.setPermissions(permissions);
-        return toResponse(employeeRepository.save(emp));
+        assertCanManage(actor, target, gymId, currentUser);
+        target.setPermissions(permissions);
+        return toResponse(employeeRepository.save(target));
     }
 
     @Transactional
     public void toggleStatus(Long gymId, Long employeeId, boolean active, User currentUser) {
-        gymAccessService.assertOwnerOrAdmin(currentUser, gymId);
-        Employee emp = findOrThrow(employeeId);
-        if (!emp.getGym().getId().equals(gymId)) {
+        Employee actor = gymAccessService.assertOwnerOrAdmin(currentUser, gymId);
+        Employee target = findOrThrow(employeeId);
+        if (!target.getGym().getId().equals(gymId)) {
             throw new ResourceNotFoundException("Employee not found in this gym");
         }
-        emp.setActive(active);
-        employeeRepository.save(emp);
+        assertCanManage(actor, target, gymId, currentUser);
+        target.setActive(active);
+        employeeRepository.save(target);
+    }
+
+    /**
+     * Enforces that the acting employee/owner can only manage employees at a strictly
+     * lower hierarchy level, and that the gym owner can never be deactivated or edited.
+     */
+    private void assertCanManage(Employee actor, Employee target, Long gymId, User currentUser) {
+        // Protect the gym owner — they can never be managed from the dashboard
+        boolean targetIsOwner = gymRepository.findById(gymId)
+                .map(g -> g.getOwner().getId().equals(target.getUser().getId()))
+                .orElse(false);
+        if (targetIsOwner) {
+            throw new UnauthorizedException("The gym owner cannot be deactivated or modified from the dashboard");
+        }
+
+        // If actor is the gym owner (no employee record or OWNER_HIERARCHY_LEVEL), allow all
+        if (actor == null) return; // actor is the gym owner with no employee record
+
+        int actorLevel = actor.getHierarchyLevel();
+        int targetLevel = target.getHierarchyLevel();
+
+        if (actorLevel <= targetLevel) {
+            throw new UnauthorizedException(
+                    "You can only manage employees with a lower hierarchy level than your own");
+        }
     }
 
     // ── Internal helpers ──────────────────────────────────────────────────────
@@ -156,6 +192,7 @@ public class EmployeeManagementService {
                 .salary(emp.getSalary())
                 .salaryCurrency(emp.getSalaryCurrency())
                 .permissions(emp.getPermissions())
+                .hierarchyLevel(emp.getHierarchyLevel())
                 .active(emp.isActive())
                 .createdAt(emp.getCreatedAt())
                 .build();

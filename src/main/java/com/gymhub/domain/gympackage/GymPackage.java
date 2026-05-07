@@ -48,9 +48,13 @@ public class GymPackage {
 
     // ── Pricing & duration ──────────────────────────────────────────────────
 
-    /** Duration in calendar days. */
+    /** Base duration in calendar days. */
     @Column(nullable = false)
     private int durationDays;
+
+    /** Extra bonus days added on top of durationDays at activation time. */
+    @Builder.Default
+    private int bonusDays = 0;
 
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal price;
@@ -58,6 +62,12 @@ public class GymPackage {
     @Column(nullable = false, length = 10)
     @Builder.Default
     private String currency = "EGP";
+
+    // ── Freeze rules ─────────────────────────────────────────────────────────
+
+    /** Total freeze days allowed per subscription of this package. 0 = no freeze. */
+    @Builder.Default
+    private int freezeAllowanceDays = 0;
 
     // ── Invitation rules ────────────────────────────────────────────────────
 
@@ -80,6 +90,16 @@ public class GymPackage {
      */
     @Builder.Default
     private boolean allowPartialPayment = false;
+
+    // ── Family package rules ─────────────────────────────────────────────────
+
+    /** When true, this package supports attaching sub-users (family members). */
+    @Builder.Default
+    private boolean isFamilyPackage = false;
+
+    /** Maximum number of sub-users allowed. Only enforced when isFamilyPackage = true. */
+    @Builder.Default
+    private int maxSubUsers = 0;
 
     // ── Included services ───────────────────────────────────────────────────
 

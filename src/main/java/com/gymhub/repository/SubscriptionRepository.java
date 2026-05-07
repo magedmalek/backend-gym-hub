@@ -18,6 +18,8 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
 
     Page<Subscription> findByCustomerId(Long customerId, Pageable pageable);
 
+    Page<Subscription> findByCustomerIdIn(List<Long> customerIds, Pageable pageable);
+
     Page<Subscription> findByGymId(Long gymId, Pageable pageable);
 
     List<Subscription> findByCustomerIdAndStatus(Long customerId, SubscriptionStatus status);

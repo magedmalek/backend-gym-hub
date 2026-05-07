@@ -65,6 +65,11 @@ public class Subscription {
     @JoinColumn(name = "activated_by_employee_id")
     private Employee activatedBy;
 
+    /** Whether activation was triggered automatically or manually. */
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private ActivationType activationType;
+
     // ── Financials ───────────────────────────────────────────────────────────
 
     @Column(nullable = false, precision = 12, scale = 2)
@@ -105,6 +110,12 @@ public class Subscription {
     @Builder.Default
     private int usedInvitations = 0;
 
+    // ── Freeze tracking ──────────────────────────────────────────────────────
+
+    /** Total freeze days consumed across all active/completed freezes. */
+    @Builder.Default
+    private int usedFreezeDays = 0;
+
     // ── Status ───────────────────────────────────────────────────────────────
 
     @Enumerated(EnumType.STRING)
@@ -132,5 +143,9 @@ public class Subscription {
 
     public int getRemainingInvitations() {
         return Math.max(0, gymPackage.getMaxInvitations() - usedInvitations);
+    }
+
+    public int getRemainingFreezeDays() {
+        return Math.max(0, gymPackage.getFreezeAllowanceDays() - usedFreezeDays);
     }
 }

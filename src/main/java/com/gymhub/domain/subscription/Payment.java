@@ -42,6 +42,12 @@ public class Payment {
     @Builder.Default
     private String currency = "EGP";
 
+    /** Phase 1: always CASH. Stored for future audit and multi-method support. */
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private PaymentMethod paymentMethod = PaymentMethod.CASH;
+
     /** The employee who received and recorded this payment. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "received_by_employee_id")

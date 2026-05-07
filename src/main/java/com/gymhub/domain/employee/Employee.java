@@ -72,6 +72,17 @@ public class Employee {
     @Builder.Default
     private Set<EmployeePermission> permissions = new HashSet<>();
 
+    /**
+     * Hierarchy level — higher number = more authority.
+     * Level 100 = gym owner / super admin (cannot be modified by employees).
+     * Level 50  = admin employee.
+     * Level 1   = regular employee (default).
+     *
+     * An employee can only manage employees with a strictly lower hierarchyLevel.
+     */
+    @Builder.Default
+    private int hierarchyLevel = 1;
+
     // ── Status ───────────────────────────────────────────────────────────────
 
     @Builder.Default
