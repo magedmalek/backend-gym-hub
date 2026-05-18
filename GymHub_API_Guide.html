@@ -3,131 +3,123 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GymHub User Guide</title>
+  <title>GymHub API and User Guide</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      line-height: 1.65;
-      color: #253044;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif;
+      color: #243043;
       background: #eef2f7;
-      padding: 20px;
+      line-height: 1.65;
     }
     .language-toggle {
       position: fixed;
-      top: 18px;
-      right: 18px;
-      z-index: 10;
+      top: 16px;
+      right: 16px;
       display: flex;
       gap: 8px;
+      z-index: 20;
     }
     .lang-btn {
-      border: 1px solid #4f6df5;
+      border: 1px solid #3857d6;
       background: #fff;
-      color: #3446a1;
+      color: #253a98;
       border-radius: 999px;
-      padding: 9px 16px;
+      padding: 9px 15px;
       cursor: pointer;
-      font-weight: 700;
-      box-shadow: 0 8px 20px rgba(37, 48, 68, .12);
+      font-weight: 800;
+      box-shadow: 0 8px 20px rgba(36, 48, 67, .14);
     }
-    .lang-btn.active { background: #4f6df5; color: #fff; }
+    .lang-btn.active { background: #3857d6; color: #fff; }
     .container {
-      max-width: 1180px;
-      margin: 0 auto;
+      width: min(1200px, calc(100% - 28px));
+      margin: 18px auto 34px;
       background: #fff;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 18px 45px rgba(37, 48, 68, .18);
+      box-shadow: 0 18px 45px rgba(36, 48, 67, .18);
     }
     .hero {
-      background: linear-gradient(135deg, #243b7d, #4f6df5);
-      color: #fff;
       padding: 46px 40px;
+      background: linear-gradient(135deg, #20366f, #3857d6);
+      color: #fff;
     }
-    .hero h1 { font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 10px; }
-    .hero p { max-width: 850px; opacity: .92; font-size: 1.05rem; }
+    .hero h1 { margin: 0 0 10px; font-size: clamp(2rem, 4vw, 3.1rem); letter-spacing: 0; }
+    .hero p { max-width: 900px; margin: 0; font-size: 1.04rem; opacity: .94; }
     .content { padding: 34px 40px 46px; }
     .hidden { display: none; }
     h2 {
       margin: 34px 0 14px;
-      color: #243b7d;
-      border-bottom: 2px solid #dbe3ff;
       padding-bottom: 8px;
+      border-bottom: 2px solid #dce4ff;
+      color: #20366f;
       font-size: 1.55rem;
+      letter-spacing: 0;
     }
-    h3 { margin: 24px 0 10px; color: #3446a1; font-size: 1.18rem; }
-    p, li { margin-bottom: 8px; }
-    ul, ol { padding-left: 24px; margin-bottom: 14px; }
+    h3 { margin: 24px 0 10px; color: #253a98; font-size: 1.17rem; letter-spacing: 0; }
+    h4 { margin: 18px 0 8px; color: #111827; font-size: 1rem; letter-spacing: 0; }
+    p { margin: 0 0 10px; }
+    ul, ol { margin: 0 0 14px; padding-left: 24px; }
     [dir="rtl"] ul, [dir="rtl"] ol { padding-left: 0; padding-right: 24px; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 14px 0 22px;
-      font-size: .94rem;
-    }
-    th, td {
-      border: 1px solid #dce3ef;
-      padding: 10px 12px;
-      vertical-align: top;
-      text-align: left;
-    }
+    li { margin-bottom: 7px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0 22px; font-size: .94rem; }
+    th, td { border: 1px solid #dce3ef; padding: 10px 12px; vertical-align: top; text-align: left; }
     [dir="rtl"] th, [dir="rtl"] td { text-align: right; }
-    th { background: #f3f6ff; color: #243b7d; }
+    th { background: #f3f6ff; color: #20366f; }
     code {
       background: #eef2ff;
-      color: #1e2d67;
+      color: #1f3072;
       padding: 2px 5px;
       border-radius: 4px;
       font-family: Consolas, "Courier New", monospace;
       font-size: .92em;
     }
     pre {
-      background: #182033;
+      background: #172033;
       color: #edf2ff;
-      padding: 16px;
+      padding: 15px;
       border-radius: 8px;
       overflow-x: auto;
-      margin: 10px 0 18px;
+      margin: 9px 0 17px;
       font-size: .9rem;
     }
     pre code { background: transparent; color: inherit; padding: 0; }
     .note {
       background: #f7fbff;
-      border-left: 4px solid #4f6df5;
-      padding: 13px 15px;
+      border-left: 4px solid #3857d6;
       border-radius: 6px;
+      padding: 13px 15px;
       margin: 14px 0;
     }
-    [dir="rtl"] .note { border-left: 0; border-right: 4px solid #4f6df5; }
-    .warn {
-      background: #fff8ed;
-      border-left: 4px solid #f59e0b;
-    }
-    [dir="rtl"] .warn { border-left: 0; border-right: 4px solid #f59e0b; }
+    .warn { background: #fff8ed; border-left-color: #f59e0b; }
+    [dir="rtl"] .note { border-left: 0; border-right: 4px solid #3857d6; }
+    [dir="rtl"] .warn { border-right-color: #f59e0b; }
     .endpoint {
       border: 1px solid #dce3ef;
+      background: #fbfcff;
       border-radius: 8px;
       padding: 16px;
       margin: 16px 0;
-      background: #fbfcff;
     }
+    .endpoint h3 { margin-top: 0; }
     .method {
       display: inline-block;
-      min-width: 56px;
+      min-width: 58px;
       text-align: center;
       color: #fff;
       border-radius: 4px;
       padding: 3px 8px;
-      font-weight: 800;
+      font-weight: 900;
       margin-right: 8px;
-      font-size: .82rem;
+      font-size: .8rem;
     }
     [dir="rtl"] .method { margin-right: 0; margin-left: 8px; }
     .get { background: #2563eb; }
     .post { background: #16a34a; }
     .put { background: #ca8a04; }
     .patch { background: #0891b2; }
+    .delete { background: #dc2626; }
     .footer {
       text-align: center;
       padding: 22px;
@@ -136,8 +128,8 @@
       border-top: 1px solid #e2e8f0;
     }
     @media (max-width: 760px) {
-      body { padding: 10px; }
-      .language-toggle { position: static; justify-content: center; margin-bottom: 10px; }
+      .language-toggle { position: static; justify-content: center; margin: 10px 0; }
+      .container { width: calc(100% - 16px); margin-top: 8px; }
       .hero, .content { padding: 26px 18px; }
       table { display: block; overflow-x: auto; white-space: nowrap; }
     }
@@ -151,566 +143,1203 @@
 
   <main class="container">
     <header class="hero">
-      <h1>GymHub User Guide</h1>
-      <p>Business and technical onboarding guide for new developers: what the application does, how the flow works, how to run it, how to register, how to test it, and how every API is used.</p>
+      <h1>GymHub API and User Guide</h1>
+      <p>Business and technical onboarding documentation for a new developer: what GymHub does, how the app flow works, how to run it, how to register, how to test, and examples for every API.</p>
     </header>
 
     <section id="en-content" class="content">
       <h2>1. Product Overview</h2>
-      <p><strong>GymHub</strong> is a backend for managing gyms as service providers. A gym owner can create a gym, define services and subscription packages, add employees with permissions, register customers, sell subscriptions, record payments, activate subscriptions, track attendance, consume guest invitations, and sell extra paid services.</p>
-      <p>The current repository is a Spring Boot REST API. It does not include the frontend UI, but it provides Swagger/OpenAPI and JSON endpoints for a web or mobile client.</p>
+      <p><strong>GymHub</strong> is a Spring Boot REST backend for operating gyms. It supports gym owners, employees, and customers using one unified user account. A gym can define services, create subscription packages, register members, sell subscriptions, take payments, activate subscriptions, record attendance, consume invitations, sell extra services, freeze active subscriptions, and manage family package sub-users.</p>
+      <p>The repository is backend-only. It exposes JSON APIs, Swagger UI, JWT authentication, MySQL persistence, Docker support, and domain services for dashboard and customer mobile app flows.</p>
 
       <h2>2. Business Modules</h2>
       <table>
-        <thead><tr><th>Module</th><th>Business meaning</th><th>Main entities</th></tr></thead>
+        <thead><tr><th>Module</th><th>Business purpose</th><th>Main entities</th></tr></thead>
         <tbody>
-          <tr><td>Identity and Auth</td><td>Unified user account. One person can be owner, employee, and customer at the same time.</td><td>User, UserRole, JWT</td></tr>
-          <tr><td>Gym Management</td><td>A service provider profile owned by a user. Includes operational settings.</td><td>Gym, GymSettings</td></tr>
-          <tr><td>Employees</td><td>Staff members linked to a gym with job, salary, active flag, and fine-grained permissions.</td><td>Employee, EmployeePermission</td></tr>
-          <tr><td>Services</td><td>Gym activities or services, for example sauna, personal training, classes, or access add-ons.</td><td>GymService</td></tr>
-          <tr><td>Packages</td><td>Subscription offers that define duration, price, invitation quota, partial payment policy, and included services.</td><td>GymPackage</td></tr>
-          <tr><td>Customers</td><td>Members registered under a specific gym with a member code for barcode or QR lookup.</td><td>Customer</td></tr>
-          <tr><td>Subscriptions and Payments</td><td>Sales flow for packages, payment tracking, activation dates, remaining balance, and invitation quota.</td><td>Subscription, Payment</td></tr>
-          <tr><td>Attendance</td><td>Member or guest check-in through barcode, dynamic QR, or printed QR.</td><td>Attendance</td></tr>
-          <tr><td>Invitations</td><td>Guest visits consumed from the host member subscription quota.</td><td>Invitation</td></tr>
-          <tr><td>Extra Services</td><td>Independent paid services outside the subscription invoice, plus included-service usage tracking.</td><td>ExtraServiceTransaction, ServiceUsage</td></tr>
+          <tr><td>Identity and Auth</td><td>Register and login one account that can hold multiple roles.</td><td>User, UserRole, JWT</td></tr>
+          <tr><td>Gym Management</td><td>Create the gym profile and configure operating rules.</td><td>Gym, GymSettings</td></tr>
+          <tr><td>Employees</td><td>Add staff, salaries, active status, and permissions.</td><td>Employee, EmployeePermission</td></tr>
+          <tr><td>Services</td><td>Define gym activities or add-ons such as access, sauna, PT, classes.</td><td>GymService</td></tr>
+          <tr><td>Packages</td><td>Define sellable membership plans with duration, price, invitations, freeze allowance, and included services.</td><td>GymPackage</td></tr>
+          <tr><td>Customers</td><td>Register members under a gym and issue a member code for QR/barcode lookup.</td><td>Customer</td></tr>
+          <tr><td>Subscriptions</td><td>Sell packages, record payments, activate memberships, and track status.</td><td>Subscription, Payment</td></tr>
+          <tr><td>Attendance</td><td>Record member or guest visits by member code or customer ID.</td><td>Attendance</td></tr>
+          <tr><td>Invitations</td><td>Consume guest slots from a member subscription.</td><td>Invitation</td></tr>
+          <tr><td>Extra Services</td><td>Sell paid add-ons or record usage of services included in a package.</td><td>ExtraServiceTransaction, ServiceUsage</td></tr>
+          <tr><td>Freeze</td><td>Pause active subscriptions using the package freeze allowance.</td><td>SubscriptionFreeze</td></tr>
+          <tr><td>Family Membership</td><td>Add sub-users to family packages.</td><td>FamilyMembership</td></tr>
+          <tr><td>Customer App</td><td>Let customers see their own gyms, subscriptions, attendance, invitations, and request gym linking.</td><td>Customer, GymLinkRequest</td></tr>
         </tbody>
       </table>
 
-      <h2>3. Roles and Permissions</h2>
-      <h3>User Roles</h3>
+      <h2>3. Roles, Permissions, and Security</h2>
+      <p>All protected requests use the JWT access token returned from register/login:</p>
+      <pre><code>Authorization: Bearer {{accessToken}}</code></pre>
       <table>
         <thead><tr><th>Role</th><th>Meaning</th></tr></thead>
         <tbody>
-          <tr><td><code>SERVICE_PROVIDER</code></td><td>Gym owner or service provider. Creating a gym makes the current user the owner.</td></tr>
-          <tr><td><code>EMPLOYEE</code></td><td>Staff account. Must be linked to a gym as an active employee before dashboard actions are allowed.</td></tr>
-          <tr><td><code>CUSTOMER</code></td><td>Member account. Customers are normally blocked from dashboard operations.</td></tr>
+          <tr><td><code>SERVICE_PROVIDER</code></td><td>Gym owner. Creating a gym makes the current user its owner.</td></tr>
+          <tr><td><code>EMPLOYEE</code></td><td>Staff account. Dashboard actions require an active employee record in the gym.</td></tr>
+          <tr><td><code>CUSTOMER</code></td><td>Gym member/customer. Uses customer self-service APIs.</td></tr>
         </tbody>
       </table>
-      <h3>Employee Permission Model</h3>
-      <p>The backend never trusts an <code>employeeId</code> from the frontend as the actor. The actor is always resolved from the JWT user. The gym owner bypasses permission checks. An employee must be active and must hold the needed permission. <code>ADMIN</code> satisfies every employee permission.</p>
-      <p>Permissions: <code>SELL_SUBSCRIPTION</code>, <code>ACTIVATE_SUBSCRIPTION</code>, <code>REGISTER_ATTENDANCE</code>, <code>REGISTER_INVITATION</code>, <code>SELL_EXTRA_SERVICE</code>, <code>MANAGE_SERVICES</code>, <code>MANAGE_PACKAGES</code>, <code>MANAGE_CUSTOMERS</code>, <code>MANAGE_EMPLOYEES</code>, <code>FREEZE_SUBSCRIPTION</code>, <code>MANUAL_ADJUSTMENT</code>, <code>CLOSE_CASH_DAY</code>, <code>ADMIN</code>.</p>
+      <p>Employee permissions are: <code>SELL_SUBSCRIPTION</code>, <code>ACTIVATE_SUBSCRIPTION</code>, <code>REGISTER_ATTENDANCE</code>, <code>REGISTER_INVITATION</code>, <code>SELL_EXTRA_SERVICE</code>, <code>MANAGE_SERVICES</code>, <code>MANAGE_PACKAGES</code>, <code>MANAGE_CUSTOMERS</code>, <code>MANAGE_EMPLOYEES</code>, <code>FREEZE_SUBSCRIPTION</code>, <code>MANUAL_ADJUSTMENT</code>, <code>CLOSE_CASH_DAY</code>, <code>ADMIN</code>. The owner bypasses employee permission checks. <code>ADMIN</code> satisfies all employee permissions.</p>
 
-      <h2>4. Main Application Flow</h2>
+      <h2>4. Application Flow</h2>
       <ol>
-        <li>Register a user with role <code>SERVICE_PROVIDER</code>.</li>
-        <li>Login and copy the returned <code>accessToken</code>.</li>
-        <li>Create a gym using <code>POST /api/v1/gyms</code>. The caller becomes the owner.</li>
-        <li>Optionally update gym settings: partial payment, activation policy, and entrance methods.</li>
+        <li>Register a user as <code>SERVICE_PROVIDER</code>.</li>
+        <li>Login and store <code>accessToken</code>.</li>
+        <li>Create a gym with <code>POST /api/v1/gyms</code>.</li>
+        <li>Configure settings: partial payment, activation policy, and entrance methods.</li>
         <li>Create employees and assign permissions.</li>
-        <li>Create services, then create packages that include selected services.</li>
-        <li>Create customers or link existing platform users as customers.</li>
-        <li>Sell a subscription to a customer and record initial payment.</li>
-        <li>If fully paid and policy is <code>IMMEDIATE</code>, the subscription activates automatically. If policy is <code>MANUAL</code>, activate it with the activation endpoint.</li>
-        <li>Use member code or customer ID to record attendance.</li>
-        <li>Consume invitations from subscription quota for guests.</li>
-        <li>Sell extra services independently or record usage of services included in a subscription.</li>
+        <li>Create services, then packages that include services.</li>
+        <li>Create customers or approve customer link requests.</li>
+        <li>Sell a subscription and record the initial payment.</li>
+        <li>If fully paid and activation policy is <code>IMMEDIATE</code>, it activates automatically. If policy is <code>MANUAL</code>, activate it manually.</li>
+        <li>Record member attendance using member code, customer ID, and optionally subscription ID.</li>
+        <li>Use invitations for guests, sell extra services, record included-service usage, freeze subscriptions, and manage family sub-users as needed.</li>
       </ol>
 
       <h2>5. Technical Architecture</h2>
       <table>
         <thead><tr><th>Layer</th><th>Path</th><th>Responsibility</th></tr></thead>
         <tbody>
-          <tr><td>Controllers</td><td><code>src/main/java/com/gymhub/controller</code></td><td>REST endpoints, path variables, query params, request validation.</td></tr>
-          <tr><td>Services</td><td><code>src/main/java/com/gymhub/service</code></td><td>Business rules, permission checks, transactions.</td></tr>
+          <tr><td>Controllers</td><td><code>src/main/java/com/gymhub/controller</code></td><td>REST endpoints, request mapping, validation, authentication principal.</td></tr>
+          <tr><td>Services</td><td><code>src/main/java/com/gymhub/service</code></td><td>Business rules, transactions, permission checks, entity orchestration.</td></tr>
           <tr><td>DTOs</td><td><code>src/main/java/com/gymhub/dto</code></td><td>Request and response contracts.</td></tr>
           <tr><td>Domain</td><td><code>src/main/java/com/gymhub/domain</code></td><td>JPA entities and enums.</td></tr>
-          <tr><td>Repositories</td><td><code>src/main/java/com/gymhub/repository</code></td><td>Spring Data persistence.</td></tr>
-          <tr><td>Security</td><td><code>src/main/java/com/gymhub/security</code></td><td>JWT creation, JWT filter, user details lookup.</td></tr>
-          <tr><td>Config</td><td><code>src/main/java/com/gymhub/config</code></td><td>Spring Security, CORS, Cloudinary config.</td></tr>
+          <tr><td>Repositories</td><td><code>src/main/java/com/gymhub/repository</code></td><td>Spring Data database access.</td></tr>
+          <tr><td>Security</td><td><code>src/main/java/com/gymhub/security</code></td><td>JWT generation, JWT filter, user loading.</td></tr>
+          <tr><td>Config</td><td><code>src/main/java/com/gymhub/config</code></td><td>Spring Security, CORS, Cloudinary.</td></tr>
         </tbody>
       </table>
-      <p>Stack: Java 17, Spring Boot 3.5.4, Spring Web, Spring Security, JWT, Spring Data JPA, MySQL, Docker Compose, Swagger/OpenAPI, Lombok, Cloudinary configuration, mail configuration, Infobip configuration.</p>
+      <p>Stack: Java 17, Spring Boot, Spring Security, Spring Data JPA, MySQL, Docker Compose, Lombok, Swagger/OpenAPI, JWT.</p>
 
       <h2>6. How to Run</h2>
-      <h3>Prerequisites</h3>
-      <ul>
-        <li>Docker and Docker Compose.</li>
-        <li>Java 17 and Maven only if running outside Docker.</li>
-      </ul>
-      <h3>Environment</h3>
-      <pre><code>copy .env.example .env</code></pre>
-      <p>For local Docker, keep these important values aligned:</p>
-      <pre><code>DATASOURCE_URL=jdbc:mysql://mysql:3306/gymhub_db?createDatabaseIfNotExist=true&amp;useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true
-DATASOURCE_USERNAME=gymhub
-DATASOURCE_PASSWORD=gymhub
-SERVER_PORT=8085
-CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8080</code></pre>
-      <div class="note warn"><strong>JWT note:</strong> The README says the JWT secret should be a long Base64 value for production. Use a proper secret before deploying.</div>
-      <h3>Docker Run</h3>
-      <pre><code>docker compose up --build</code></pre>
-      <h3>Stop</h3>
-      <pre><code>docker compose down</code></pre>
-      <h3>Reset Database</h3>
-      <pre><code>docker compose down -v</code></pre>
-      <h3>Verify</h3>
-      <pre><code>docker ps
-docker compose logs app -f
-curl http://localhost:8085/v3/api-docs</code></pre>
-      <p>Swagger UI: <code>http://localhost:8085/swagger-ui.html</code></p>
-
-      <h2>7. How to Test</h2>
-      <p>Run the automated tests from the project root:</p>
-      <pre><code>./mvnw test</code></pre>
-      <p>On Windows PowerShell, if no Maven wrapper exists in your checkout, use:</p>
-      <pre><code>mvn test</code></pre>
-      <p>The current focused test file is <code>GymAccessServiceTest</code>. It verifies that owners, active employees, inactive employees, foreign employees, customers, and <code>ADMIN</code> employees follow the expected access rules.</p>
-      <h3>Manual API Test Strategy</h3>
+      <h3>With Docker</h3>
       <ol>
-        <li>Register owner, login, and save the token.</li>
-        <li>Create gym and save <code>gymId</code>.</li>
-        <li>Create a service and save <code>serviceId</code>.</li>
-        <li>Create a package and save <code>packageId</code>.</li>
-        <li>Create a customer and save <code>customerId</code> and <code>memberCode</code>.</li>
-        <li>Sell subscription and save <code>subscriptionId</code>.</li>
-        <li>Record attendance using <code>memberCode</code>.</li>
-        <li>Test list/search endpoints with <code>?page=0&amp;size=20</code>.</li>
+        <li>Copy <code>.env.example</code> to <code>.env</code>.</li>
+        <li>Keep fake mail/Cloudinary/Infobip values for normal API testing.</li>
+        <li>Run the app and MySQL:</li>
       </ol>
+      <pre><code>docker compose up --build</code></pre>
+      <p>Default app URL: <code>http://localhost:8085</code>.</p>
+      <h3>Useful URLs</h3>
+      <pre><code>Health:      http://localhost:8085/api/v1/health
+Swagger UI:  http://localhost:8085/swagger-ui.html
+OpenAPI:     http://localhost:8085/v3/api-docs</code></pre>
+      <h3>Tests</h3>
+      <pre><code>mvn test</code></pre>
+      <p>Existing tests include the application context and access-control service behavior.</p>
 
-      <h2>8. Common Headers and Response Shapes</h2>
-      <pre><code>Content-Type: application/json
-Authorization: Bearer &lt;accessToken&gt;</code></pre>
-      <p>Most list endpoints return:</p>
+      <h2>7. Testing Variables</h2>
+      <p>Use these variables in Postman, Insomnia, or curl examples:</p>
+      <pre><code>{{baseUrl}} = http://localhost:8085
+{{accessToken}} = token returned from register/login
+{{gymId}} = 1
+{{employeeId}} = 1
+{{serviceId}} = 1
+{{packageId}} = 1
+{{customerId}} = 1
+{{subscriptionId}} = 1
+{{freezeId}} = 1
+{{requestId}} = 1
+{{memberCode}} = GH-0001</code></pre>
+      <p>Paginated APIs accept Spring pagination query parameters such as <code>?page=0&amp;size=10&amp;sort=createdAt,desc</code>. A paged response has this shape:</p>
       <pre><code>{
   "content": [],
   "page": 0,
-  "size": 20,
+  "size": 10,
   "totalElements": 0,
   "totalPages": 0,
   "last": true
 }</code></pre>
-      <p>Common error response shape:</p>
-      <pre><code>{
-  "timestamp": "2026-05-04T10:00:00",
-  "status": 400,
-  "error": "Bad Request",
-  "message": "Business rule or validation message",
-  "path": "/api/v1/..."
-}</code></pre>
 
-      <h2>9. API Reference</h2>
+      <h2>8. API Examples</h2>
 
-      <h3>Authentication</h3>
       <div class="endpoint">
-        <p><span class="method post">POST</span><code>/api/v1/auth/register</code> - Create account and return JWT tokens.</p>
+        <h3><span class="method get">GET</span>/api/v1/health</h3>
+        <p>Checks whether the application is running. No authentication.</p>
+        <h4>Response</h4>
         <pre><code>{
-  "firstName": "Amr",
+  "status": "UP",
+  "timestamp": "2026-05-18T08:30:00Z"
+}</code></pre>
+      </div>
+
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/auth/register</h3>
+        <p>Creates a unified user account and returns JWT tokens.</p>
+        <h4>Request</h4>
+        <pre><code>{
+  "firstName": "Omar",
   "lastName": "Hassan",
-  "email": "owner@example.com",
-  "phone": "01000000000",
-  "password": "Secret123",
+  "email": "owner@gymhub.test",
+  "phone": "+201000000001",
+  "password": "password123",
   "role": "SERVICE_PROVIDER"
 }</code></pre>
+        <h4>Response 201</h4>
         <pre><code>{
-  "accessToken": "eyJ...",
-  "refreshToken": "eyJ...",
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9...",
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9...",
   "tokenType": "Bearer",
   "userId": 1,
-  "email": "owner@example.com",
-  "fullName": "Amr Hassan",
+  "email": "owner@gymhub.test",
+  "fullName": "Omar Hassan",
   "roles": ["SERVICE_PROVIDER"],
   "activeContext": "SERVICE_PROVIDER"
 }</code></pre>
       </div>
+
       <div class="endpoint">
-        <p><span class="method post">POST</span><code>/api/v1/auth/login</code> - Login by email and password.</p>
-        <pre><code>{ "email": "owner@example.com", "password": "Secret123" }</code></pre>
-        <pre><code>{ "accessToken": "eyJ...", "refreshToken": "eyJ...", "tokenType": "Bearer", "userId": 1 }</code></pre>
-      </div>
-      <div class="endpoint">
-        <p><span class="method post">POST</span><code>/api/v1/auth/add-role?role=CUSTOMER</code> - Add another role to the authenticated user.</p>
-        <pre><code>{ "roles": ["SERVICE_PROVIDER", "CUSTOMER"], "activeContext": "SERVICE_PROVIDER" }</code></pre>
-      </div>
-      <div class="endpoint">
-        <p><span class="method get">GET</span><code>/api/v1/auth/me</code> - Get current profile and fresh tokens.</p>
-        <pre><code>{ "userId": 1, "email": "owner@example.com", "fullName": "Amr Hassan", "roles": ["SERVICE_PROVIDER"] }</code></pre>
+        <h3><span class="method post">POST</span>/api/v1/auth/login</h3>
+        <p>Authenticates with email/password and returns tokens.</p>
+        <h4>Request</h4>
+        <pre><code>{
+  "email": "owner@gymhub.test",
+  "password": "password123"
+}</code></pre>
+        <h4>Response 200</h4>
+        <pre><code>{
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9...",
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9...",
+  "tokenType": "Bearer",
+  "userId": 1,
+  "email": "owner@gymhub.test",
+  "fullName": "Omar Hassan",
+  "roles": ["SERVICE_PROVIDER"],
+  "activeContext": "SERVICE_PROVIDER"
+}</code></pre>
       </div>
 
-      <h3>Gyms</h3>
       <div class="endpoint">
-        <p><span class="method post">POST</span><code>/api/v1/gyms</code> - Create a gym. Caller becomes owner.</p>
+        <h3><span class="method post">POST</span>/api/v1/auth/add-role?role=CUSTOMER</h3>
+        <p>Adds another role to the authenticated account.</p>
+        <h4>Request</h4>
+        <pre><code>No JSON body. Send Authorization header and role query parameter.</code></pre>
+        <h4>Response 200</h4>
         <pre><code>{
-  "name": "Downtown Gym",
-  "description": "Premium fitness club",
-  "address": "10 Nile St",
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9...",
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9...",
+  "tokenType": "Bearer",
+  "userId": 1,
+  "email": "owner@gymhub.test",
+  "fullName": "Omar Hassan",
+  "roles": ["SERVICE_PROVIDER", "CUSTOMER"],
+  "activeContext": "CUSTOMER"
+}</code></pre>
+      </div>
+
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/auth/me</h3>
+        <p>Returns current authenticated user profile and roles.</p>
+        <h4>Response 200</h4>
+        <pre><code>{
+  "userId": 1,
+  "email": "owner@gymhub.test",
+  "fullName": "Omar Hassan",
+  "roles": ["SERVICE_PROVIDER"],
+  "activeContext": "SERVICE_PROVIDER"
+}</code></pre>
+      </div>
+
+      <h3>Gym Management APIs</h3>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms</h3>
+        <p>Creates a gym. The current user becomes the owner.</p>
+        <h4>Request</h4>
+        <pre><code>{
+  "name": "Power House Gym",
+  "description": "24/7 fitness club with classes and personal training.",
+  "address": "90 Nile Street",
   "city": "Cairo",
   "country": "Egypt",
-  "phone": "0200000000",
-  "email": "info@downtowngym.com",
-  "website": "https://downtowngym.com"
+  "phone": "+20200000000",
+  "email": "info@powerhouse.test",
+  "website": "https://powerhouse.test"
 }</code></pre>
-        <pre><code>{ "id": 1, "name": "Downtown Gym", "status": "ACTIVE", "ownerId": 1, "ownerName": "Amr Hassan" }</code></pre>
+        <h4>Response 201</h4>
+        <pre><code>{
+  "id": 1,
+  "name": "Power House Gym",
+  "description": "24/7 fitness club with classes and personal training.",
+  "logoUrl": null,
+  "address": "90 Nile Street",
+  "city": "Cairo",
+  "country": "Egypt",
+  "phone": "+20200000000",
+  "email": "info@powerhouse.test",
+  "website": "https://powerhouse.test",
+  "status": "ACTIVE",
+  "ownerId": 1,
+  "ownerName": "Omar Hassan",
+  "createdAt": "2026-05-18T10:00:00"
+}</code></pre>
       </div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}</code> - Get public gym details.</p><pre><code>{ "id": 1, "name": "Downtown Gym", "status": "ACTIVE" }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/my</code> - List gyms owned by current user.</p><pre><code>[{ "id": 1, "name": "Downtown Gym", "status": "ACTIVE" }]</code></pre></div>
-      <div class="endpoint"><p><span class="method put">PUT</span><code>/api/v1/gyms/{gymId}</code> - Update gym profile. Owner only.</p><pre><code>{ "name": "Downtown Gym Plus", "city": "Cairo" }</code></pre><pre><code>{ "id": 1, "name": "Downtown Gym Plus" }</code></pre></div>
-      <div class="endpoint"><p><span class="method put">PUT</span><code>/api/v1/gyms/{gymId}/settings</code> - Update operational settings. Owner only.</p><pre><code>{
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}</h3>
+        <p>Gets public gym details.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "name": "Power House Gym", "status": "ACTIVE", "ownerId": 1 }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/my</h3>
+        <p>Lists gyms owned by the authenticated service provider.</p>
+        <h4>Response 200</h4>
+        <pre><code>[
+  { "id": 1, "name": "Power House Gym", "status": "ACTIVE", "ownerName": "Omar Hassan" }
+]</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method put">PUT</span>/api/v1/gyms/{{gymId}}</h3>
+        <p>Updates gym profile fields.</p>
+        <h4>Request</h4>
+        <pre><code>{
+  "name": "Power House Gym - Maadi",
+  "description": "Premium fitness club.",
+  "address": "90 Nile Street",
+  "city": "Cairo",
+  "country": "Egypt",
+  "phone": "+20200000000",
+  "email": "info@powerhouse.test",
+  "website": "https://powerhouse.test"
+}</code></pre>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "name": "Power House Gym - Maadi", "status": "ACTIVE" }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method put">PUT</span>/api/v1/gyms/{{gymId}}/settings</h3>
+        <p>Updates payment and activation rules. Valid activation policies: <code>IMMEDIATE</code>, <code>MANUAL</code>. Valid entrance methods: <code>BARCODE</code>, <code>DYNAMIC_QR</code>, <code>PRINTED_QR</code>.</p>
+        <h4>Request</h4>
+        <pre><code>{
   "allowPartialPayment": true,
   "activationPolicy": "MANUAL",
-  "enabledEntranceMethods": ["BARCODE", "DYNAMIC_QR", "PRINTED_QR"]
-}</code></pre><pre><code>204 No Content</code></pre></div>
-      <div class="endpoint"><p><span class="method patch">PATCH</span><code>/api/v1/gyms/{gymId}/status?status=SUSPENDED</code> - Change gym status. Values: <code>ACTIVE</code>, <code>INACTIVE</code>, <code>SUSPENDED</code>.</p><pre><code>204 No Content</code></pre></div>
-
-      <h3>Employees</h3>
-      <div class="endpoint">
-        <p><span class="method post">POST</span><code>/api/v1/gyms/{gymId}/employees</code> - Add employee. Owner or ADMIN.</p>
-        <pre><code>{
-  "userEmail": "reception@example.com",
-  "jobTitle": "Receptionist",
-  "salary": 8000,
-  "salaryCurrency": "EGP",
-  "permissions": ["REGISTER_ATTENDANCE", "SELL_SUBSCRIPTION"],
-  "firstName": "Sara",
-  "lastName": "Ali",
-  "phone": "01111111111",
-  "password": "Secret123"
+  "allowActivationWithRemainingBalance": false,
+  "enabledEntranceMethods": ["BARCODE", "PRINTED_QR"]
 }</code></pre>
-        <pre><code>{ "id": 1, "userId": 2, "fullName": "Sara Ali", "permissions": ["REGISTER_ATTENDANCE", "SELL_SUBSCRIPTION"], "active": true }</code></pre>
+        <h4>Response 204</h4>
+        <pre><code>No response body.</code></pre>
       </div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/employees?page=0&amp;size=20</code> - List employees.</p><pre><code>{ "content": [{ "id": 1, "jobTitle": "Receptionist", "active": true }], "page": 0 }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/employees/{employeeId}</code> - Get employee details.</p><pre><code>{ "id": 1, "fullName": "Sara Ali", "jobTitle": "Receptionist" }</code></pre></div>
-      <div class="endpoint"><p><span class="method put">PUT</span><code>/api/v1/gyms/{gymId}/employees/{employeeId}/permissions</code> - Replace permissions.</p><pre><code>["ADMIN"]</code></pre><pre><code>{ "id": 1, "permissions": ["ADMIN"] }</code></pre></div>
-      <div class="endpoint"><p><span class="method patch">PATCH</span><code>/api/v1/gyms/{gymId}/employees/{employeeId}/status?active=false</code> - Activate/deactivate employee.</p><pre><code>204 No Content</code></pre></div>
+      <div class="endpoint">
+        <h3><span class="method patch">PATCH</span>/api/v1/gyms/{{gymId}}/status?status=INACTIVE</h3>
+        <p>Changes gym status. Valid values: <code>ACTIVE</code>, <code>INACTIVE</code>, <code>SUSPENDED</code>.</p>
+        <h4>Response 204</h4>
+        <pre><code>No response body.</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/link-requests</h3>
+        <p>Owner lists pending customer app link requests.</p>
+        <h4>Response 200</h4>
+        <pre><code>[
+  {
+    "id": 1,
+    "gymId": 1,
+    "gymName": "Power House Gym",
+    "status": "PENDING",
+    "notes": "I joined yesterday.",
+    "requestedAt": "2026-05-18T10:10:00",
+    "resolvedAt": null
+  }
+]</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/link-requests/{{requestId}}/approve</h3>
+        <p>Approves a customer link request and creates a Customer record.</p>
+        <h4>Response 204</h4>
+        <pre><code>No response body.</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/link-requests/{{requestId}}/reject</h3>
+        <p>Rejects a customer link request.</p>
+        <h4>Response 204</h4>
+        <pre><code>No response body.</code></pre>
+      </div>
 
-      <h3>Services</h3>
-      <div class="endpoint"><p><span class="method post">POST</span><code>/api/v1/gyms/{gymId}/services</code> - Create service. Requires <code>MANAGE_SERVICES</code>.</p><pre><code>{
+      <h3>Employee APIs</h3>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/employees</h3>
+        <p>Adds an employee. If the email does not exist, the provided user fields create a new user.</p>
+        <h4>Request</h4>
+        <pre><code>{
+  "userEmail": "cashier@gymhub.test",
+  "jobTitle": "Receptionist",
+  "salary": 7000,
+  "salaryCurrency": "EGP",
+  "notes": "Morning shift",
+  "permissions": ["SELL_SUBSCRIPTION", "REGISTER_ATTENDANCE", "MANAGE_CUSTOMERS"],
+  "firstName": "Mona",
+  "lastName": "Ali",
+  "phone": "+201000000002",
+  "password": "password123"
+}</code></pre>
+        <h4>Response 201</h4>
+        <pre><code>{
+  "id": 1,
+  "userId": 2,
+  "fullName": "Mona Ali",
+  "email": "cashier@gymhub.test",
+  "phone": "+201000000002",
+  "gymId": 1,
+  "gymName": "Power House Gym",
+  "jobTitle": "Receptionist",
+  "salary": 7000,
+  "salaryCurrency": "EGP",
+  "permissions": ["SELL_SUBSCRIPTION", "REGISTER_ATTENDANCE", "MANAGE_CUSTOMERS"],
+  "hierarchyLevel": 1,
+  "active": true,
+  "createdAt": "2026-05-18T10:15:00"
+}</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/employees?page=0&amp;size=10</h3>
+        <p>Lists gym employees.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "fullName": "Mona Ali", "active": true }], "page": 0, "size": 10, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/employees/{{employeeId}}</h3>
+        <p>Gets employee details.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "fullName": "Mona Ali", "permissions": ["REGISTER_ATTENDANCE"], "active": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method put">PUT</span>/api/v1/gyms/{{gymId}}/employees/{{employeeId}}/permissions</h3>
+        <p>Replaces an employee permission set.</p>
+        <h4>Request</h4>
+        <pre><code>["SELL_SUBSCRIPTION", "REGISTER_ATTENDANCE", "SELL_EXTRA_SERVICE"]</code></pre>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "permissions": ["SELL_SUBSCRIPTION", "REGISTER_ATTENDANCE", "SELL_EXTRA_SERVICE"], "active": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method patch">PATCH</span>/api/v1/gyms/{{gymId}}/employees/{{employeeId}}/status?active=false</h3>
+        <p>Activates or deactivates an employee.</p>
+        <h4>Response 204</h4>
+        <pre><code>No response body.</code></pre>
+      </div>
+
+      <h3>Service Catalog APIs</h3>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/services</h3>
+        <p>Creates a service/class/add-on.</p>
+        <h4>Request</h4>
+        <pre><code>{
   "name": "Sauna",
-  "description": "Sauna access",
+  "description": "30 minute sauna access",
   "canBeIncludedInPackage": true,
   "canBeSoldIndependently": true
-}</code></pre><pre><code>{ "id": 1, "name": "Sauna", "status": "ACTIVE", "canBeSoldIndependently": true }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/services</code> - List services.</p><pre><code>{ "content": [{ "id": 1, "name": "Sauna", "status": "ACTIVE" }] }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/services/{serviceId}</code> - Get service.</p><pre><code>{ "id": 1, "name": "Sauna" }</code></pre></div>
-      <div class="endpoint"><p><span class="method put">PUT</span><code>/api/v1/gyms/{gymId}/services/{serviceId}</code> - Update service.</p><pre><code>{ "name": "Sauna VIP", "canBeIncludedInPackage": true, "canBeSoldIndependently": true }</code></pre><pre><code>{ "id": 1, "name": "Sauna VIP" }</code></pre></div>
-      <div class="endpoint"><p><span class="method patch">PATCH</span><code>/api/v1/gyms/{gymId}/services/{serviceId}/status?status=INACTIVE</code> - Change status. Values: <code>ACTIVE</code>, <code>INACTIVE</code>.</p><pre><code>204 No Content</code></pre></div>
+}</code></pre>
+        <h4>Response 201</h4>
+        <pre><code>{
+  "id": 1,
+  "gymId": 1,
+  "name": "Sauna",
+  "description": "30 minute sauna access",
+  "canBeIncludedInPackage": true,
+  "canBeSoldIndependently": true,
+  "status": "ACTIVE",
+  "createdAt": "2026-05-18T10:20:00"
+}</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/services</h3>
+        <p>Lists services.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "name": "Sauna", "status": "ACTIVE" }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/services/{{serviceId}}</h3>
+        <p>Gets a service.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "gymId": 1, "name": "Sauna", "status": "ACTIVE" }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method put">PUT</span>/api/v1/gyms/{{gymId}}/services/{{serviceId}}</h3>
+        <p>Updates service details.</p>
+        <h4>Request</h4>
+        <pre><code>{
+  "name": "Sauna Premium",
+  "description": "45 minute sauna access",
+  "canBeIncludedInPackage": true,
+  "canBeSoldIndependently": true
+}</code></pre>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "name": "Sauna Premium", "status": "ACTIVE" }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method patch">PATCH</span>/api/v1/gyms/{{gymId}}/services/{{serviceId}}/status?status=INACTIVE</h3>
+        <p>Changes service status. Valid values: <code>ACTIVE</code>, <code>INACTIVE</code>.</p>
+        <h4>Response 204</h4>
+        <pre><code>No response body.</code></pre>
+      </div>
 
-      <h3>Packages</h3>
-      <div class="endpoint"><p><span class="method post">POST</span><code>/api/v1/gyms/{gymId}/packages</code> - Create subscription package. Requires <code>MANAGE_PACKAGES</code>.</p><pre><code>{
-  "name": "Monthly Plus",
-  "description": "30 days with sauna",
+      <h3>Package APIs</h3>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/packages</h3>
+        <p>Creates a sellable subscription package.</p>
+        <h4>Request</h4>
+        <pre><code>{
+  "name": "Monthly Gold",
+  "description": "30 days full access with sauna.",
   "durationDays": 30,
+  "bonusDays": 2,
   "price": 1200,
   "currency": "EGP",
+  "freezeAllowanceDays": 5,
   "maxInvitations": 2,
   "allowGuestRepeatVisit": false,
   "allowPartialPayment": true,
+  "isFamilyPackage": false,
+  "maxSubUsers": 0,
   "includedServiceIds": [1]
-}</code></pre><pre><code>{ "id": 1, "name": "Monthly Plus", "price": 1200, "active": true, "includedServices": [{ "id": 1, "name": "Sauna" }] }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/packages</code> - List packages.</p><pre><code>{ "content": [{ "id": 1, "name": "Monthly Plus", "active": true }] }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/packages/{packageId}</code> - Get package.</p><pre><code>{ "id": 1, "durationDays": 30, "maxInvitations": 2 }</code></pre></div>
-      <div class="endpoint"><p><span class="method put">PUT</span><code>/api/v1/gyms/{gymId}/packages/{packageId}</code> - Update package.</p><pre><code>{ "name": "Monthly Pro", "durationDays": 30, "price": 1500, "includedServiceIds": [1] }</code></pre><pre><code>{ "id": 1, "name": "Monthly Pro", "price": 1500 }</code></pre></div>
-      <div class="endpoint"><p><span class="method patch">PATCH</span><code>/api/v1/gyms/{gymId}/packages/{packageId}/status?active=false</code> - Activate/deactivate package.</p><pre><code>204 No Content</code></pre></div>
+}</code></pre>
+        <h4>Response 201</h4>
+        <pre><code>{
+  "id": 1,
+  "gymId": 1,
+  "name": "Monthly Gold",
+  "durationDays": 30,
+  "bonusDays": 2,
+  "price": 1200,
+  "currency": "EGP",
+  "freezeAllowanceDays": 5,
+  "maxInvitations": 2,
+  "allowPartialPayment": true,
+  "isFamilyPackage": false,
+  "maxSubUsers": 0,
+  "active": true,
+  "includedServices": [{ "id": 1, "name": "Sauna", "status": "ACTIVE" }],
+  "createdAt": "2026-05-18T10:25:00"
+}</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/packages</h3>
+        <p>Lists packages.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "name": "Monthly Gold", "price": 1200, "active": true }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/packages/{{packageId}}</h3>
+        <p>Gets a package.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "name": "Monthly Gold", "durationDays": 30, "price": 1200, "active": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method put">PUT</span>/api/v1/gyms/{{gymId}}/packages/{{packageId}}</h3>
+        <p>Updates package details.</p>
+        <h4>Request</h4>
+        <pre><code>{
+  "name": "Monthly Gold Plus",
+  "description": "32 days full access.",
+  "durationDays": 30,
+  "bonusDays": 2,
+  "price": 1300,
+  "currency": "EGP",
+  "freezeAllowanceDays": 5,
+  "maxInvitations": 2,
+  "allowGuestRepeatVisit": false,
+  "allowPartialPayment": true,
+  "isFamilyPackage": false,
+  "maxSubUsers": 0,
+  "includedServiceIds": [1]
+}</code></pre>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "name": "Monthly Gold Plus", "price": 1300, "active": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method patch">PATCH</span>/api/v1/gyms/{{gymId}}/packages/{{packageId}}/status?active=false</h3>
+        <p>Activates or deactivates a package.</p>
+        <h4>Response 204</h4>
+        <pre><code>No response body.</code></pre>
+      </div>
 
-      <h3>Customers</h3>
-      <div class="endpoint"><p><span class="method post">POST</span><code>/api/v1/gyms/{gymId}/customers</code> - Register customer. Requires <code>MANAGE_CUSTOMERS</code>.</p><pre><code>{
-  "firstName": "Mona",
-  "lastName": "Khaled",
-  "email": "mona@example.com",
-  "phone": "01222222222",
-  "password": "Secret123",
-  "memberCode": "CARD-1001"
-}</code></pre><pre><code>{ "id": 1, "userId": 3, "fullName": "Mona Khaled", "memberCode": "CARD-1001", "active": true }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/customers</code> - List customers.</p><pre><code>{ "content": [{ "id": 1, "fullName": "Mona Khaled", "memberCode": "CARD-1001" }] }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/customers/search?q=mona</code> - Search by name, email, or member code.</p><pre><code>{ "content": [{ "id": 1, "email": "mona@example.com" }] }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/customers/{customerId}</code> - Get customer profile.</p><pre><code>{ "id": 1, "fullName": "Mona Khaled", "active": true }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/customers/by-code/{memberCode}</code> - Lookup for barcode/QR entry.</p><pre><code>{ "id": 1, "memberCode": "CARD-1001" }</code></pre></div>
-      <div class="endpoint"><p><span class="method patch">PATCH</span><code>/api/v1/gyms/{gymId}/customers/{customerId}/status?active=false</code> - Activate/deactivate customer.</p><pre><code>204 No Content</code></pre></div>
+      <h3>Customer Management APIs</h3>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/customers</h3>
+        <p>Creates a new customer user and customer record, or links an existing user using <code>existingUserId</code>. If a phone already exists, the dashboard should not create a duplicate; the existing user should request linking from the customer app.</p>
+        <h4>Request: new customer</h4>
+        <pre><code>{
+  "phone": "+201000000003",
+  "firstName": "Sara",
+  "lastName": "Mahmoud",
+  "email": "sara@gymhub.test",
+  "password": "password123",
+  "memberCode": "GH-0001"
+}</code></pre>
+        <h4>Response 201</h4>
+        <pre><code>{
+  "id": 1,
+  "userId": 3,
+  "fullName": "Sara Mahmoud",
+  "email": "sara@gymhub.test",
+  "phone": "+201000000003",
+  "profileImageUrl": null,
+  "gymId": 1,
+  "gymName": "Power House Gym",
+  "memberCode": "GH-0001",
+  "active": true,
+  "joinedAt": "2026-05-18T10:30:00"
+}</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/customers</h3>
+        <p>Lists gym customers.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "fullName": "Sara Mahmoud", "memberCode": "GH-0001", "active": true }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/customers/search?q=Sara</h3>
+        <p>Searches customers by name, email, or member code.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "fullName": "Sara Mahmoud", "email": "sara@gymhub.test" }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/customers/{{customerId}}</h3>
+        <p>Gets customer profile.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "fullName": "Sara Mahmoud", "memberCode": "GH-0001", "active": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/customers/by-code/{{memberCode}}</h3>
+        <p>Looks up a member by barcode/QR value.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "fullName": "Sara Mahmoud", "memberCode": "GH-0001", "active": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method patch">PATCH</span>/api/v1/gyms/{{gymId}}/customers/{{customerId}}/status?active=false</h3>
+        <p>Activates or deactivates a customer.</p>
+        <h4>Response 204</h4>
+        <pre><code>No response body.</code></pre>
+      </div>
 
-      <h3>Subscriptions</h3>
-      <div class="endpoint"><p><span class="method post">POST</span><code>/api/v1/gyms/{gymId}/subscriptions/sell</code> - Sell package to customer. Requires <code>SELL_SUBSCRIPTION</code>.</p><pre><code>{
+      <h3>Subscription APIs</h3>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/subscriptions/sell</h3>
+        <p>Sells a package to a customer and records the initial CASH payment. Partial payment is accepted only if allowed by the package or gym settings.</p>
+        <h4>Request</h4>
+        <pre><code>{
   "customerId": 1,
   "packageId": 1,
   "initialPaymentAmount": 1200,
   "deferredStartDate": null
-}</code></pre><pre><code>{ "id": 1, "customerId": 1, "packageId": 1, "totalPrice": 1200, "paidAmount": 1200, "remainingAmount": 0, "status": "ACTIVE", "startDate": "2026-05-04", "endDate": "2026-06-03" }</code></pre></div>
-      <div class="endpoint"><p><span class="method post">POST</span><code>/api/v1/gyms/{gymId}/subscriptions/{subscriptionId}/payments</code> - Add payment installment.</p><pre><code>{ "amount": 500, "notes": "Second payment" }</code></pre><pre><code>{ "id": 1, "paidAmount": 1000, "remainingAmount": 200, "status": "PENDING_PAYMENT" }</code></pre></div>
-      <div class="endpoint"><p><span class="method post">POST</span><code>/api/v1/gyms/{gymId}/subscriptions/{subscriptionId}/activate?startDate=2026-05-10</code> - Manually activate fully paid subscription. Requires <code>ACTIVATE_SUBSCRIPTION</code>.</p><pre><code>{ "id": 1, "status": "ACTIVE", "startDate": "2026-05-10", "endDate": "2026-06-09" }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/subscriptions</code> - List subscriptions.</p><pre><code>{ "content": [{ "id": 1, "status": "ACTIVE", "remainingInvitations": 2 }] }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/subscriptions/{subscriptionId}</code> - Get subscription.</p><pre><code>{ "id": 1, "customerName": "Mona Khaled", "status": "ACTIVE" }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/subscriptions/customer/{customerId}</code> - List subscriptions for a customer.</p><pre><code>{ "content": [{ "id": 1, "packageName": "Monthly Plus" }] }</code></pre></div>
+}</code></pre>
+        <h4>Response 201</h4>
+        <pre><code>{
+  "id": 1,
+  "customerId": 1,
+  "customerName": "Sara Mahmoud",
+  "packageId": 1,
+  "packageName": "Monthly Gold",
+  "gymId": 1,
+  "totalPrice": 1200,
+  "paidAmount": 1200,
+  "remainingAmount": 0,
+  "currency": "EGP",
+  "status": "ACTIVE",
+  "saleDate": "2026-05-18",
+  "activationDate": "2026-05-18",
+  "startDate": "2026-05-18",
+  "endDate": "2026-06-19",
+  "maxInvitations": 2,
+  "usedInvitations": 0,
+  "remainingInvitations": 2,
+  "usedFreezeDays": 0,
+  "remainingFreezeDays": 5,
+  "activationType": "AUTOMATIC",
+  "soldByEmployeeName": "Omar Hassan",
+  "activatedByEmployeeName": "Omar Hassan",
+  "createdAt": "2026-05-18T10:35:00"
+}</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/payments</h3>
+        <p>Adds another payment installment. Phase 1 supports <code>CASH</code> only.</p>
+        <h4>Request</h4>
+        <pre><code>{
+  "amount": 500,
+  "paymentMethod": "CASH",
+  "notes": "Second installment"
+}</code></pre>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "paidAmount": 1200, "remainingAmount": 0, "status": "PENDING_ACTIVATION" }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/activate?startDate=2026-05-20</h3>
+        <p>Manually activates a pending subscription and sets start/end dates.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "status": "ACTIVE", "activationType": "MANUAL", "startDate": "2026-05-20", "endDate": "2026-06-21" }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/subscriptions</h3>
+        <p>Lists subscriptions for a gym.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "customerName": "Sara Mahmoud", "status": "ACTIVE" }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}</h3>
+        <p>Gets one subscription.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "customerId": 1, "packageId": 1, "status": "ACTIVE", "remainingInvitations": 2 }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/subscriptions/customer/{{customerId}}</h3>
+        <p>Lists subscriptions for one customer in a gym.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "packageName": "Monthly Gold", "status": "ACTIVE" }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
 
-      <h3>Attendance</h3>
-      <div class="endpoint"><p><span class="method post">POST</span><code>/api/v1/gyms/{gymId}/attendance</code> - Record member or guest visit. Requires <code>REGISTER_ATTENDANCE</code>.</p><pre><code>{
-  "memberCode": "CARD-1001",
+      <h3>Attendance APIs</h3>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/attendance</h3>
+        <p>Records a member or guest visit. For <code>MEMBER_VISIT</code>, the service links an active subscription automatically unless <code>subscriptionId</code> is provided.</p>
+        <h4>Request</h4>
+        <pre><code>{
+  "memberCode": "GH-0001",
   "customerId": null,
   "entranceMethod": "BARCODE",
   "type": "MEMBER_VISIT",
   "subscriptionId": 1
-}</code></pre><pre><code>{ "customerId": 1, "customerName": "Mona Khaled", "memberCode": "CARD-1001", "subscriptionId": 1, "subscriptionStatus": "ACTIVE", "visitedAt": "2026-05-04T10:15:00" }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/attendance</code> - List gym attendance records.</p><pre><code>{ "content": [{ "type": "MEMBER_VISIT", "entranceMethod": "BARCODE" }] }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/attendance/customer/{customerId}</code> - Customer attendance history.</p><pre><code>{ "content": [{ "visitedAt": "2026-05-04T10:15:00" }] }</code></pre></div>
+}</code></pre>
+        <h4>Response 201</h4>
+        <pre><code>{
+  "customerId": 1,
+  "customerName": "Sara Mahmoud",
+  "memberCode": "GH-0001",
+  "profileImageUrl": null,
+  "subscriptionId": 1,
+  "subscriptionStatus": "ACTIVE",
+  "visitedAt": "2026-05-18T11:00:00"
+}</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/attendance</h3>
+        <p>Lists all attendance records for the gym.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "type": "MEMBER_VISIT", "entranceMethod": "BARCODE", "visitedAt": "2026-05-18T11:00:00" }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/attendance/customer/{{customerId}}</h3>
+        <p>Lists attendance history for a customer.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "type": "MEMBER_VISIT", "visitedAt": "2026-05-18T11:00:00" }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
 
-      <h3>Invitations</h3>
-      <div class="endpoint"><p><span class="method post">POST</span><code>/api/v1/gyms/{gymId}/invitations</code> - Consume one guest invitation slot. Requires <code>REGISTER_INVITATION</code>.</p><pre><code>{
+      <h3>Invitation APIs</h3>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/invitations</h3>
+        <p>Uses one invitation slot from an active subscription.</p>
+        <h4>Request</h4>
+        <pre><code>{
   "hostCustomerId": 1,
   "subscriptionId": 1,
-  "guestFirstName": "Omar",
-  "guestLastName": "Samy",
-  "guestEmail": "omar@example.com",
-  "guestPhone": "01033333333"
-}</code></pre><pre><code>{ "id": 1, "newGuestAccount": true, "guestRepeatVisitAllowed": false }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/invitations</code> - List all invitations.</p><pre><code>{ "content": [{ "id": 1, "newGuestAccount": true }] }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/invitations/customer/{customerId}</code> - List invitations for host customer.</p><pre><code>{ "content": [{ "id": 1, "host": { "id": 1 } }] }</code></pre></div>
+  "existingGuestUserId": null,
+  "guestFirstName": "Khaled",
+  "guestLastName": "Sameh",
+  "guestEmail": "khaled.guest@test.com",
+  "guestPhone": "+201000000004"
+}</code></pre>
+        <h4>Response 201</h4>
+        <pre><code>{
+  "id": 1,
+  "host": { "id": 1 },
+  "subscription": { "id": 1 },
+  "guestUser": { "id": 4, "email": "khaled.guest@test.com" },
+  "gym": { "id": 1 },
+  "newGuestAccount": true,
+  "guestRepeatVisitAllowed": false,
+  "usedAt": "2026-05-18T11:10:00"
+}</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/invitations</h3>
+        <p>Lists invitations for a gym.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "guestRepeatVisitAllowed": false, "usedAt": "2026-05-18T11:10:00" }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/invitations/customer/{{customerId}}</h3>
+        <p>Lists invitations where the customer is the host.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "subscription": { "id": 1 }, "usedAt": "2026-05-18T11:10:00" }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
 
-      <h3>Extra Services</h3>
-      <div class="endpoint"><p><span class="method post">POST</span><code>/api/v1/gyms/{gymId}/extra-services/sell</code> - Sell paid independent service. Requires <code>SELL_EXTRA_SERVICE</code>.</p><pre><code>{
+      <h3>Extra Service APIs</h3>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/extra-services/sell</h3>
+        <p>Sells a paid add-on outside the subscription invoice.</p>
+        <h4>Request</h4>
+        <pre><code>{
   "customerId": 1,
   "serviceId": 1,
   "amount": 150,
   "currency": "EGP",
   "notes": "One-time sauna"
-}</code></pre><pre><code>{ "id": 1, "amount": 150, "currency": "EGP", "notes": "One-time sauna" }</code></pre></div>
-      <div class="endpoint"><p><span class="method post">POST</span><code>/api/v1/gyms/{gymId}/extra-services/usage?customerId=1&amp;serviceId=1&amp;subscriptionId=1&amp;notes=Included</code> - Record included service usage with no charge.</p><pre><code>{ "id": 1, "notes": "Included" }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/extra-services/transactions</code> - List gym extra-service transactions.</p><pre><code>{ "content": [{ "id": 1, "amount": 150 }] }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/extra-services/transactions/customer/{customerId}</code> - List customer extra transactions.</p><pre><code>{ "content": [{ "id": 1, "service": { "id": 1 } }] }</code></pre></div>
-      <div class="endpoint"><p><span class="method get">GET</span><code>/api/v1/gyms/{gymId}/extra-services/usages/customer/{customerId}</code> - List included-service usage records.</p><pre><code>{ "content": [{ "id": 1, "notes": "Included" }] }</code></pre></div>
+}</code></pre>
+        <h4>Response 201</h4>
+        <pre><code>{
+  "id": 1,
+  "customer": { "id": 1 },
+  "gym": { "id": 1 },
+  "service": { "id": 1, "name": "Sauna" },
+  "amount": 150,
+  "currency": "EGP",
+  "paymentMethod": "CASH",
+  "notes": "One-time sauna",
+  "soldAt": "2026-05-18T11:20:00"
+}</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/extra-services/usage?customerId=1&amp;serviceId=1&amp;subscriptionId=1&amp;notes=Included%20sauna</h3>
+        <p>Records usage of a service included in the customer's package. No JSON body.</p>
+        <h4>Response 201</h4>
+        <pre><code>{
+  "id": 1,
+  "customer": { "id": 1 },
+  "subscription": { "id": 1 },
+  "service": { "id": 1, "name": "Sauna" },
+  "notes": "Included sauna",
+  "usedAt": "2026-05-18T11:25:00"
+}</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/extra-services/transactions</h3>
+        <p>Lists all paid extra-service transactions for the gym.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "amount": 150, "currency": "EGP" }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/extra-services/transactions/customer/{{customerId}}</h3>
+        <p>Lists paid extra-service transactions for one customer.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "amount": 150, "notes": "One-time sauna" }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/extra-services/usages/customer/{{customerId}}</h3>
+        <p>Lists included-service usages for one customer.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "notes": "Included sauna", "usedAt": "2026-05-18T11:25:00" }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
 
-      <h2>10. Quick Smoke Test with curl</h2>
-      <pre><code>BASE=http://localhost:8085/api/v1
+      <h3>Freeze APIs</h3>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/freezes</h3>
+        <p>Applies a freeze to an active subscription. Dates must not be in the past.</p>
+        <h4>Request</h4>
+        <pre><code>{
+  "startDate": "2026-06-01",
+  "endDate": "2026-06-05",
+  "reason": "Travel"
+}</code></pre>
+        <h4>Response 201</h4>
+        <pre><code>{
+  "id": 1,
+  "subscriptionId": 1,
+  "startDate": "2026-06-01",
+  "endDate": "2026-06-05",
+  "actualEndDate": null,
+  "daysConsumed": 5,
+  "reason": "Travel",
+  "status": "ACTIVE",
+  "registeredByEmployeeName": "Omar Hassan",
+  "cancelledByEmployeeName": null,
+  "createdAt": "2026-05-18T11:30:00",
+  "cancelledAt": null
+}</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/freezes</h3>
+        <p>Lists freeze history for a subscription.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "status": "ACTIVE", "daysConsumed": 5 }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method patch">PATCH</span>/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/freezes/{{freezeId}}/cancel</h3>
+        <p>Cancels an active freeze early and credits unused days according to service logic.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "subscriptionId": 1, "status": "CANCELLED", "actualEndDate": "2026-06-03", "cancelledAt": "2026-06-03T09:00:00" }</code></pre>
+      </div>
 
-curl -X POST "$BASE/auth/register" \
-  -H "Content-Type: application/json" \
-  -d '{"firstName":"Amr","lastName":"Hassan","email":"owner@example.com","password":"Secret123","role":"SERVICE_PROVIDER"}'
+      <h3>Family Package APIs</h3>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/sub-users</h3>
+        <p>Adds an existing customer as a sub-user to a family package subscription.</p>
+        <h4>Request</h4>
+        <pre><code>{
+  "subCustomerId": 2,
+  "relationType": "Spouse"
+}</code></pre>
+        <h4>Response 201</h4>
+        <pre><code>{
+  "id": 1,
+  "mainCustomerId": 1,
+  "subCustomerId": 2,
+  "subCustomerFullName": "Nour Adel",
+  "subCustomerPhone": "+201000000005",
+  "subscriptionId": 1,
+  "relationType": "Spouse",
+  "createdByEmployeeName": "Omar Hassan",
+  "createdAt": "2026-05-18T11:40:00"
+}</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/sub-users</h3>
+        <p>Lists sub-users on a family subscription.</p>
+        <h4>Response 200</h4>
+        <pre><code>[
+  { "id": 1, "mainCustomerId": 1, "subCustomerId": 2, "relationType": "Spouse" }
+]</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method delete">DELETE</span>/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/sub-users/{{subCustomerId}}</h3>
+        <p>Removes a sub-user from a family subscription.</p>
+        <h4>Response 204</h4>
+        <pre><code>No response body.</code></pre>
+      </div>
 
-curl -X POST "$BASE/auth/login" \
-  -H "Content-Type: application/json" \
-  -d '{"email":"owner@example.com","password":"Secret123"}'
+      <h3>Customer App APIs</h3>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/customer/me</h3>
+        <p>Returns the authenticated customer profile.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 3, "firstName": "Sara", "lastName": "Mahmoud", "email": "sara@gymhub.test", "phone": "+201000000003", "roles": ["CUSTOMER"] }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/customer/gyms</h3>
+        <p>Lists gyms where the authenticated user is linked as a customer.</p>
+        <h4>Response 200</h4>
+        <pre><code>[{ "id": 1, "name": "Power House Gym", "status": "ACTIVE" }]</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/customer/gyms/{{gymId}}</h3>
+        <p>Gets public gym details for customer app screens.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "name": "Power House Gym", "city": "Cairo", "status": "ACTIVE" }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/customer/gyms/{{gymId}}/link-request?notes=I%20am%20already%20a%20member</h3>
+        <p>Customer requests linking to a gym when their account already exists.</p>
+        <h4>Response 201</h4>
+        <pre><code>{
+  "id": 1,
+  "gymId": 1,
+  "gymName": "Power House Gym",
+  "status": "PENDING",
+  "notes": "I am already a member",
+  "requestedAt": "2026-05-18T12:00:00",
+  "resolvedAt": null
+}</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/customer/link-requests</h3>
+        <p>Lists the authenticated customer's link requests.</p>
+        <h4>Response 200</h4>
+        <pre><code>[{ "id": 1, "gymId": 1, "status": "PENDING", "notes": "I am already a member" }]</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/customer/subscriptions</h3>
+        <p>Lists all subscriptions for the authenticated customer across gyms.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "gymId": 1, "packageName": "Monthly Gold", "status": "ACTIVE" }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/customer/subscriptions/{{subscriptionId}}</h3>
+        <p>Gets one subscription owned by the authenticated customer.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "id": 1, "packageName": "Monthly Gold", "status": "ACTIVE", "remainingInvitations": 2 }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/customer/attendance</h3>
+        <p>Lists authenticated customer's attendance history across gyms.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "gymName": "Power House Gym", "type": "MEMBER_VISIT", "visitedAt": "2026-05-18T11:00:00" }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method get">GET</span>/api/v1/customer/invitations</h3>
+        <p>Lists invitations used by the authenticated customer as host.</p>
+        <h4>Response 200</h4>
+        <pre><code>{ "content": [{ "id": 1, "gymName": "Power House Gym", "guestFullName": "Khaled Sameh", "usedAt": "2026-05-18T11:10:00" }], "page": 0, "size": 20, "totalElements": 1, "totalPages": 1, "last": true }</code></pre>
+      </div>
 
-# Copy accessToken from login:
-TOKEN=&lt;accessToken&gt;
+      <h2>9. Common Errors</h2>
+      <table>
+        <thead><tr><th>Status</th><th>Meaning</th><th>Common reason</th></tr></thead>
+        <tbody>
+          <tr><td>400</td><td>Bad request or business rule violation</td><td>Missing required fields, partial payment not allowed, no active subscription, payment exceeds remaining balance.</td></tr>
+          <tr><td>401</td><td>Unauthorized</td><td>Missing or invalid JWT.</td></tr>
+          <tr><td>403</td><td>Forbidden</td><td>User is not owner/active employee or lacks the required employee permission.</td></tr>
+          <tr><td>404</td><td>Not found</td><td>Entity ID does not exist or does not belong to the gym.</td></tr>
+          <tr><td>409</td><td>Conflict</td><td>Duplicate user/customer phone or email.</td></tr>
+        </tbody>
+      </table>
+      <pre><code>{
+  "timestamp": "2026-05-18T12:30:00",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Partial payment is not allowed for this package",
+  "path": "/api/v1/gyms/1/subscriptions/sell"
+}</code></pre>
 
-curl -X POST "$BASE/gyms" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $TOKEN" \
-  -d '{"name":"Downtown Gym","city":"Cairo","country":"Egypt"}'</code></pre>
+      <h2>10. Fast Manual Test Scenario</h2>
+      <ol>
+        <li>Register owner and copy token.</li>
+        <li>Create gym and save <code>gymId</code>.</li>
+        <li>Update settings with <code>IMMEDIATE</code> activation.</li>
+        <li>Create service <code>Sauna</code>.</li>
+        <li>Create package <code>Monthly Gold</code> with <code>includedServiceIds: [serviceId]</code>.</li>
+        <li>Create customer with member code <code>GH-0001</code>.</li>
+        <li>Sell subscription with full payment.</li>
+        <li>Record attendance using <code>memberCode</code>.</li>
+        <li>Use one invitation.</li>
+        <li>Sell an extra service and record included usage.</li>
+        <li>List subscriptions, attendance, invitations, and customer app endpoints to verify data.</li>
+      </ol>
     </section>
 
     <section id="ar-content" class="content hidden" dir="rtl" lang="ar">
-      <h2>1. نظرة عامة</h2>
-      <p><strong>GymHub</strong> هو Backend لإدارة الجيمات. صاحب الجيم يستطيع إنشاء جيم، تعريف الخدمات والباقات، إضافة موظفين بصلاحيات، تسجيل العملاء، بيع الاشتراكات، تسجيل المدفوعات، تفعيل الاشتراكات، تسجيل الحضور، استخدام دعوات الضيوف، وبيع خدمات إضافية مستقلة.</p>
+      <h2>1. نظرة عامة على المنتج</h2>
+      <p><strong>GymHub</strong> هو Backend لإدارة الجيمات. النظام يسمح لصاحب الجيم بإنشاء جيم، إضافة موظفين بصلاحيات، إنشاء خدمات وباقات، تسجيل عملاء، بيع اشتراكات، تسجيل المدفوعات، تفعيل الاشتراك، تسجيل الحضور، استخدام الدعوات، بيع خدمات إضافية، تجميد الاشتراك، وإدارة الباقات العائلية.</p>
+      <p>المشروع الحالي هو REST API فقط باستخدام Spring Boot و MySQL و JWT. لا يوجد Frontend داخل هذا الريبو، لكن يمكن اختبار كل شيء من Swagger أو Postman.</p>
 
-      <h2>2. الموديولات من منظور البيزنس</h2>
+      <h2>2. الوحدات الأساسية</h2>
       <table>
-        <thead><tr><th>الموديول</th><th>الفكرة</th><th>الكيانات</th></tr></thead>
+        <thead><tr><th>الوحدة</th><th>المعنى التجاري</th><th>أهم الكيانات</th></tr></thead>
         <tbody>
-          <tr><td>الحسابات والصلاحيات</td><td>حساب واحد يمكن أن يكون صاحب جيم وموظف وعميل في نفس الوقت.</td><td>User, UserRole, JWT</td></tr>
-          <tr><td>إدارة الجيم</td><td>بيانات الجيم وإعداداته وصاحبه.</td><td>Gym, GymSettings</td></tr>
-          <tr><td>الموظفون</td><td>موظفون مربوطون بجيم محدد ومعهم صلاحيات تشغيلية.</td><td>Employee, EmployeePermission</td></tr>
+          <tr><td>الحسابات والصلاحيات</td><td>حساب واحد يمكن أن يكون مالك جيم أو موظف أو عميل.</td><td>User, UserRole, JWT</td></tr>
+          <tr><td>إدارة الجيم</td><td>بيانات الجيم وإعدادات التشغيل.</td><td>Gym, GymSettings</td></tr>
+          <tr><td>الموظفون</td><td>الموظف وصلاحياته وحالته وراتبه.</td><td>Employee, EmployeePermission</td></tr>
           <tr><td>الخدمات</td><td>خدمات الجيم مثل الساونا أو التدريب الشخصي أو الحصص.</td><td>GymService</td></tr>
-          <tr><td>الباقات</td><td>مدة وسعر ودعوات وخدمات مرفقة داخل الاشتراك.</td><td>GymPackage</td></tr>
-          <tr><td>العملاء</td><td>أعضاء الجيم ولهم كود عضوية للباركود أو QR.</td><td>Customer</td></tr>
-          <tr><td>الاشتراكات</td><td>بيع الباقة، المدفوعات، التفعيل، الرصيد المتبقي، والدعوات.</td><td>Subscription, Payment</td></tr>
-          <tr><td>الحضور</td><td>تسجيل دخول العميل أو الضيف.</td><td>Attendance</td></tr>
-          <tr><td>الدعوات</td><td>ضيف يدخل من رصيد دعوات اشتراك عميل.</td><td>Invitation</td></tr>
-          <tr><td>الخدمات الإضافية</td><td>بيع خدمة مدفوعة خارج الاشتراك أو تسجيل استخدام خدمة مرفقة.</td><td>ExtraServiceTransaction, ServiceUsage</td></tr>
+          <tr><td>الباقات</td><td>اشتراكات للبيع بمدة وسعر ودعوات وأيام تجميد وخدمات مرفقة.</td><td>GymPackage</td></tr>
+          <tr><td>العملاء</td><td>أعضاء الجيم وكود العضوية المستخدم في QR أو Barcode.</td><td>Customer</td></tr>
+          <tr><td>الاشتراكات</td><td>بيع الباقة، المدفوعات، التفعيل، وحالة الاشتراك.</td><td>Subscription, Payment</td></tr>
+          <tr><td>الحضور</td><td>تسجيل دخول العضو أو الضيف.</td><td>Attendance</td></tr>
+          <tr><td>الدعوات</td><td>استخدام دعوة من رصيد اشتراك العضو.</td><td>Invitation</td></tr>
+          <tr><td>الخدمات الإضافية</td><td>بيع خدمة خارج الاشتراك أو تسجيل استخدام خدمة داخل الباقة.</td><td>ExtraServiceTransaction, ServiceUsage</td></tr>
+          <tr><td>التجميد</td><td>إيقاف الاشتراك مؤقتا ضمن الأيام المسموحة.</td><td>SubscriptionFreeze</td></tr>
+          <tr><td>الباقة العائلية</td><td>إضافة أعضاء فرعيين على اشتراك عائلي.</td><td>FamilyMembership</td></tr>
         </tbody>
       </table>
 
       <h2>3. الأدوار والصلاحيات</h2>
-      <p>الأدوار الأساسية: <code>SERVICE_PROVIDER</code> صاحب جيم، <code>EMPLOYEE</code> موظف، <code>CUSTOMER</code> عميل.</p>
-      <p>الـ Backend لا يستقبل <code>employeeId</code> من الواجهة كممثل للعملية. هو يحدد المستخدم من JWT ثم يبحث هل هو صاحب الجيم أو موظف نشط له الصلاحية المطلوبة. صاحب الجيم له كل الصلاحيات. صلاحية <code>ADMIN</code> تكفي لكل عمليات الموظف.</p>
-      <p>الصلاحيات المتاحة: <code>SELL_SUBSCRIPTION</code>, <code>ACTIVATE_SUBSCRIPTION</code>, <code>REGISTER_ATTENDANCE</code>, <code>REGISTER_INVITATION</code>, <code>SELL_EXTRA_SERVICE</code>, <code>MANAGE_SERVICES</code>, <code>MANAGE_PACKAGES</code>, <code>MANAGE_CUSTOMERS</code>, <code>MANAGE_EMPLOYEES</code>, <code>FREEZE_SUBSCRIPTION</code>, <code>MANUAL_ADJUSTMENT</code>, <code>CLOSE_CASH_DAY</code>, <code>ADMIN</code>.</p>
-
-      <h2>4. فلو التطبيق</h2>
-      <ol>
-        <li>تسجيل مستخدم بدور <code>SERVICE_PROVIDER</code>.</li>
-        <li>تسجيل الدخول وأخذ <code>accessToken</code>.</li>
-        <li>إنشاء جيم، والمستخدم الحالي يصبح صاحب الجيم.</li>
-        <li>تحديث إعدادات الجيم مثل الدفع الجزئي وسياسة التفعيل وطرق الدخول.</li>
-        <li>إضافة موظفين وتحديد صلاحياتهم.</li>
-        <li>إنشاء خدمات ثم إنشاء باقات تحتوي على بعض الخدمات.</li>
-        <li>تسجيل العملاء أو ربط مستخدم موجود كعميل.</li>
-        <li>بيع اشتراك للعميل وتسجيل الدفعة الأولى.</li>
-        <li>لو الاشتراك مدفوع بالكامل وسياسة التفعيل <code>IMMEDIATE</code> يتم التفعيل تلقائيا. لو <code>MANUAL</code> يتم التفعيل من API التفعيل.</li>
-        <li>تسجيل الحضور باستخدام كود العضوية أو رقم العميل.</li>
-        <li>استخدام دعوات الضيوف من رصيد الاشتراك.</li>
-        <li>بيع خدمات إضافية أو تسجيل استخدام خدمة مرفقة بالاشتراك.</li>
-      </ol>
-
-      <h2>5. التشغيل والاختبار</h2>
-      <h3>التشغيل</h3>
-      <pre><code>copy .env.example .env
-docker compose up --build</code></pre>
-      <p>Swagger: <code>http://localhost:8085/swagger-ui.html</code></p>
-      <p>OpenAPI JSON: <code>http://localhost:8085/v3/api-docs</code></p>
-      <h3>إيقاف التطبيق</h3>
-      <pre><code>docker compose down</code></pre>
-      <h3>مسح قاعدة البيانات والبدء من جديد</h3>
-      <pre><code>docker compose down -v</code></pre>
-      <h3>تشغيل الاختبارات</h3>
-      <pre><code>mvn test</code></pre>
-
-      <h2>6. الهيدرز المهمة</h2>
-      <pre><code>Content-Type: application/json
-Authorization: Bearer &lt;accessToken&gt;</code></pre>
-      <p>معظم Endpoints بعد التسجيل والدخول تحتاج JWT في الهيدر.</p>
-
-      <h2>7. ملخص كل الـ APIs</h2>
+      <p>كل API محمي يحتاج Header:</p>
+      <pre><code>Authorization: Bearer {{accessToken}}</code></pre>
       <table>
-        <thead><tr><th>Method</th><th>Path</th><th>ما الذي يفعله</th><th>Body أو Params</th></tr></thead>
+        <thead><tr><th>الدور</th><th>المعنى</th></tr></thead>
         <tbody>
-          <tr><td>POST</td><td><code>/api/v1/auth/register</code></td><td>تسجيل حساب جديد وإرجاع JWT.</td><td><code>firstName, lastName, email, password, role</code></td></tr>
-          <tr><td>POST</td><td><code>/api/v1/auth/login</code></td><td>تسجيل الدخول.</td><td><code>email, password</code></td></tr>
-          <tr><td>POST</td><td><code>/api/v1/auth/add-role?role=CUSTOMER</code></td><td>إضافة دور جديد لنفس الحساب.</td><td>Query param: <code>role</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/auth/me</code></td><td>بيانات المستخدم الحالي.</td><td>JWT</td></tr>
-          <tr><td>POST</td><td><code>/api/v1/gyms</code></td><td>إنشاء جيم.</td><td><code>name, description, address, city, country, phone, email, website</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}</code></td><td>عرض بيانات جيم.</td><td>Path: <code>gymId</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/my</code></td><td>كل الجيمات التي يملكها المستخدم الحالي.</td><td>JWT</td></tr>
-          <tr><td>PUT</td><td><code>/api/v1/gyms/{gymId}</code></td><td>تعديل بيانات الجيم.</td><td>نفس Body إنشاء الجيم</td></tr>
-          <tr><td>PUT</td><td><code>/api/v1/gyms/{gymId}/settings</code></td><td>تعديل إعدادات التشغيل.</td><td><code>allowPartialPayment, activationPolicy, enabledEntranceMethods</code></td></tr>
-          <tr><td>PATCH</td><td><code>/api/v1/gyms/{gymId}/status?status=ACTIVE</code></td><td>تغيير حالة الجيم.</td><td><code>ACTIVE, INACTIVE, SUSPENDED</code></td></tr>
-          <tr><td>POST</td><td><code>/api/v1/gyms/{gymId}/employees</code></td><td>إضافة موظف.</td><td><code>userEmail, jobTitle, salary, permissions, firstName, password</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/employees</code></td><td>قائمة الموظفين.</td><td><code>page, size</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/employees/{employeeId}</code></td><td>تفاصيل موظف.</td><td>Path params</td></tr>
-          <tr><td>PUT</td><td><code>/api/v1/gyms/{gymId}/employees/{employeeId}/permissions</code></td><td>تغيير صلاحيات موظف.</td><td>Array مثل <code>["ADMIN"]</code></td></tr>
-          <tr><td>PATCH</td><td><code>/api/v1/gyms/{gymId}/employees/{employeeId}/status?active=false</code></td><td>تفعيل أو تعطيل موظف.</td><td><code>active</code></td></tr>
-          <tr><td>POST</td><td><code>/api/v1/gyms/{gymId}/services</code></td><td>إنشاء خدمة.</td><td><code>name, description, canBeIncludedInPackage, canBeSoldIndependently</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/services</code></td><td>قائمة الخدمات.</td><td><code>page, size</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/services/{serviceId}</code></td><td>تفاصيل خدمة.</td><td>Path params</td></tr>
-          <tr><td>PUT</td><td><code>/api/v1/gyms/{gymId}/services/{serviceId}</code></td><td>تعديل خدمة.</td><td>نفس Body إنشاء الخدمة</td></tr>
-          <tr><td>PATCH</td><td><code>/api/v1/gyms/{gymId}/services/{serviceId}/status?status=INACTIVE</code></td><td>تغيير حالة خدمة.</td><td><code>ACTIVE, INACTIVE</code></td></tr>
-          <tr><td>POST</td><td><code>/api/v1/gyms/{gymId}/packages</code></td><td>إنشاء باقة.</td><td><code>name, durationDays, price, maxInvitations, includedServiceIds</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/packages</code></td><td>قائمة الباقات.</td><td><code>page, size</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/packages/{packageId}</code></td><td>تفاصيل باقة.</td><td>Path params</td></tr>
-          <tr><td>PUT</td><td><code>/api/v1/gyms/{gymId}/packages/{packageId}</code></td><td>تعديل باقة.</td><td>نفس Body إنشاء الباقة</td></tr>
-          <tr><td>PATCH</td><td><code>/api/v1/gyms/{gymId}/packages/{packageId}/status?active=false</code></td><td>تفعيل أو تعطيل باقة.</td><td><code>active</code></td></tr>
-          <tr><td>POST</td><td><code>/api/v1/gyms/{gymId}/customers</code></td><td>تسجيل عميل.</td><td><code>existingUserId</code> أو بيانات مستخدم جديد</td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/customers</code></td><td>قائمة العملاء.</td><td><code>page, size</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/customers/search?q=mona</code></td><td>بحث في العملاء.</td><td><code>q</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/customers/{customerId}</code></td><td>تفاصيل عميل.</td><td>Path params</td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/customers/by-code/{memberCode}</code></td><td>بحث بالباركود أو QR.</td><td><code>memberCode</code></td></tr>
-          <tr><td>PATCH</td><td><code>/api/v1/gyms/{gymId}/customers/{customerId}/status?active=false</code></td><td>تفعيل أو تعطيل عميل.</td><td><code>active</code></td></tr>
-          <tr><td>POST</td><td><code>/api/v1/gyms/{gymId}/subscriptions/sell</code></td><td>بيع اشتراك.</td><td><code>customerId, packageId, initialPaymentAmount, deferredStartDate</code></td></tr>
-          <tr><td>POST</td><td><code>/api/v1/gyms/{gymId}/subscriptions/{subscriptionId}/payments</code></td><td>إضافة دفعة.</td><td><code>amount, notes</code></td></tr>
-          <tr><td>POST</td><td><code>/api/v1/gyms/{gymId}/subscriptions/{subscriptionId}/activate?startDate=2026-05-10</code></td><td>تفعيل اشتراك مدفوع بالكامل.</td><td><code>startDate</code> اختياري</td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/subscriptions</code></td><td>قائمة الاشتراكات.</td><td><code>page, size</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/subscriptions/{subscriptionId}</code></td><td>تفاصيل اشتراك.</td><td>Path params</td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/subscriptions/customer/{customerId}</code></td><td>اشتراكات عميل.</td><td><code>customerId</code></td></tr>
-          <tr><td>POST</td><td><code>/api/v1/gyms/{gymId}/attendance</code></td><td>تسجيل حضور.</td><td><code>memberCode/customerId, entranceMethod, type, subscriptionId</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/attendance</code></td><td>حضور الجيم.</td><td><code>page, size</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/attendance/customer/{customerId}</code></td><td>حضور عميل.</td><td><code>customerId</code></td></tr>
-          <tr><td>POST</td><td><code>/api/v1/gyms/{gymId}/invitations</code></td><td>استخدام دعوة ضيف.</td><td><code>hostCustomerId, subscriptionId, guest...</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/invitations</code></td><td>كل الدعوات.</td><td><code>page, size</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/invitations/customer/{customerId}</code></td><td>دعوات عميل مستضيف.</td><td><code>customerId</code></td></tr>
-          <tr><td>POST</td><td><code>/api/v1/gyms/{gymId}/extra-services/sell</code></td><td>بيع خدمة إضافية مدفوعة.</td><td><code>customerId, serviceId, amount, currency, notes</code></td></tr>
-          <tr><td>POST</td><td><code>/api/v1/gyms/{gymId}/extra-services/usage</code></td><td>تسجيل استخدام خدمة مرفقة.</td><td><code>customerId, serviceId, subscriptionId, notes</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/extra-services/transactions</code></td><td>كل معاملات الخدمات الإضافية.</td><td><code>page, size</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/extra-services/transactions/customer/{customerId}</code></td><td>معاملات عميل.</td><td><code>customerId</code></td></tr>
-          <tr><td>GET</td><td><code>/api/v1/gyms/{gymId}/extra-services/usages/customer/{customerId}</code></td><td>استخدامات الخدمات المرفقة لعميل.</td><td><code>customerId</code></td></tr>
+          <tr><td><code>SERVICE_PROVIDER</code></td><td>صاحب الجيم. عند إنشاء الجيم يصبح هذا المستخدم هو المالك.</td></tr>
+          <tr><td><code>EMPLOYEE</code></td><td>موظف داخل جيم. يجب أن يكون Active ولديه الصلاحية المطلوبة.</td></tr>
+          <tr><td><code>CUSTOMER</code></td><td>عميل أو عضو يستخدم تطبيق العميل.</td></tr>
         </tbody>
       </table>
+      <p>الصلاحيات المتاحة للموظفين: <code>SELL_SUBSCRIPTION</code>, <code>ACTIVATE_SUBSCRIPTION</code>, <code>REGISTER_ATTENDANCE</code>, <code>REGISTER_INVITATION</code>, <code>SELL_EXTRA_SERVICE</code>, <code>MANAGE_SERVICES</code>, <code>MANAGE_PACKAGES</code>, <code>MANAGE_CUSTOMERS</code>, <code>MANAGE_EMPLOYEES</code>, <code>FREEZE_SUBSCRIPTION</code>, <code>MANUAL_ADJUSTMENT</code>, <code>CLOSE_CASH_DAY</code>, <code>ADMIN</code>. المالك يتجاوز فحص صلاحيات الموظف، وصلاحية <code>ADMIN</code> تعطي كل الصلاحيات.</p>
 
-      <h2>8. أمثلة Requests و Responses</h2>
-      <h3>Register</h3>
-      <pre><code>POST /api/v1/auth/register
-{
-  "firstName": "Amr",
+      <h2>4. تدفق التطبيق</h2>
+      <ol>
+        <li>تسجيل مستخدم بدور <code>SERVICE_PROVIDER</code>.</li>
+        <li>تسجيل الدخول وحفظ <code>accessToken</code>.</li>
+        <li>إنشاء جيم من <code>POST /api/v1/gyms</code>.</li>
+        <li>ضبط إعدادات الدفع والتفعيل وطرق الدخول.</li>
+        <li>إضافة موظفين وصلاحيات.</li>
+        <li>إنشاء خدمات ثم إنشاء باقات تعتمد على هذه الخدمات.</li>
+        <li>إنشاء عملاء أو قبول طلب ربط عميل من تطبيق العميل.</li>
+        <li>بيع اشتراك وتسجيل أول دفعة.</li>
+        <li>إذا تم دفع كامل المبلغ وسياسة التفعيل <code>IMMEDIATE</code> يتم التفعيل تلقائيا. إذا كانت <code>MANUAL</code> يتم التفعيل من API التفعيل.</li>
+        <li>تسجيل حضور العضو باستخدام كود العضوية أو رقم العميل.</li>
+        <li>استخدام الدعوات، بيع خدمات إضافية، تسجيل استخدام خدمة داخل الباقة، تجميد الاشتراك، وإضافة أعضاء فرعيين للباقات العائلية.</li>
+      </ol>
+
+      <h2>5. تشغيل المشروع</h2>
+      <ol>
+        <li>انسخ <code>.env.example</code> إلى <code>.env</code>.</li>
+        <li>شغل المشروع:</li>
+      </ol>
+      <pre><code>docker compose up --build</code></pre>
+      <p>الرابط الافتراضي: <code>http://localhost:8085</code></p>
+      <pre><code>Health:      http://localhost:8085/api/v1/health
+Swagger UI:  http://localhost:8085/swagger-ui.html
+OpenAPI:     http://localhost:8085/v3/api-docs</code></pre>
+      <p>تشغيل الاختبارات:</p>
+      <pre><code>mvn test</code></pre>
+
+      <h2>6. متغيرات الاختبار</h2>
+      <pre><code>{{baseUrl}} = http://localhost:8085
+{{accessToken}} = التوكن الراجع من login/register
+{{gymId}} = 1
+{{employeeId}} = 1
+{{serviceId}} = 1
+{{packageId}} = 1
+{{customerId}} = 1
+{{subscriptionId}} = 1
+{{freezeId}} = 1
+{{requestId}} = 1
+{{memberCode}} = GH-0001</code></pre>
+
+      <h2>7. أمثلة مهمة للاختبار</h2>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/auth/register</h3>
+        <p>إنشاء حساب جديد.</p>
+        <pre><code>{
+  "firstName": "Omar",
   "lastName": "Hassan",
-  "email": "owner@example.com",
-  "password": "Secret123",
+  "email": "owner@gymhub.test",
+  "phone": "+201000000001",
+  "password": "password123",
   "role": "SERVICE_PROVIDER"
 }</code></pre>
-      <pre><code>{
-  "accessToken": "eyJ...",
-  "refreshToken": "eyJ...",
+        <pre><code>{
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9...",
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9...",
   "tokenType": "Bearer",
   "userId": 1,
-  "roles": ["SERVICE_PROVIDER"]
+  "email": "owner@gymhub.test",
+  "fullName": "Omar Hassan",
+  "roles": ["SERVICE_PROVIDER"],
+  "activeContext": "SERVICE_PROVIDER"
 }</code></pre>
-
-      <h3>Create Gym</h3>
-      <pre><code>POST /api/v1/gyms
-{
-  "name": "Downtown Gym",
+      </div>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms</h3>
+        <p>إنشاء جيم.</p>
+        <pre><code>{
+  "name": "Power House Gym",
+  "description": "Premium fitness club",
+  "address": "90 Nile Street",
   "city": "Cairo",
-  "country": "Egypt"
+  "country": "Egypt",
+  "phone": "+20200000000",
+  "email": "info@powerhouse.test",
+  "website": "https://powerhouse.test"
 }</code></pre>
-      <pre><code>{ "id": 1, "name": "Downtown Gym", "status": "ACTIVE", "ownerId": 1 }</code></pre>
-
-      <h3>Create Service</h3>
-      <pre><code>POST /api/v1/gyms/1/services
-{
+        <pre><code>{ "id": 1, "name": "Power House Gym", "status": "ACTIVE", "ownerId": 1 }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/services</h3>
+        <p>إنشاء خدمة.</p>
+        <pre><code>{
   "name": "Sauna",
+  "description": "30 minute sauna access",
   "canBeIncludedInPackage": true,
   "canBeSoldIndependently": true
 }</code></pre>
-      <pre><code>{ "id": 1, "name": "Sauna", "status": "ACTIVE" }</code></pre>
-
-      <h3>Create Package</h3>
-      <pre><code>POST /api/v1/gyms/1/packages
-{
-  "name": "Monthly Plus",
+        <pre><code>{ "id": 1, "gymId": 1, "name": "Sauna", "status": "ACTIVE" }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/packages</h3>
+        <p>إنشاء باقة.</p>
+        <pre><code>{
+  "name": "Monthly Gold",
   "durationDays": 30,
+  "bonusDays": 2,
   "price": 1200,
   "currency": "EGP",
+  "freezeAllowanceDays": 5,
   "maxInvitations": 2,
+  "allowGuestRepeatVisit": false,
   "allowPartialPayment": true,
+  "isFamilyPackage": false,
+  "maxSubUsers": 0,
   "includedServiceIds": [1]
 }</code></pre>
-      <pre><code>{ "id": 1, "name": "Monthly Plus", "price": 1200, "active": true }</code></pre>
-
-      <h3>Create Customer</h3>
-      <pre><code>POST /api/v1/gyms/1/customers
-{
-  "firstName": "Mona",
-  "lastName": "Khaled",
-  "email": "mona@example.com",
-  "password": "Secret123",
-  "memberCode": "CARD-1001"
+        <pre><code>{ "id": 1, "name": "Monthly Gold", "price": 1200, "active": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/customers</h3>
+        <p>إنشاء عميل.</p>
+        <pre><code>{
+  "phone": "+201000000003",
+  "firstName": "Sara",
+  "lastName": "Mahmoud",
+  "email": "sara@gymhub.test",
+  "password": "password123",
+  "memberCode": "GH-0001"
 }</code></pre>
-      <pre><code>{ "id": 1, "fullName": "Mona Khaled", "memberCode": "CARD-1001", "active": true }</code></pre>
-
-      <h3>Sell Subscription</h3>
-      <pre><code>POST /api/v1/gyms/1/subscriptions/sell
-{
+        <pre><code>{ "id": 1, "fullName": "Sara Mahmoud", "memberCode": "GH-0001", "active": true }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/subscriptions/sell</h3>
+        <p>بيع اشتراك.</p>
+        <pre><code>{
   "customerId": 1,
   "packageId": 1,
-  "initialPaymentAmount": 1200
+  "initialPaymentAmount": 1200,
+  "deferredStartDate": null
 }</code></pre>
-      <pre><code>{ "id": 1, "status": "ACTIVE", "paidAmount": 1200, "remainingAmount": 0 }</code></pre>
-
-      <h3>Record Attendance</h3>
-      <pre><code>POST /api/v1/gyms/1/attendance
-{
-  "memberCode": "CARD-1001",
+        <pre><code>{ "id": 1, "customerName": "Sara Mahmoud", "paidAmount": 1200, "remainingAmount": 0, "status": "ACTIVE" }</code></pre>
+      </div>
+      <div class="endpoint">
+        <h3><span class="method post">POST</span>/api/v1/gyms/{{gymId}}/attendance</h3>
+        <p>تسجيل حضور.</p>
+        <pre><code>{
+  "memberCode": "GH-0001",
+  "customerId": null,
   "entranceMethod": "BARCODE",
   "type": "MEMBER_VISIT",
   "subscriptionId": 1
 }</code></pre>
-      <pre><code>{ "customerId": 1, "customerName": "Mona Khaled", "subscriptionStatus": "ACTIVE" }</code></pre>
+        <pre><code>{ "customerId": 1, "customerName": "Sara Mahmoud", "subscriptionStatus": "ACTIVE", "visitedAt": "2026-05-18T11:00:00" }</code></pre>
+      </div>
+
+      <h2>8. قائمة كل الـ APIs</h2>
+      <p>القسم الإنجليزي يحتوي أمثلة Request/Response كاملة لكل Endpoint. هذه قائمة مختصرة لكل المسارات:</p>
+      <table>
+        <thead><tr><th>Method</th><th>Path</th><th>الاستخدام</th></tr></thead>
+        <tbody>
+          <tr><td>GET</td><td><code>/api/v1/health</code></td><td>فحص تشغيل التطبيق.</td></tr>
+          <tr><td>POST</td><td><code>/api/v1/auth/register</code></td><td>تسجيل حساب.</td></tr>
+          <tr><td>POST</td><td><code>/api/v1/auth/login</code></td><td>تسجيل دخول.</td></tr>
+          <tr><td>POST</td><td><code>/api/v1/auth/add-role?role=CUSTOMER</code></td><td>إضافة دور للحساب.</td></tr>
+          <tr><td>GET</td><td><code>/api/v1/auth/me</code></td><td>بيانات المستخدم الحالي.</td></tr>
+          <tr><td>POST, GET, PUT, PATCH</td><td><code>/api/v1/gyms...</code></td><td>إدارة الجيم والإعدادات وحالة الجيم وطلبات ربط العملاء.</td></tr>
+          <tr><td>POST, GET, PUT, PATCH</td><td><code>/api/v1/gyms/{gymId}/employees...</code></td><td>إدارة الموظفين والصلاحيات.</td></tr>
+          <tr><td>POST, GET, PUT, PATCH</td><td><code>/api/v1/gyms/{gymId}/services...</code></td><td>إدارة الخدمات.</td></tr>
+          <tr><td>POST, GET, PUT, PATCH</td><td><code>/api/v1/gyms/{gymId}/packages...</code></td><td>إدارة الباقات.</td></tr>
+          <tr><td>POST, GET, PATCH</td><td><code>/api/v1/gyms/{gymId}/customers...</code></td><td>إدارة العملاء والبحث بالكود.</td></tr>
+          <tr><td>POST, GET</td><td><code>/api/v1/gyms/{gymId}/subscriptions...</code></td><td>بيع الاشتراك، دفع، تفعيل، واستعلام.</td></tr>
+          <tr><td>POST, GET</td><td><code>/api/v1/gyms/{gymId}/attendance...</code></td><td>تسجيل وعرض الحضور.</td></tr>
+          <tr><td>POST, GET</td><td><code>/api/v1/gyms/{gymId}/invitations...</code></td><td>استخدام وعرض الدعوات.</td></tr>
+          <tr><td>POST, GET</td><td><code>/api/v1/gyms/{gymId}/extra-services...</code></td><td>الخدمات الإضافية المدفوعة أو الاستخدام المضمن في الباقة.</td></tr>
+          <tr><td>POST, GET, PATCH</td><td><code>/api/v1/gyms/{gymId}/subscriptions/{subscriptionId}/freezes...</code></td><td>تجميد الاشتراك وإلغاء التجميد.</td></tr>
+          <tr><td>POST, GET, DELETE</td><td><code>/api/v1/gyms/{gymId}/subscriptions/{subscriptionId}/sub-users...</code></td><td>أعضاء الباقة العائلية.</td></tr>
+          <tr><td>GET, POST</td><td><code>/api/v1/customer...</code></td><td>واجهات تطبيق العميل الذاتية.</td></tr>
+        </tbody>
+      </table>
+
+      <h2>9. سيناريو اختبار سريع</h2>
+      <ol>
+        <li>سجل Owner وخذ التوكن.</li>
+        <li>أنشئ Gym وخذ <code>gymId</code>.</li>
+        <li>أنشئ Service وخذ <code>serviceId</code>.</li>
+        <li>أنشئ Package وخذ <code>packageId</code>.</li>
+        <li>أنشئ Customer وخذ <code>customerId</code>.</li>
+        <li>بع Subscription وخذ <code>subscriptionId</code>.</li>
+        <li>سجل Attendance باستخدام <code>memberCode</code>.</li>
+        <li>اختبر Invitations و Extra Services و Freeze حسب الحاجة.</li>
+      </ol>
     </section>
 
     <footer class="footer">
-      <p>GymHub Backend User Guide - updated for the current Spring Boot API.</p>
+      GymHub API and User Guide - Updated for the current backend source.
     </footer>
   </main>
 
   <script>
     function switchLanguage(lang, button) {
-      const en = document.getElementById("en-content");
-      const ar = document.getElementById("ar-content");
-      const buttons = document.querySelectorAll(".lang-btn");
-      if (lang === "ar") {
-        en.classList.add("hidden");
-        ar.classList.remove("hidden");
-        document.documentElement.lang = "ar";
-        document.documentElement.dir = "rtl";
+      var en = document.getElementById('en-content');
+      var ar = document.getElementById('ar-content');
+      var buttons = document.querySelectorAll('.lang-btn');
+      buttons.forEach(function (btn) { btn.classList.remove('active'); });
+      button.classList.add('active');
+      if (lang === 'ar') {
+        en.classList.add('hidden');
+        ar.classList.remove('hidden');
+        document.documentElement.lang = 'ar';
+        document.documentElement.dir = 'rtl';
       } else {
-        ar.classList.add("hidden");
-        en.classList.remove("hidden");
-        document.documentElement.lang = "en";
-        document.documentElement.dir = "ltr";
+        ar.classList.add('hidden');
+        en.classList.remove('hidden');
+        document.documentElement.lang = 'en';
+        document.documentElement.dir = 'ltr';
       }
-      buttons.forEach((btn) => btn.classList.remove("active"));
-      button.classList.add("active");
-      localStorage.setItem("gymhubGuideLanguage", lang);
     }
-
-    window.addEventListener("load", () => {
-      const preferred = localStorage.getItem("gymhubGuideLanguage") || "en";
-      const button = preferred === "ar" ? document.querySelectorAll(".lang-btn")[1] : document.querySelectorAll(".lang-btn")[0];
-      switchLanguage(preferred, button);
-    });
   </script>
 </body>
 </html>
