@@ -44,7 +44,22 @@ public class SecurityConfig {
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-ui.html",
-            "/actuator/health"
+            "/actuator/health",
+            // Public provider-invitation token lookup (no auth required — token is the secret)
+            "/api/v1/public/provider-invitations/**",
+            // Public workout share links
+            "/api/v1/public/workout-shares/**",
+            // Exercise library browse (read-only, no PII)
+            "/api/v1/exercises",
+            "/api/v1/exercises/**",
+            "/api/v1/training-templates",
+            "/api/v1/training-templates/**",
+            // Equipment QR scan endpoint
+            "/api/v1/equipment/qr/**",
+            // Public provider reviews and rating summaries
+            "/api/v1/providers/*/reviews",
+            "/api/v1/providers/*/rating-summary",
+            "/api/v1/specialists/*/profile"
     };
 
     @Bean

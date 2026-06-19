@@ -2,8 +2,14 @@ package com.gymhub.domain.subscription;
 
 /**
  * Payment methods accepted by the platform.
- * Phase 1 supports CASH only. Future phases may add CARD, BANK_TRANSFER, etc.
+ * CASH is the only method with a real implementation.
+ * Remaining values are structural — no gateway is integrated.
  */
 public enum PaymentMethod {
-    CASH
+    CASH,
+    ONLINE_PAYMENT_READY,
+    EXTERNAL_PAYMENT,
+    PAYMENT_AT_GYM,
+    PAYMENT_TO_SPECIALIST,
+    WALLET_FUTURE
 }

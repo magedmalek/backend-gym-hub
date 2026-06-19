@@ -1,0 +1,3127 @@
+{
+  "info": {
+    "_postman_id": "3cd77ad5-013e-49ab-bcb7-d979ce891129",
+    "name": "GymHubCollection",
+    "description": "Complete API collection for GymHub backend (Spring Boot, port 8085). Base URL: http://localhost:8085. After login/register, the JWT is auto-saved to {{token}} and used as Bearer auth across all requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-13T14:04:33.000Z",
+    "updatedAt": "2026-06-13T14:04:33.000Z",
+    "lastUpdatedBy": "50656199",
+    "uid": "50656199-3cd77ad5-013e-49ab-bcb7-d979ce891129"
+  },
+  "item": [
+    {
+      "name": "\ud83d\udd10 Auth",
+      "item": [
+        {
+          "name": "Register",
+          "id": "e5b1ee50-a4d2-4335-9028-229e282b4f2d",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Alaa\",\n  \"lastName\": \"Sakr\",\n  \"email\": \"alaa@gymhub.com\",\n  \"phone\": \"01012345678\",\n  \"password\": \"password123\",\n  \"role\": \"SERVICE_PROVIDER\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-e5b1ee50-a4d2-4335-9028-229e282b4f2d"
+        },
+        {
+          "name": "Login",
+          "id": "4b1b55a4-5099-49e8-a303-a12f234c982a",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"loginIdentifier\": \"alaa@gymhub.com\",\n  \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-4b1b55a4-5099-49e8-a303-a12f234c982a"
+        },
+        {
+          "name": "Add Role",
+          "id": "7bd97778-faab-46bb-864c-e63323f8e2dc",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/add-role?role=CUSTOMER",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "add-role"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "CUSTOMER"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-7bd97778-faab-46bb-864c-e63323f8e2dc"
+        },
+        {
+          "name": "Get My Profile",
+          "id": "1dc40cdd-2879-46d8-9a34-6a672269f093",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-1dc40cdd-2879-46d8-9a34-6a672269f093"
+        }
+      ],
+      "id": "32c34968-398b-478b-a562-056aec5a103a",
+      "description": "Register, login, add role, get current user profile",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-32c34968-398b-478b-a562-056aec5a103a"
+    },
+    {
+      "name": "\u2764\ufe0f Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "id": "5f55eae3-5ed8-4c3b-8076-278fd275cda3",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "health"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-5f55eae3-5ed8-4c3b-8076-278fd275cda3"
+        }
+      ],
+      "id": "a9b03d00-b812-4049-bc06-bcf458c44c44",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-a9b03d00-b812-4049-bc06-bcf458c44c44"
+    },
+    {
+      "name": "\ud83c\udfcb\ufe0f Gym Management",
+      "item": [
+        {
+          "name": "Create Gym",
+          "id": "25fa2e8c-901f-4704-b570-56d503c5d199",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"PowerFit Gym\",\n  \"description\": \"Premium fitness center with modern equipment\",\n  \"address\": \"123 Fitness Street\",\n  \"city\": \"Cairo\",\n  \"country\": \"Egypt\",\n  \"phone\": \"0221234567\",\n  \"email\": \"info@powerfit.com\",\n  \"website\": \"https://powerfit.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-25fa2e8c-901f-4704-b570-56d503c5d199"
+        },
+        {
+          "name": "Get My Gyms",
+          "id": "2e088cfb-8514-46b7-bd98-b84bfb2b7a8e",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/my",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "my"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-2e088cfb-8514-46b7-bd98-b84bfb2b7a8e"
+        },
+        {
+          "name": "Get Gym by ID",
+          "id": "38a95add-a9fd-4879-b9bd-57c6c0e520a2",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-38a95add-a9fd-4879-b9bd-57c6c0e520a2"
+        },
+        {
+          "name": "Update Gym",
+          "id": "bf0f91be-7c90-4148-9ff6-2a18def5ad01",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"PowerFit Gym - Updated\",\n  \"description\": \"Cairo's best fitness center\",\n  \"address\": \"456 Gym Avenue\",\n  \"city\": \"Cairo\",\n  \"country\": \"Egypt\",\n  \"phone\": \"0221234567\",\n  \"email\": \"info@powerfit.com\",\n  \"website\": \"https://powerfit.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-bf0f91be-7c90-4148-9ff6-2a18def5ad01"
+        },
+        {
+          "name": "Update Gym Settings",
+          "id": "3ccceff3-a5eb-4669-bf24-ae63b77c4044",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"allowPartialPayment\": true,\n  \"activationPolicy\": \"IMMEDIATE\",\n  \"allowActivationWithRemainingBalance\": false,\n  \"enabledEntranceMethods\": [\"BARCODE\", \"DYNAMIC_QR\", \"PRINTED_QR\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "settings"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-3ccceff3-a5eb-4669-bf24-ae63b77c4044"
+        },
+        {
+          "name": "Update Gym Status",
+          "id": "f6998cdf-a4ac-499a-bcad-af7fb88d5432",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/status?status=ACTIVE",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "ACTIVE"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-f6998cdf-a4ac-499a-bcad-af7fb88d5432"
+        },
+        {
+          "name": "Get Pending Link Requests",
+          "id": "5a190db6-abdd-4552-b17f-8959f1dbe6d4",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/link-requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "link-requests"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-5a190db6-abdd-4552-b17f-8959f1dbe6d4"
+        },
+        {
+          "name": "Approve Link Request",
+          "id": "820c736e-0829-48da-a2f7-fa0364aaa0dd",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/link-requests/{{requestId}}/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "link-requests",
+                "{{requestId}}",
+                "approve"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-820c736e-0829-48da-a2f7-fa0364aaa0dd"
+        },
+        {
+          "name": "Reject Link Request",
+          "id": "3e1b907b-a6f6-47b6-b268-5132ccb3205d",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/link-requests/{{requestId}}/reject",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "link-requests",
+                "{{requestId}}",
+                "reject"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-3e1b907b-a6f6-47b6-b268-5132ccb3205d"
+        }
+      ],
+      "id": "25d8d0a8-8c04-43df-938e-a11d741e99a7",
+      "description": "Create and manage gym entities",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-25d8d0a8-8c04-43df-938e-a11d741e99a7"
+    },
+    {
+      "name": "\ud83d\udc64 Customer Management",
+      "item": [
+        {
+          "name": "Create Customer",
+          "id": "92bfb0c8-c388-451b-b184-cc77307d0637",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Mohamed\",\n  \"lastName\": \"Ali\",\n  \"email\": \"mohamed.ali@example.com\",\n  \"phone\": \"01098765432\",\n  \"password\": \"member123\",\n  \"memberCode\": \"GH-001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/customers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "customers"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-92bfb0c8-c388-451b-b184-cc77307d0637"
+        },
+        {
+          "name": "List Customers",
+          "id": "30503a43-3aef-4faf-a9db-1e0caad7826a",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/customers?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-30503a43-3aef-4faf-a9db-1e0caad7826a"
+        },
+        {
+          "name": "Search Customers",
+          "id": "3c81192a-8c49-4e34-91f6-f6bb417a7a29",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/customers/search?q=Mohamed&page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "customers",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "Mohamed"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-3c81192a-8c49-4e34-91f6-f6bb417a7a29"
+        },
+        {
+          "name": "Get Customer by ID",
+          "id": "e243aca4-7c67-458b-b441-4dc1c44f8958",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/customers/{{customerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-e243aca4-7c67-458b-b441-4dc1c44f8958"
+        },
+        {
+          "name": "Get Customer by Member Code",
+          "id": "6b4eba5f-1800-4a7b-9c0e-a8fa12c4456b",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/customers/by-code/{{memberCode}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "customers",
+                "by-code",
+                "{{memberCode}}"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-6b4eba5f-1800-4a7b-9c0e-a8fa12c4456b"
+        },
+        {
+          "name": "Toggle Customer Status",
+          "id": "fae3348f-c9a1-488c-b74e-25361b2aad77",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/customers/{{customerId}}/status?active=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "customers",
+                "{{customerId}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "active",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-fae3348f-c9a1-488c-b74e-25361b2aad77"
+        }
+      ],
+      "id": "d8641ce2-575f-4571-a1f8-80c6e97ec07d",
+      "description": "Dashboard: register and manage gym members",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-d8641ce2-575f-4571-a1f8-80c6e97ec07d"
+    },
+    {
+      "name": "\ud83d\udc68\u200d\ud83d\udcbc Employee Management",
+      "item": [
+        {
+          "name": "Create Employee",
+          "id": "12a61145-08ac-4545-a602-fe09360720cf",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userEmail\": \"employee@gymhub.com\",\n  \"jobTitle\": \"Receptionist\",\n  \"salary\": 5000.00,\n  \"salaryCurrency\": \"EGP\",\n  \"notes\": \"Morning shift employee\",\n  \"permissions\": [\"REGISTER_ATTENDANCE\", \"SELL_SUBSCRIPTION\", \"MANAGE_CUSTOMERS\"],\n  \"firstName\": \"Sara\",\n  \"lastName\": \"Ahmed\",\n  \"phone\": \"01111234567\",\n  \"password\": \"emp123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "employees"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-12a61145-08ac-4545-a602-fe09360720cf"
+        },
+        {
+          "name": "List Employees",
+          "id": "409ef565-5763-49fa-8d0e-7750c29cf869",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/employees?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-409ef565-5763-49fa-8d0e-7750c29cf869"
+        },
+        {
+          "name": "Get Employee by ID",
+          "id": "28cef13d-00aa-48dc-b232-98e5f334a587",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/employees/{{employeeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "employees",
+                "{{employeeId}}"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-28cef13d-00aa-48dc-b232-98e5f334a587"
+        },
+        {
+          "name": "Update Employee Permissions",
+          "id": "1d932607-c9db-4cb4-aef0-bd6c7c2eece9",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\"REGISTER_ATTENDANCE\", \"SELL_SUBSCRIPTION\", \"MANAGE_CUSTOMERS\", \"FREEZE_SUBSCRIPTION\"]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/employees/{{employeeId}}/permissions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "employees",
+                "{{employeeId}}",
+                "permissions"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-1d932607-c9db-4cb4-aef0-bd6c7c2eece9"
+        },
+        {
+          "name": "Toggle Employee Status",
+          "id": "e7f2bf10-2aea-4fe0-b3db-4d96d297fac8",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/employees/{{employeeId}}/status?active=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "employees",
+                "{{employeeId}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "active",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-e7f2bf10-2aea-4fe0-b3db-4d96d297fac8"
+        }
+      ],
+      "id": "21be0f07-8fdf-42a5-80a7-053e72da5e66",
+      "description": "Add and manage gym employees and permissions",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-21be0f07-8fdf-42a5-80a7-053e72da5e66"
+    },
+    {
+      "name": "\ud83d\udece\ufe0f Services",
+      "item": [
+        {
+          "name": "Create Service",
+          "id": "436c0205-54e4-42de-a798-8b055ffc47f0",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Personal Training Session\",\n  \"description\": \"One-on-one personal training with a certified trainer\",\n  \"canBeIncludedInPackage\": true,\n  \"canBeSoldIndependently\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/services",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "services"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-436c0205-54e4-42de-a798-8b055ffc47f0"
+        },
+        {
+          "name": "List Services",
+          "id": "6b8cb862-83be-4d25-8fa0-462f5290ae84",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/services",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "services"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-6b8cb862-83be-4d25-8fa0-462f5290ae84"
+        },
+        {
+          "name": "Get Service by ID",
+          "id": "a2891c90-dc81-47cc-9660-f6ff1c98b151",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/services/{{serviceId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "services",
+                "{{serviceId}}"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-a2891c90-dc81-47cc-9660-f6ff1c98b151"
+        },
+        {
+          "name": "Update Service",
+          "id": "d57c734e-33b8-4fd9-9d98-7f43fc428386",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Personal Training Session - Updated\",\n  \"description\": \"One-on-one training, 60 min\",\n  \"canBeIncludedInPackage\": true,\n  \"canBeSoldIndependently\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/services/{{serviceId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "services",
+                "{{serviceId}}"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-d57c734e-33b8-4fd9-9d98-7f43fc428386"
+        },
+        {
+          "name": "Toggle Service Status",
+          "id": "43966484-27d7-4236-992b-199d4f612f32",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/services/{{serviceId}}/status?active=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "services",
+                "{{serviceId}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "active",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-43966484-27d7-4236-992b-199d4f612f32"
+        }
+      ],
+      "id": "972af57c-c158-485f-b0b5-2f5267f01b6d",
+      "description": "Gym services that can be included in packages or sold independently",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-972af57c-c158-485f-b0b5-2f5267f01b6d"
+    },
+    {
+      "name": "\ud83d\udce6 Packages",
+      "item": [
+        {
+          "name": "Create Package",
+          "id": "29c2cb67-4b28-4f74-a20d-1041e43f4dda",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Monthly Premium\",\n  \"description\": \"Full access for 30 days\",\n  \"durationDays\": 30,\n  \"bonusDays\": 0,\n  \"price\": 500.00,\n  \"currency\": \"EGP\",\n  \"freezeAllowanceDays\": 7,\n  \"maxInvitations\": 2,\n  \"allowGuestRepeatVisit\": false,\n  \"allowPartialPayment\": true,\n  \"isFamilyPackage\": false,\n  \"maxSubUsers\": 0,\n  \"includedServiceIds\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/packages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "packages"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-29c2cb67-4b28-4f74-a20d-1041e43f4dda"
+        },
+        {
+          "name": "List Packages",
+          "id": "73dc1da8-1d49-426d-955d-390c9f39e8a4",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/packages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "packages"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-73dc1da8-1d49-426d-955d-390c9f39e8a4"
+        },
+        {
+          "name": "Get Package by ID",
+          "id": "260210b4-5a75-4d66-ba31-9f0b87dcb9ae",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/packages/{{packageId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "packages",
+                "{{packageId}}"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-260210b4-5a75-4d66-ba31-9f0b87dcb9ae"
+        },
+        {
+          "name": "Update Package",
+          "id": "34599abe-dd66-4918-a601-6fc278ea8347",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Monthly Premium - Updated\",\n  \"description\": \"Full access 30 days + 2 PT sessions\",\n  \"durationDays\": 30,\n  \"bonusDays\": 2,\n  \"price\": 550.00,\n  \"currency\": \"EGP\",\n  \"freezeAllowanceDays\": 7,\n  \"maxInvitations\": 3,\n  \"allowGuestRepeatVisit\": false,\n  \"allowPartialPayment\": true,\n  \"isFamilyPackage\": false,\n  \"maxSubUsers\": 0,\n  \"includedServiceIds\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/packages/{{packageId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "packages",
+                "{{packageId}}"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-34599abe-dd66-4918-a601-6fc278ea8347"
+        },
+        {
+          "name": "Toggle Package Status",
+          "id": "facebfea-294b-40d3-ae66-d6b5b1957ffb",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/packages/{{packageId}}/status?active=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "packages",
+                "{{packageId}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "active",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-facebfea-294b-40d3-ae66-d6b5b1957ffb"
+        }
+      ],
+      "id": "c82fd62e-1217-4b68-a890-b0749a0f85b6",
+      "description": "Membership packages with duration, pricing, and included services",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-c82fd62e-1217-4b68-a890-b0749a0f85b6"
+    },
+    {
+      "name": "\ud83d\udcb3 Subscriptions",
+      "item": [
+        {
+          "name": "Sell Subscription",
+          "id": "0c9ca969-9a2f-4583-a8dd-966cde47bf33",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": {{customerId}},\n  \"packageId\": {{packageId}},\n  \"initialPaymentAmount\": 500.00,\n  \"deferredStartDate\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/subscriptions/sell",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "subscriptions",
+                "sell"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-0c9ca969-9a2f-4583-a8dd-966cde47bf33"
+        },
+        {
+          "name": "Add Payment to Subscription",
+          "id": "10ef3c47-6df8-4e45-b449-69f581181c70",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 250.00,\n  \"paymentMethod\": \"CASH\",\n  \"notes\": \"Second instalment\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/payments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "subscriptions",
+                "{{subscriptionId}}",
+                "payments"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-10ef3c47-6df8-4e45-b449-69f581181c70"
+        },
+        {
+          "name": "Activate Subscription",
+          "id": "cd2fef71-0232-4e8d-8c7d-54b85b9286db",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/activate?startDate=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "subscriptions",
+                "{{subscriptionId}}",
+                "activate"
+              ],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-cd2fef71-0232-4e8d-8c7d-54b85b9286db"
+        },
+        {
+          "name": "List Subscriptions (Gym)",
+          "id": "32196dda-9ad1-4ace-b668-e558017082b3",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/subscriptions?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "subscriptions"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-32196dda-9ad1-4ace-b668-e558017082b3"
+        },
+        {
+          "name": "Get Subscription by ID",
+          "id": "ec88455c-b94b-4c8a-abd5-4c433a23f14a",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "subscriptions",
+                "{{subscriptionId}}"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-ec88455c-b94b-4c8a-abd5-4c433a23f14a"
+        },
+        {
+          "name": "Get Subscriptions by Customer",
+          "id": "9831f9b6-7506-451e-8177-cf6d921ca851",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/subscriptions/customer/{{customerId}}?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "subscriptions",
+                "customer",
+                "{{customerId}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-9831f9b6-7506-451e-8177-cf6d921ca851"
+        }
+      ],
+      "id": "7d56c016-ca94-4375-b645-9cea3fd29828",
+      "description": "Sell subscriptions, accept payments, activate",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-7d56c016-ca94-4375-b645-9cea3fd29828"
+    },
+    {
+      "name": "\ud83d\udeaa Attendance",
+      "item": [
+        {
+          "name": "Record Attendance",
+          "id": "5924667f-17ae-4ff2-86b6-99f0dc0dcef6",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberCode\": \"GH-001\",\n  \"customerId\": null,\n  \"entranceMethod\": \"BARCODE\",\n  \"type\": \"MEMBER_VISIT\",\n  \"subscriptionId\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/attendance",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "attendance"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-5924667f-17ae-4ff2-86b6-99f0dc0dcef6"
+        },
+        {
+          "name": "List Gym Attendance",
+          "id": "da5ba0c0-e87b-4162-a201-94013073a46e",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/attendance?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "attendance"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-da5ba0c0-e87b-4162-a201-94013073a46e"
+        },
+        {
+          "name": "Get Customer Attendance",
+          "id": "8270454f-20c7-438f-bb69-c0c9caea23b9",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/attendance/customer/{{customerId}}?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "attendance",
+                "customer",
+                "{{customerId}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-8270454f-20c7-438f-bb69-c0c9caea23b9"
+        }
+      ],
+      "id": "ed6a6e68-9629-4c73-a914-d410c7a40733",
+      "description": "Record member entry via barcode, dynamic QR, or printed QR",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-ed6a6e68-9629-4c73-a914-d410c7a40733"
+    },
+    {
+      "name": "\ud83d\udcb0 Extra Services",
+      "item": [
+        {
+          "name": "Sell Extra Service",
+          "id": "7e8111c4-58a7-4ffb-9116-c58f4f15753c",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": {{customerId}},\n  \"serviceId\": {{serviceId}},\n  \"amount\": 150.00,\n  \"currency\": \"EGP\",\n  \"notes\": \"Personal training session - 1 hour\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/extra-services/sell",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "extra-services",
+                "sell"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-7e8111c4-58a7-4ffb-9116-c58f4f15753c"
+        },
+        {
+          "name": "Record Included Service Usage",
+          "id": "df494713-40ab-4598-847d-4d9b3b274506",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/extra-services/usage?customerId={{customerId}}&serviceId={{serviceId}}&subscriptionId={{subscriptionId}}&notes=Session completed",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "extra-services",
+                "usage"
+              ],
+              "query": [
+                {
+                  "key": "customerId",
+                  "value": "{{customerId}}"
+                },
+                {
+                  "key": "serviceId",
+                  "value": "{{serviceId}}"
+                },
+                {
+                  "key": "subscriptionId",
+                  "value": "{{subscriptionId}}"
+                },
+                {
+                  "key": "notes",
+                  "value": "Session completed"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-df494713-40ab-4598-847d-4d9b3b274506"
+        },
+        {
+          "name": "List Gym Extra Transactions",
+          "id": "b2b8651b-c263-48a9-bf84-fef3243c0fd3",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/extra-services/transactions?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "extra-services",
+                "transactions"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-b2b8651b-c263-48a9-bf84-fef3243c0fd3"
+        },
+        {
+          "name": "Get Customer Extra Transactions",
+          "id": "21a7103f-7848-4256-b14b-34353ec252d6",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/extra-services/transactions/customer/{{customerId}}?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "extra-services",
+                "transactions",
+                "customer",
+                "{{customerId}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-21a7103f-7848-4256-b14b-34353ec252d6"
+        },
+        {
+          "name": "Get Customer Service Usages",
+          "id": "de7941c3-ccab-494d-91a1-c30c995f4ade",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/extra-services/usages/customer/{{customerId}}?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "extra-services",
+                "usages",
+                "customer",
+                "{{customerId}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-de7941c3-ccab-494d-91a1-c30c995f4ade"
+        }
+      ],
+      "id": "f1580b6a-1528-4977-b58a-4b93c709a03f",
+      "description": "Sell paid add-ons and record included service usage",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-f1580b6a-1528-4977-b58a-4b93c709a03f"
+    },
+    {
+      "name": "\ud83c\udf9f\ufe0f Invitations",
+      "item": [
+        {
+          "name": "Use Invitation",
+          "id": "b0b8b8e8-7d34-4787-ba8a-b5ecea19ac99",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hostCustomerId\": {{customerId}},\n  \"subscriptionId\": {{subscriptionId}},\n  \"existingGuestUserId\": null,\n  \"guestFirstName\": \"Ahmed\",\n  \"guestLastName\": \"Hassan\",\n  \"guestEmail\": \"ahmed.guest@example.com\",\n  \"guestPhone\": \"01066667777\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/invitations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "invitations"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-b0b8b8e8-7d34-4787-ba8a-b5ecea19ac99"
+        },
+        {
+          "name": "List Gym Invitations",
+          "id": "e182fc69-f850-4f67-9378-c926bc5f2a66",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/invitations?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "invitations"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-e182fc69-f850-4f67-9378-c926bc5f2a66"
+        },
+        {
+          "name": "Get Invitations by Host Customer",
+          "id": "f9264ae1-1b23-49ac-892b-c430ca63e9e9",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/invitations/customer/{{customerId}}?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "invitations",
+                "customer",
+                "{{customerId}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-f9264ae1-1b23-49ac-892b-c430ca63e9e9"
+        }
+      ],
+      "id": "630b02a9-477c-4699-9415-7b4394e75574",
+      "description": "Guest invitations consumed from a member's subscription quota",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-630b02a9-477c-4699-9415-7b4394e75574"
+    },
+    {
+      "name": "\u2744\ufe0f Freeze",
+      "item": [
+        {
+          "name": "Apply Freeze",
+          "id": "7001f1ff-5521-4c9a-906f-b6037f2c1681",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"startDate\": \"2026-06-20\",\n  \"endDate\": \"2026-06-27\",\n  \"reason\": \"Customer travelling abroad\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/freezes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "subscriptions",
+                "{{subscriptionId}}",
+                "freezes"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-7001f1ff-5521-4c9a-906f-b6037f2c1681"
+        },
+        {
+          "name": "Get Freeze History",
+          "id": "a36478ea-dae6-4550-9fd3-125142ca39e4",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/freezes?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "subscriptions",
+                "{{subscriptionId}}",
+                "freezes"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-a36478ea-dae6-4550-9fd3-125142ca39e4"
+        },
+        {
+          "name": "Cancel Freeze",
+          "id": "b21588c2-9032-4f38-9276-0ff0b91e4d0b",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/freezes/{{freezeId}}/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "subscriptions",
+                "{{subscriptionId}}",
+                "freezes",
+                "{{freezeId}}",
+                "cancel"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-b21588c2-9032-4f38-9276-0ff0b91e4d0b"
+        }
+      ],
+      "id": "7dddbced-320e-4e91-95cf-6695c9972ca3",
+      "description": "Apply and manage subscription freeze periods",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-7dddbced-320e-4e91-95cf-6695c9972ca3"
+    },
+    {
+      "name": "\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67 Family Package",
+      "item": [
+        {
+          "name": "Add Sub-User",
+          "id": "54e6f7ac-e38a-4425-81da-b128eec2bfb9",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subCustomerId\": {{subCustomerId}},\n  \"relationType\": \"Spouse\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/sub-users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "subscriptions",
+                "{{subscriptionId}}",
+                "sub-users"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-54e6f7ac-e38a-4425-81da-b128eec2bfb9"
+        },
+        {
+          "name": "List Sub-Users",
+          "id": "2d985b65-7fa1-42d3-9380-cec3b00b132a",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/sub-users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "subscriptions",
+                "{{subscriptionId}}",
+                "sub-users"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-2d985b65-7fa1-42d3-9380-cec3b00b132a"
+        },
+        {
+          "name": "Remove Sub-User",
+          "id": "e8c0510f-6bc1-4386-adea-c4d5c4ee64d0",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/subscriptions/{{subscriptionId}}/sub-users/{{subCustomerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "subscriptions",
+                "{{subscriptionId}}",
+                "sub-users",
+                "{{subCustomerId}}"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-e8c0510f-6bc1-4386-adea-c4d5c4ee64d0"
+        }
+      ],
+      "id": "25bb860d-98dc-4cf4-8098-d91f7e4025bd",
+      "description": "Sub-users on family package subscriptions",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-25bb860d-98dc-4cf4-8098-d91f7e4025bd"
+    },
+    {
+      "name": "\ud83d\udcf1 Customer App",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "id": "9041ac21-5e3e-474b-a9d0-32ba3f8875ff",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/customer/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customer",
+                "me"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-9041ac21-5e3e-474b-a9d0-32ba3f8875ff"
+        },
+        {
+          "name": "Get My Gyms",
+          "id": "2bde00db-a20a-4d4e-b67e-56bfe9f83b2e",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/customer/gyms",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customer",
+                "gyms"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-2bde00db-a20a-4d4e-b67e-56bfe9f83b2e"
+        },
+        {
+          "name": "Get Gym Details",
+          "id": "05562def-5987-40bd-b057-94478531c656",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/customer/gyms/{{gymId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customer",
+                "gyms",
+                "{{gymId}}"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-05562def-5987-40bd-b057-94478531c656"
+        },
+        {
+          "name": "Request Gym Link",
+          "id": "704fb335-5b7d-4229-ba39-662bff7ed1cd",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/customer/gyms/{{gymId}}/link-request?notes=I want to join this gym",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customer",
+                "gyms",
+                "{{gymId}}",
+                "link-request"
+              ],
+              "query": [
+                {
+                  "key": "notes",
+                  "value": "I want to join this gym"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-704fb335-5b7d-4229-ba39-662bff7ed1cd"
+        },
+        {
+          "name": "Get My Link Requests",
+          "id": "f442bbe9-6690-4d16-8a69-958c98518c13",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/customer/link-requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customer",
+                "link-requests"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-f442bbe9-6690-4d16-8a69-958c98518c13"
+        },
+        {
+          "name": "Get My Subscriptions",
+          "id": "b52d1ccf-d5b0-40a3-bba8-d3dc2c362cfd",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/customer/subscriptions?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customer",
+                "subscriptions"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-b52d1ccf-d5b0-40a3-bba8-d3dc2c362cfd"
+        },
+        {
+          "name": "Get My Subscription by ID",
+          "id": "8cf576e6-da8f-4a6b-9ac1-2933c3849a89",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/customer/subscriptions/{{subscriptionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customer",
+                "subscriptions",
+                "{{subscriptionId}}"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-8cf576e6-da8f-4a6b-9ac1-2933c3849a89"
+        },
+        {
+          "name": "Get My Attendance",
+          "id": "ff6e52d6-c81a-4a75-ac72-48479c1efe51",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/customer/attendance?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customer",
+                "attendance"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-ff6e52d6-c81a-4a75-ac72-48479c1efe51"
+        },
+        {
+          "name": "Get My Invitations",
+          "id": "92868b29-436a-47c1-a4f3-c789ed633941",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/customer/invitations?page=0&size=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customer",
+                "invitations"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-92868b29-436a-47c1-a4f3-c789ed633941"
+        }
+      ],
+      "id": "1c12048a-9f5d-4ecf-8f28-4a407502346a",
+      "description": "Self-service endpoints for the customer mobile app",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-1c12048a-9f5d-4ecf-8f28-4a407502346a"
+    },
+    {
+      "name": "\ud83c\udfaf Specialists",
+      "item": [
+        {
+          "name": "Create Specialist Profile",
+          "id": "ad9fbcba-7c96-4c26-88a4-9c576cb83018",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mainSpecialization\": \"PERSONAL_TRAINER\",\n  \"additionalSpecializations\": [\"NUTRITION_SPECIALIST\"],\n  \"bio\": \"Certified personal trainer with 5+ years of experience in strength & conditioning\",\n  \"experienceYears\": 5,\n  \"profileImageUrl\": \"https://example.com/photo.jpg\",\n  \"coverImageUrl\": null,\n  \"worksIndependently\": true,\n  \"displayName\": \"Coach Alaa\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialists/me/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialists",
+                "me",
+                "profile"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-ad9fbcba-7c96-4c26-88a4-9c576cb83018"
+        },
+        {
+          "name": "Get My Specialist Profile",
+          "id": "43c5f14a-62f0-4c40-a7bd-df8c717ac73c",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialists/me/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialists",
+                "me",
+                "profile"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-43c5f14a-62f0-4c40-a7bd-df8c717ac73c"
+        },
+        {
+          "name": "Update My Specialist Profile",
+          "id": "e19dd08a-6915-4f91-bfac-fe3854e6010f",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mainSpecialization\": \"PERSONAL_TRAINER\",\n  \"additionalSpecializations\": [\"NUTRITION_SPECIALIST\", \"ONLINE_COACH\"],\n  \"bio\": \"Updated bio \u2014 7 years experience, specializing in weight loss and muscle gain\",\n  \"experienceYears\": 7,\n  \"profileImageUrl\": \"https://example.com/new-photo.jpg\",\n  \"coverImageUrl\": null,\n  \"worksIndependently\": true,\n  \"displayName\": \"Coach Alaa Fitness\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialists/me/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialists",
+                "me",
+                "profile"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-e19dd08a-6915-4f91-bfac-fe3854e6010f"
+        },
+        {
+          "name": "Get Public Specialist Profile",
+          "id": "41e221db-397b-43be-8a8a-d7dca43284c2",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialists/{{specialistId}}/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialists",
+                "{{specialistId}}",
+                "profile"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-41e221db-397b-43be-8a8a-d7dca43284c2"
+        },
+        {
+          "name": "Update Service Axes",
+          "id": "47919942-60a9-4d31-9f84-6613902a3da7",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mainAxis\": \"WORKOUT_PLAN\",\n  \"selectedAxes\": [\"WORKOUT_PLAN\", \"NUTRITION\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialists/me/service-axes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialists",
+                "me",
+                "service-axes"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-47919942-60a9-4d31-9f84-6613902a3da7"
+        },
+        {
+          "name": "Get My Service Axes",
+          "id": "483f64e7-0046-490f-bbe6-f406fe987bb3",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialists/me/service-axes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialists",
+                "me",
+                "service-axes"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-483f64e7-0046-490f-bbe6-f406fe987bb3"
+        },
+        {
+          "name": "Update Enabled Tools",
+          "id": "74563e9b-86a4-4367-8409-d751c8a3b089",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tools\": [\n    { \"toolCode\": \"WORKOUT_PLAN_CREATION\", \"enabled\": true },\n    { \"toolCode\": \"WORKOUT_PLAN_EDITING\", \"enabled\": true },\n    { \"toolCode\": \"MEASUREMENTS\", \"enabled\": true },\n    { \"toolCode\": \"PROGRESS_PHOTOS\", \"enabled\": false, \"disableReason\": \"Not using photo tracking currently\" },\n    { \"toolCode\": \"APPOINTMENTS\", \"enabled\": true },\n    { \"toolCode\": \"CLIENT_TIMELINE\", \"enabled\": true }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialists/me/enabled-tools",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialists",
+                "me",
+                "enabled-tools"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-74563e9b-86a4-4367-8409-d751c8a3b089"
+        },
+        {
+          "name": "Get My Enabled Tools",
+          "id": "d083880a-cbe6-4e10-9b15-dd5105ec575b",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialists/me/enabled-tools",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialists",
+                "me",
+                "enabled-tools"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-d083880a-cbe6-4e10-9b15-dd5105ec575b"
+        }
+      ],
+      "id": "c0fa7ca2-b5ca-4049-adbe-67994f15fee9",
+      "description": "Specialist profile, service axes, and tool management",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-c0fa7ca2-b5ca-4049-adbe-67994f15fee9"
+    },
+    {
+      "name": "\ud83e\udd1d Specialist Relationships",
+      "item": [
+        {
+          "name": "Request Relationship (From Gym)",
+          "id": "c543de3b-6f1c-4957-ab52-dc6e58a67480",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"specialistProfileId\": {{specialistId}},\n  \"relationshipType\": \"ENTITY_CONTRACT\",\n  \"proposedStartDate\": \"2026-07-01\",\n  \"paymentOwner\": \"GYM\",\n  \"activationOwner\": \"GYM\",\n  \"serviceOwner\": \"GYM\",\n  \"packageOwner\": \"GYM\",\n  \"canSpecialistSellToGymClients\": true,\n  \"canSpecialistSellToNonGymClients\": false,\n  \"gymPatternPolicy\": \"RECOMMENDED_ONLY\",\n  \"mandatoryPatternsApply\": false,\n  \"recommendedPatternsVisible\": true,\n  \"notes\": \"Interested in a full-time contract starting July\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/specialist-relationships/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "specialist-relationships",
+                "requests"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-c543de3b-6f1c-4957-ab52-dc6e58a67480"
+        },
+        {
+          "name": "List Gym Specialist Relationships",
+          "id": "b610e9ba-8fbd-40f4-ad36-f85d26b1dbe4",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/gyms/{{gymId}}/specialist-relationships",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "gyms",
+                "{{gymId}}",
+                "specialist-relationships"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-b610e9ba-8fbd-40f4-ad36-f85d26b1dbe4"
+        },
+        {
+          "name": "Request Relationship (From Specialist)",
+          "id": "19e576f1-66f5-44d9-86b6-ed83de7324fc",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gymId\": {{gymId}},\n  \"relationshipType\": \"ENTITY_CONTRACT\",\n  \"proposedStartDate\": \"2026-07-01\",\n  \"notes\": \"Interested in working with your gym\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialists/me/gym-relationships/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialists",
+                "me",
+                "gym-relationships",
+                "requests"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-19e576f1-66f5-44d9-86b6-ed83de7324fc"
+        },
+        {
+          "name": "List My Gym Relationships (Specialist)",
+          "id": "546d5448-dfe3-4fa8-bce5-5a172b82ea41",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialists/me/gym-relationships",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialists",
+                "me",
+                "gym-relationships"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-546d5448-dfe3-4fa8-bce5-5a172b82ea41"
+        },
+        {
+          "name": "Accept Relationship",
+          "id": "5e0bb9c6-eeb9-4798-985d-1668d1a428ca",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialist-relationships/{{relationshipId}}/accept",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialist-relationships",
+                "{{relationshipId}}",
+                "accept"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-5e0bb9c6-eeb9-4798-985d-1668d1a428ca"
+        },
+        {
+          "name": "Reject Relationship",
+          "id": "a55eb5d5-3ead-4a37-b101-f60ef0c04f2b",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialist-relationships/{{relationshipId}}/reject",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialist-relationships",
+                "{{relationshipId}}",
+                "reject"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-a55eb5d5-3ead-4a37-b101-f60ef0c04f2b"
+        },
+        {
+          "name": "Suspend Relationship",
+          "id": "773459b8-2467-42cd-a1eb-101226111394",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialist-relationships/{{relationshipId}}/suspend",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialist-relationships",
+                "{{relationshipId}}",
+                "suspend"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-773459b8-2467-42cd-a1eb-101226111394"
+        },
+        {
+          "name": "Terminate Relationship",
+          "id": "69ba05a2-f9fa-43e3-b3e1-734164ab6ea2",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialist-relationships/{{relationshipId}}/terminate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialist-relationships",
+                "{{relationshipId}}",
+                "terminate"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-69ba05a2-f9fa-43e3-b3e1-734164ab6ea2"
+        },
+        {
+          "name": "Update Relationship Policy",
+          "id": "9d97da6e-e782-4aec-a29a-578e7651f1f9",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentOwner\": \"GYM\",\n  \"activationOwner\": \"GYM\",\n  \"serviceOwner\": \"SPECIALIST\",\n  \"packageOwner\": \"GYM\",\n  \"canSpecialistSellToGymClients\": true,\n  \"canSpecialistSellToNonGymClients\": true,\n  \"gymPatternPolicy\": \"MANDATORY_APPLIES\",\n  \"mandatoryPatternsApply\": true,\n  \"recommendedPatternsVisible\": true,\n  \"notes\": \"Updated terms after negotiation\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/specialist-relationships/{{relationshipId}}/policy",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "specialist-relationships",
+                "{{relationshipId}}",
+                "policy"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-9d97da6e-e782-4aec-a29a-578e7651f1f9"
+        }
+      ],
+      "id": "0a5ec044-001f-417d-9b47-99c15cf7ca97",
+      "description": "Gym \u2194 Specialist relationship contracts \u2014 initiated from either side",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-0a5ec044-001f-417d-9b47-99c15cf7ca97"
+    },
+    {
+      "name": "\ud83c\udfe2 Providers",
+      "item": [
+        {
+          "name": "Get My Provider Profile",
+          "id": "8a885407-106f-4188-83d9-76171b86bdd6",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/providers/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "providers",
+                "me"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-8a885407-106f-4188-83d9-76171b86bdd6"
+        },
+        {
+          "name": "Update My Provider Profile",
+          "id": "75931d43-1c6c-4bc2-9585-362b15895cf4",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayName\": \"PowerFit Organization\",\n  \"phone\": \"0221234567\",\n  \"email\": \"provider@powerfit.com\",\n  \"logoUrl\": \"https://example.com/logo.png\",\n  \"coverImageUrl\": \"https://example.com/cover.jpg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/providers/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "providers",
+                "me"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-75931d43-1c6c-4bc2-9585-362b15895cf4"
+        },
+        {
+          "name": "Get Provider by ID",
+          "id": "0e4dca49-0ef9-48a9-a899-c5a9c23d972f",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/providers/{{providerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "providers",
+                "{{providerId}}"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-0e4dca49-0ef9-48a9-a899-c5a9c23d972f"
+        },
+        {
+          "name": "List All Providers",
+          "id": "2c5b2fd2-9def-41bd-b8df-6289a658ea55",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/providers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "providers"
+              ]
+            }
+          },
+          "response": [],
+          "createdAt": "2026-06-13T14:04:33.000Z",
+          "updatedAt": "2026-06-13T14:04:33.000Z",
+          "uid": "50656199-2c5b2fd2-9def-41bd-b8df-6289a658ea55"
+        }
+      ],
+      "id": "1a8950af-a491-4835-8ff5-1415b717eb41",
+      "description": "Provider profile management (gym owners / specialists)",
+      "createdAt": "2026-06-13T14:04:33.000Z",
+      "updatedAt": "2026-06-13T14:04:33.000Z",
+      "uid": "50656199-1a8950af-a491-4835-8ff5-1415b717eb41"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8085",
+      "description": "Backend base URL"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "description": "JWT token \u2014 auto-set after login/register"
+    },
+    {
+      "key": "gymId",
+      "value": "1",
+      "description": "Target gym ID"
+    },
+    {
+      "key": "customerId",
+      "value": "1",
+      "description": "Target customer ID"
+    },
+    {
+      "key": "subscriptionId",
+      "value": "1",
+      "description": "Target subscription ID"
+    },
+    {
+      "key": "employeeId",
+      "value": "1",
+      "description": "Target employee ID"
+    },
+    {
+      "key": "packageId",
+      "value": "1",
+      "description": "Target package ID"
+    },
+    {
+      "key": "serviceId",
+      "value": "1",
+      "description": "Target service ID"
+    },
+    {
+      "key": "requestId",
+      "value": "1",
+      "description": "Link request ID"
+    },
+    {
+      "key": "memberCode",
+      "value": "GH-001",
+      "description": "Member barcode / QR value"
+    },
+    {
+      "key": "freezeId",
+      "value": "1",
+      "description": "Freeze record ID"
+    },
+    {
+      "key": "subCustomerId",
+      "value": "2",
+      "description": "Sub-user customer ID for family package"
+    },
+    {
+      "key": "specialistId",
+      "value": "1",
+      "description": "Specialist profile ID"
+    },
+    {
+      "key": "providerId",
+      "value": "1",
+      "description": "Provider ID"
+    },
+    {
+      "key": "relationshipId",
+      "value": "1",
+      "description": "Specialist-Gym relationship ID"
+    }
+  ]
+}

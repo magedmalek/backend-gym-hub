@@ -44,7 +44,7 @@ public class Payment {
 
     /** Phase 1: always CASH. Stored for future audit and multi-method support. */
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 30)
     @Builder.Default
     private PaymentMethod paymentMethod = PaymentMethod.CASH;
 

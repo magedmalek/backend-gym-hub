@@ -32,6 +32,10 @@ public class AuthService {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new DuplicateResourceException("Email already registered: " + request.getEmail());
         }
+        if (request.getPhone() != null && !request.getPhone().isBlank()
+                && userRepository.existsByPhone(request.getPhone())) {
+            throw new DuplicateResourceException("Phone number already registered: " + request.getPhone());
+        }
 
         User user = User.builder()
                 .firstName(request.getFirstName())
@@ -55,11 +59,23 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        String identifier = request.getLoginIdentifier();
 
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+        // Resolve to email: if identifier contains '@' it is an email; otherwise treat as phone
+        String email;
+        if (identifier.contains("@")) {
+            email = identifier;
+        } else {
+            User byPhone = userRepository.findByPhone(identifier)
+                    .orElseThrow(() -> new org.springframework.security.authentication.BadCredentialsException(
+                            "Invalid credentials"));
+            email = byPhone.getEmail();
+        }
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, request.getPassword()));
+
+        User user = userRepository.findByEmail(email).orElseThrow();
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
         String accessToken  = jwtService.generateToken(userDetails);

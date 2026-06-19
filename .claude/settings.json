@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"e:\\\\SSS\\\\Github\\\\backend-gym-hub\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(mvn clean *)",
+      "Bash(./mvnw clean *)",
+      "Read(//c/Program Files/**)",
+      "PowerShell($mvn = \"C:\\\\Users\\\\ELNOUR\\\\.m2\\\\wrapper\\\\dists\\\\apache-maven-3.9.11\\\\d6d3cbd4012d4c1d840e93277aca316c\\\\bin\\\\mvn.cmd\"; Set-Location \"e:\\\\SSS\\\\Github\\\\backend-gym-hub\"; & $mvn clean compile 2>&1 | Select-Object -Last 30)",
+      "PowerShell($mvn = \"C:\\\\Users\\\\ELNOUR\\\\.m2\\\\wrapper\\\\dists\\\\apache-maven-3.9.11\\\\d6d3cbd4012d4c1d840e93277aca316c\\\\bin\\\\mvn.cmd\"; Set-Location \"e:\\\\SSS\\\\Github\\\\backend-gym-hub\"; & $mvn test \"-Dspring.datasource.url=jdbc:h2:mem:testdb\" \"-Dspring.datasource.driver-class-name=org.h2.Driver\" \"-Dspring.jpa.database-platform=org.hibernate.dialect.H2Dialect\" 2>&1 | Select-Object -Last 25)",
+      "Bash(mkdir -p \"e:/SSS/Github/backend-gym-hub/src/test/resources\")",
+      "PowerShell(New-Item -ItemType Directory -Path \"e:\\\\SSS\\\\Github\\\\backend-gym-hub\\\\src\\\\test\\\\resources\" -Force)",
+      "PowerShell($mvn = \"C:\\\\Users\\\\ELNOUR\\\\.m2\\\\wrapper\\\\dists\\\\apache-maven-3.9.11\\\\d6d3cbd4012d4c1d840e93277aca316c\\\\bin\\\\mvn.cmd\"; Set-Location \"e:\\\\SSS\\\\Github\\\\backend-gym-hub\"; & $mvn test 2>&1 | Select-Object -Last 35)"
+    ],
+    "additionalDirectories": [
+      "e:\\SSS\\Github\\backend-gym-hub\\src\\test"
+    ]
+  }
+}

@@ -43,5 +43,14 @@ public enum EmployeePermission {
     CLOSE_CASH_DAY,
 
     /** Full admin access — typically the gym owner only. */
-    ADMIN
+    ADMIN,
+
+    /** Can manage gym ↔ specialist relationship contracts. */
+    MANAGE_SPECIALIST_RELATIONSHIPS,
+
+    /** Can create and manage gym training patterns. */
+    MANAGE_TRAINING_PATTERNS,
+
+    /** Can register and manage gym equipment and QR codes. */
+    MANAGE_EQUIPMENT
 }
