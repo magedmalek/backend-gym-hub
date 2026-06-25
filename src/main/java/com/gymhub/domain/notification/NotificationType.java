@@ -1,0 +1,27 @@
+package com.gymhub.domain.notification;
+
+/**
+ * Business event that triggered a notification.
+ * Implements the FND-05 notification taxonomy consumed by GD-13 and CA-11.
+ */
+public enum NotificationType {
+    SUBSCRIPTION_SOLD,
+    SUBSCRIPTION_ACTIVATED,
+    SUBSCRIPTION_EXPIRING,
+    SUBSCRIPTION_EXPIRED,
+    SUBSCRIPTION_FROZEN,
+    PAYMENT_RECORDED,
+    ATTENDANCE_RECORDED,
+    INVITATION_REGISTERED,
+    LINK_REQUEST_RECEIVED,
+    LINK_REQUEST_APPROVED,
+    LINK_REQUEST_REJECTED,
+    RELATIONSHIP_REQUEST,
+    RELATIONSHIP_UPDATED,
+    BOOKING_CONFIRMED,
+    BOOKING_CANCELLED,
+    RATING_RECEIVED,
+    SUPPORT_REQUEST_UPDATE,
+    OFFER,
+    SYSTEM
+}
