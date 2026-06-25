@@ -65,7 +65,7 @@ public class Notification {
 
     @Column(nullable = false)
     @Builder.Default
-    private boolean isRead = false;
+    private boolean read = false;
 
     private LocalDateTime readAt;
 
@@ -73,8 +73,8 @@ public class Notification {
     private LocalDateTime createdAt;
 
     public void markRead() {
-        if (!this.isRead) {
-            this.isRead = true;
+        if (!this.read) {
+            this.read = true;
             this.readAt = LocalDateTime.now();
         }
     }

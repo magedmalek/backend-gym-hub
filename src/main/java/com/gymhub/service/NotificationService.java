@@ -70,7 +70,7 @@ public class NotificationService {
     public Page<NotificationResponse> getMyNotifications(User currentUser, boolean unreadOnly,
                                                          Pageable pageable) {
         Page<Notification> page = unreadOnly
-                ? notificationRepository.findByRecipientIdAndIsReadFalseOrderByCreatedAtDesc(
+                ? notificationRepository.findByRecipientIdAndReadFalseOrderByCreatedAtDesc(
                         currentUser.getId(), pageable)
                 : notificationRepository.findByRecipientIdOrderByCreatedAtDesc(
                         currentUser.getId(), pageable);
@@ -79,7 +79,7 @@ public class NotificationService {
 
     @Transactional(readOnly = true)
     public long getUnreadCount(User currentUser) {
-        return notificationRepository.countByRecipientIdAndIsReadFalse(currentUser.getId());
+        return notificationRepository.countByRecipientIdAndReadFalse(currentUser.getId());
     }
 
     @Transactional
@@ -94,7 +94,7 @@ public class NotificationService {
     @Transactional
     public long markAllRead(User currentUser) {
         Page<Notification> unread = notificationRepository
-                .findByRecipientIdAndIsReadFalseOrderByCreatedAtDesc(
+                .findByRecipientIdAndReadFalseOrderByCreatedAtDesc(
                         currentUser.getId(), Pageable.unpaged());
         unread.forEach(Notification::markRead);
         notificationRepository.saveAll(unread);
