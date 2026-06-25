@@ -24,6 +24,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     Page<Customer> findByGymId(Long gymId, Pageable pageable);
 
+    long countByGymId(Long gymId);
+
+    long countByGymIdAndActiveTrue(Long gymId);
+
     List<Customer> findByUserId(Long userId);
 
     @Query("SELECT c FROM Customer c " +

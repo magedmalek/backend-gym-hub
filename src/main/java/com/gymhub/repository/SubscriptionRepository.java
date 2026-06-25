@@ -33,4 +33,7 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
 
     /** Count active subscriptions per gym for reporting. */
     long countByGymIdAndStatus(Long gymId, SubscriptionStatus status);
+
+    /** Count subscriptions sold within a date range (GD-15 reporting). */
+    long countByGymIdAndSaleDateBetween(Long gymId, LocalDate from, LocalDate to);
 }
